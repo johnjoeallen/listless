@@ -70,3 +70,6 @@ Testing/
 
 # original OnScreen/2 source, kept locally as read-only reference only
 /original/
+
+# mkdocs build output (published via mike to the gh-pages branch, not committed here)
+/site/
