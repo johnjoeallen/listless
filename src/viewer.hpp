@@ -34,11 +34,14 @@ struct Selection {
 
 enum class BookmarkAction { Set, Cleared, Reset };
 
+enum class DisplayMode { Text, Hex };
+
 // Pure logic and state for viewing one loaded text file: line model,
-// scrolling, word wrap, search, bookmarks. No terminal/rendering
-// dependency -- see viewer_render.hpp for that. See
-// docs/07-file-viewer-core.md for what's ported, narrowed, or deferred
-// relative to the original's Viewer (osview.cpp).
+// scrolling, word wrap, search, bookmarks, and hex-dump mode. No
+// terminal/rendering dependency -- see viewer_render.hpp for that. See
+// docs/07-file-viewer-core.md and docs/10-hex-mode-viewer.md for what's
+// ported, narrowed, or deferred relative to the original's Viewer
+// (osview.cpp).
 class Viewer {
   public:
     // Loads and indexes the file at `path`. Throws std::runtime_error if
@@ -110,6 +113,46 @@ class Viewer {
 
     const Bookmark& bookmark(int slot) const { return bookmarks_[static_cast<std::size_t>(slot)]; }
 
+    // --- Hex mode (subsystem 10; see docs/10-hex-mode-viewer.md) ---------
+
+    static constexpr int kBytesPerHexLine = 16;
+
+    DisplayMode display_mode() const { return display_mode_; }
+
+    // Switches to hex-dump mode, positioning the hex viewport at the row
+    // containing the current text top_line()'s starting byte offset
+    // (original: calcNearestHexTopLine).
+    void switch_to_hex_mode();
+
+    // Switches back to text mode, positioning top_line() at the nearest
+    // line to the current hex viewport's byte offset (original:
+    // switchToTextMode's scan for the nearest LinePtr).
+    void switch_to_text_mode();
+
+    // Number of kBytesPerHexLine-byte rows needed to display the whole
+    // buffer (0 for an empty buffer).
+    int hex_line_count() const;
+    int hex_top_line() const { return hex_top_line_; }
+
+    // All hex_scroll_*() mirror the text-mode scroll_*() contract: return
+    // true if the position actually changed. visible_lines is the number
+    // of hex rows the viewport can show.
+    bool hex_scroll_to_top();
+    bool hex_scroll_to_bottom(int visible_lines);
+    bool hex_scroll_page_down(int visible_lines);
+    bool hex_scroll_page_up(int visible_lines);
+    bool hex_scroll_line_down(int visible_lines);
+    bool hex_scroll_line_up();
+
+    // Positions the hex viewport so the row containing absolute byte
+    // offset `offset` is at the top. Clamped to a valid offset.
+    void hex_goto_offset(std::size_t offset);
+
+    // The raw bytes making up hex row `line` (fewer than
+    // kBytesPerHexLine bytes for the final, possibly partial, row).
+    // Precondition: 0 <= line < hex_line_count().
+    std::string_view hex_line_bytes(int line) const;
+
   private:
     void load(std::string content);
     void rebuild_lines(int width);
@@ -132,6 +175,9 @@ class Viewer {
     bool has_last_search_ = false;
 
     std::array<Bookmark, 10> bookmarks_;
+
+    DisplayMode display_mode_ = DisplayMode::Text;
+    int hex_top_line_ = 0;
 };
 
 }  // namespace listless

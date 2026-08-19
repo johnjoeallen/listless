@@ -30,6 +30,8 @@ describe the new implementation — new behaviour and deviations belong in
   prototype-style inheritance, and the config file load/save format.
 - [09-syntax-highlighting.md](09-syntax-highlighting.md) — per-line
   syntax colouring driven by `Style`, layered on the viewer core.
+- [10-hex-mode-viewer.md](10-hex-mode-viewer.md) — the 16-bytes-per-row
+  hex-dump display mode layered on the viewer core.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.

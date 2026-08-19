@@ -387,4 +387,121 @@ bool Viewer::jump_to_bookmark(int slot) {
     return true;
 }
 
+// --- Hex mode ---------------------------------------------------------
+
+void Viewer::switch_to_hex_mode() {
+    std::size_t offset = top_line_ < line_count()
+                             ? lines_[static_cast<std::size_t>(top_line_)].offset
+                             : data_.size();
+
+    hex_top_line_ = static_cast<int>(offset / kBytesPerHexLine);
+    if (offset % kBytesPerHexLine != 0) {
+        ++hex_top_line_;
+    }
+
+    display_mode_ = DisplayMode::Hex;
+}
+
+void Viewer::switch_to_text_mode() {
+    std::size_t offset = static_cast<std::size_t>(hex_top_line_) * kBytesPerHexLine;
+
+    // Faithful to the original's switchToTextMode(): finds the first line
+    // starting past `offset` and backs up one. If no such line exists
+    // (the hex viewport is at/past the last line's start), top_line_
+    // falls back to 0, matching the original's uninitialized-loop
+    // behaviour in that case rather than clamping to the last line.
+    int target = 0;
+    for (int i = 0; i < line_count(); ++i) {
+        if (lines_[static_cast<std::size_t>(i)].offset > offset) {
+            target = i > 0 ? i - 1 : 0;
+            break;
+        }
+    }
+
+    top_line_ = target;
+    display_mode_ = DisplayMode::Text;
+}
+
+int Viewer::hex_line_count() const {
+    return static_cast<int>((data_.size() + kBytesPerHexLine - 1) / kBytesPerHexLine);
+}
+
+bool Viewer::hex_scroll_to_top() {
+    if (hex_top_line_ == 0) {
+        return false;
+    }
+    hex_top_line_ = 0;
+    return true;
+}
+
+bool Viewer::hex_scroll_to_bottom(int visible_lines) {
+    if (visible_lines <= 0) {
+        return false;
+    }
+    int target = clamp_top_for_full_page(hex_line_count(), visible_lines);
+    if (target == hex_top_line_) {
+        return false;
+    }
+    hex_top_line_ = target;
+    return true;
+}
+
+bool Viewer::hex_scroll_page_down(int visible_lines) {
+    if (visible_lines <= 0) {
+        return false;
+    }
+    int max_top = clamp_top_for_full_page(hex_line_count(), visible_lines);
+    int target = std::min(hex_top_line_ + visible_lines, max_top);
+    if (target == hex_top_line_) {
+        return false;
+    }
+    hex_top_line_ = target;
+    return true;
+}
+
+bool Viewer::hex_scroll_page_up(int visible_lines) {
+    if (visible_lines <= 0 || hex_top_line_ == 0) {
+        return false;
+    }
+    hex_top_line_ = std::max(0, hex_top_line_ - visible_lines);
+    return true;
+}
+
+bool Viewer::hex_scroll_line_down(int visible_lines) {
+    if (visible_lines <= 0) {
+        return false;
+    }
+    int max_top = clamp_top_for_full_page(hex_line_count(), visible_lines);
+    if (hex_top_line_ >= max_top) {
+        return false;
+    }
+    ++hex_top_line_;
+    return true;
+}
+
+bool Viewer::hex_scroll_line_up() {
+    if (hex_top_line_ <= 0) {
+        return false;
+    }
+    --hex_top_line_;
+    return true;
+}
+
+void Viewer::hex_goto_offset(std::size_t offset) {
+    if (data_.empty()) {
+        hex_top_line_ = 0;
+        return;
+    }
+
+    offset = std::min(offset, data_.size() - 1);
+    offset -= offset % kBytesPerHexLine;
+    hex_top_line_ = static_cast<int>(offset / kBytesPerHexLine);
+}
+
+std::string_view Viewer::hex_line_bytes(int line) const {
+    std::size_t offset = static_cast<std::size_t>(line) * kBytesPerHexLine;
+    std::size_t len = std::min(static_cast<std::size_t>(kBytesPerHexLine), data_.size() - offset);
+    return std::string_view(data_).substr(offset, len);
+}
+
 }  // namespace listless
