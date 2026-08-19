@@ -1,4 +1,5 @@
 add_library(listless_core
+    text.cpp
     version.cpp
 )
 
