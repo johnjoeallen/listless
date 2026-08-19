@@ -1,10 +1,13 @@
 add_library(listless_core
+    app_actions.cpp
     color.cpp
     color_pair_table.cpp
     directory.cpp
     file_manager.cpp
+    file_manager_render.cpp
     glob.cpp
     key.cpp
+    line_edit.cpp
     search.cpp
     style.cpp
     syntax_highlight.cpp

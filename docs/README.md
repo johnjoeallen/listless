@@ -37,6 +37,9 @@ describe the new implementation — new behaviour and deviations belong in
   syntax colouring driven by `Style`, layered on the viewer core.
 - [10-hex-mode-viewer.md](10-hex-mode-viewer.md) — the 16-bytes-per-row
   hex-dump display mode layered on the viewer core.
+- [app-main-loop.md](app-main-loop.md) — the `App`/main-loop layer
+  (issue #24, not in the numbered breakdown above) that wires
+  `FileManager` and `Viewer` into the first runnable `lss` binary.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.
