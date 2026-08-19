@@ -724,3 +724,104 @@ the viewer core). The `App`/main-loop subsystem (issue #24) remains a
 prerequisite for wiring any of `Style`'s live-editing features
 (`F2`-`F7` cycling, `Ctrl+S`) or `FileManager`/`Viewer`'s keyboard loops
 into an actual running program.
+
+## 2026-08-19 — Subsystem 09: syntax highlighting (issue #10)
+
+**Objective:** layer per-line syntax colouring onto the viewer core
+(subsystem 07) using the style system (subsystem 08) — reserved-word/
+comment/string/preprocessor/number/symbol colouring, cross-line comment
+and preprocessor state tracking, and the separate `BOLD_CODE`/
+`UNDERLINE_CODE` "text with layout" toggle-byte feature.
+
+**Changes:**
+- `docs/09-syntax-highlighting.md`: documents the classification helpers
+  (`IsString`/`IsEolComment`/`IsBeginComment`/`IsEndComment`/
+  `IsNumericPrefix`/`IsSymbol`/`keywordCmp`/`IsReservedWord`),
+  `findStyleForFile`, the `LineStatus` cross-line state model, the
+  `BOLD_CODE`/`UNDERLINE_CODE` toggle-byte feature and its "disabled
+  whenever syntax highlighting is on" gating, and `scanData`'s (state-
+  tracking) and `displayData`'s (colouring) two separate passes over the
+  same rule set — including the `iReserved.Size() > 0` quirk that
+  silently falls back to layout-toggle mode when syntax highlighting is
+  enabled but a style has zero reserved words.
+- `src/syntax_highlight.hpp`/`src/syntax_highlight.cpp` (new):
+  `highlight_line(text, style, state)`, unifying `scanData`'s state
+  machine and `displayData`'s colouring chain into one pass over the
+  line, since both need the same rule evaluations and the original only
+  splits them because `scanData` runs once up front while `displayData`
+  re-derives entry state per render. Returns `std::vector<ColorSpan>`
+  (offset/length/colour/bold/underlined runs, adjacent same-attribute
+  spans merged) and mutates a `HighlightState` (`in_comment`,
+  `in_preprocessor`, `bold`, `underlined` — the original's single
+  `LineStatus` enum split into independent fields since a line can be
+  bold *and* underlined at once). Internally: `highlight_syntax()` (the
+  comment/preprocessor/string/symbol/number/reserved-word/identifier
+  precedence chain, active when `syntax_highlight_enabled &&
+  !reserved.empty()`) and `highlight_layout()` (the `BOLD_CODE`/
+  `UNDERLINE_CODE` toggle path, gated on `text_with_layout`, used
+  otherwise). Per-extension style selection needed no new code — reuses
+  `StyleSet::style_for_extension()` from subsystem 08.
+- `tests/core/syntax_highlight_test.cpp` (new, 18 cases): plain
+  identifiers, reserved-word matching with word-boundary and case-
+  sensitivity handling, hex/decimal numbers, escaped strings, end-of-
+  line comments, multi-line `/* */` comments persisting `in_comment`
+  across 3 lines, preprocessor blocks requiring column-0 start and
+  persisting `in_preprocessor` only when the line ends in the
+  continuation character, syntax-highlighting-disabled and empty-
+  reserved-list fallback to a single default-coloured span, `BOLD_CODE`/
+  `UNDERLINE_CODE` toggling and cross-line persistence gated on
+  `text_with_layout`, and per-extension style selection feeding into
+  `highlight_line`.
+- `docs/README.md`: added the subsystem 09 entry to the index.
+
+**Decisions:**
+- **Comment delimiters always matched case-sensitively** — the original
+  is internally inconsistent here (`IsEolComment` respects
+  `iCaseSensitive`; `IsBeginComment`/`IsEndComment` use plain `strncmp`
+  regardless). This port picks the always-case-sensitive behaviour for
+  all three, applying `case_sensitive` only where the original
+  consistently does (reserved words).
+- **String escape handling uses a standard "backslash escapes the next
+  character" reading**, not the original's exact post-increment
+  double-consume sequence (`osview.cpp:936-940`), which reads as an
+  accidental simplification in the original rather than deliberate
+  behaviour — a faithful-enough reinterpretation in the same spirit as
+  subsystem 07's search-backward decision, not a byte-for-byte port of
+  what looks like an original bug.
+- **No case-conversion of displayed reserved-word text** — `ColorSpan`
+  carries an offset/length into the caller's text, not replacement
+  text, so `iCaseConvert`'s "redisplay the keyword in its stored casing"
+  isn't reproduced; reserved words keep the source's casing, only their
+  colour changes. Revisiting needs `ColorSpan` (or a caller) to carry
+  replacement text, deferred until a real renderer needs it.
+- **Preprocessor/comment state tracking gated identically to colouring**
+  (`syntax_highlight_enabled && !reserved.empty()`), where the original's
+  `scanData` state machine only checks `iSyntaxHighlightEnabled` — judged
+  not worth reproducing since a style with syntax highlighting on and
+  zero reserved words is a degenerate case the original barely supports
+  either way (falls back to layout-toggle colouring regardless).
+- **No backspace-overstrike manual bolding** (`char\bchar`,
+  `osview.cpp:1024-1041`) — a separate `WithLayout`-gated feature from
+  `BOLD_CODE`/`UNDERLINE_CODE`, not implemented; no call site in this
+  port needs it.
+
+**Bug fixed:** none new — this is a from-scratch tokenizer built against
+`Style`'s field API, not a line-by-line port of `scanData`/`displayData`.
+
+**Tests:** 18 new (`HighlightLine.*`) — 197 total across `core_tests` and
+`platform_linux_tests`. Pass under GCC plain and under
+`-DLISTLESS_ENABLE_SANITIZERS=ON`; `clang-format --dry-run --Werror`
+clean.
+
+**Behaviour notes:** cross-line comment/preprocessor state tracking, the
+column-0-only preprocessor start rule, word-boundary reserved-word
+matching, and the syntax-highlighting/layout-toggle mutual exclusivity
+all preserve the original's behaviour deliberately — see
+`docs/09-syntax-highlighting.md`'s "narrowed or deferred" section for
+where this port diverges.
+
+**Next steps:** subsystem 10, hex-mode viewer (smaller, mostly self-
+contained). Rendering `highlight_line`'s output to a real terminal, and
+wiring `F2`-`F7`/`Ctrl+S`/per-file-type style selection into an
+interactive session, both remain blocked on the `App`/main-loop
+subsystem (issue #24).

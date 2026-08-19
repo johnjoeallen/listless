@@ -28,6 +28,8 @@ describe the new implementation — new behaviour and deviations belong in
   scrolling, search, bookmarks, and rendering of the file viewer core.
 - [08-style-config.md](08-style-config.md) — `Style`, `Item<T>`
   prototype-style inheritance, and the config file load/save format.
+- [09-syntax-highlighting.md](09-syntax-highlighting.md) — per-line
+  syntax colouring driven by `Style`, layered on the viewer core.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.

@@ -7,6 +7,7 @@ add_executable(core_tests
     key_test.cpp
     search_test.cpp
     style_test.cpp
+    syntax_highlight_test.cpp
     text_test.cpp
     version_test.cpp
     viewer_test.cpp
