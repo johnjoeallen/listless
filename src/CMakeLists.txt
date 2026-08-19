@@ -7,6 +7,7 @@ add_library(listless_core
     key.cpp
     search.cpp
     style.cpp
+    syntax_highlight.cpp
     text.cpp
     version.cpp
     viewer.cpp
