@@ -3,6 +3,7 @@ add_executable(core_tests
     color_test.cpp
     directory_test.cpp
     glob_test.cpp
+    key_test.cpp
     search_test.cpp
     text_test.cpp
     version_test.cpp
