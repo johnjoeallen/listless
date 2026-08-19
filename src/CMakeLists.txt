@@ -1,4 +1,6 @@
 add_library(listless_core
+    glob.cpp
+    search.cpp
     text.cpp
     version.cpp
 )

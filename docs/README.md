@@ -12,6 +12,8 @@ describe the new implementation — new behaviour and deviations belong in
 - [01-string-container-primitives.md](01-string-container-primitives.md) —
   the custom pre-STL container/utility library (`CString`, `Array`,
   `SList`/`DList`/`Set`, `RefPtr`, `Date`/`Time`, etc).
+- [02-search-primitives.md](02-search-primitives.md) — literal search
+  (Boyer-Moore-Horspool) and the documented wildcard/glob syntax.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.
