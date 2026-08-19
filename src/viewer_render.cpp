@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdio>
 #include <string>
 
 namespace listless {
@@ -110,6 +111,59 @@ void draw_text_line(Terminal& terminal, int row, const Viewer& viewer, int line_
     }
 }
 
+// "OOOOOOOO  HH HH HH HH  HH HH HH HH  HH HH HH HH  HH HH HH HH |ASCII...........|"
+// -- a standard hex-dump layout, not a reproduction of the original's
+// corrupted-encoding separator glyphs (see docs/10-hex-mode-viewer.md).
+// Non-printable bytes (outside 0x20-0x7E) show as '.' in the gutter.
+std::string format_hex_line(std::string_view bytes, int line_index) {
+    std::string out;
+    char offset_field[32];
+    char byte_field[8];
+
+    std::snprintf(offset_field, sizeof(offset_field), "%08zX",
+                  static_cast<std::size_t>(line_index) * Viewer::kBytesPerHexLine);
+    out += offset_field;
+    out += "  ";
+
+    for (int i = 0; i < Viewer::kBytesPerHexLine; ++i) {
+        if (i != 0 && i % 4 == 0) {
+            out += ' ';
+        }
+        if (i < static_cast<int>(bytes.size())) {
+            std::snprintf(byte_field, sizeof(byte_field), "%02X ",
+                          static_cast<unsigned char>(bytes[static_cast<std::size_t>(i)]));
+            out += byte_field;
+        } else {
+            out += "   ";
+        }
+    }
+
+    out += '|';
+    for (int i = 0; i < Viewer::kBytesPerHexLine; ++i) {
+        if (i < static_cast<int>(bytes.size())) {
+            auto c = static_cast<unsigned char>(bytes[static_cast<std::size_t>(i)]);
+            out += (c >= 0x20 && c < 0x7F) ? static_cast<char>(c) : '.';
+        } else {
+            out += ' ';
+        }
+    }
+    out += '|';
+
+    return out;
+}
+
+void draw_hex_line(Terminal& terminal, int row, const Viewer& viewer, int line_index, int width) {
+    std::string line = format_hex_line(viewer.hex_line_bytes(line_index), line_index);
+    if (static_cast<int>(line.size()) > width) {
+        line.resize(static_cast<std::size_t>(width));
+    }
+
+    terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);
+    if (!line.empty()) {
+        terminal.put_text(0, row, line, kNormalFg, kNormalBg);
+    }
+}
+
 void draw_status_line(Terminal& terminal, const Viewer& viewer, int width) {
     int total = viewer.line_count();
     int current = viewer.top_line() + 1;
@@ -134,6 +188,18 @@ void render_viewer(const Viewer& viewer, Terminal& terminal) {
     int height = terminal.height();
 
     draw_status_line(terminal, viewer, width);
+
+    if (viewer.display_mode() == DisplayMode::Hex) {
+        for (int row = 1; row < height; ++row) {
+            int line_index = viewer.hex_top_line() + (row - 1);
+            if (line_index < viewer.hex_line_count()) {
+                draw_hex_line(terminal, row, viewer, line_index, width);
+            } else {
+                terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);
+            }
+        }
+        return;
+    }
 
     for (int row = 1; row < height; ++row) {
         int line_index = viewer.top_line() + (row - 1);

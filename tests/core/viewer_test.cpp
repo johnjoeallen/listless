@@ -6,6 +6,7 @@
 
 namespace fs = std::filesystem;
 using listless::BookmarkAction;
+using listless::DisplayMode;
 using listless::kWholeLine;
 using listless::Viewer;
 
@@ -320,4 +321,121 @@ TEST(Viewer, BookmarksAreIndependentPerSlot) {
 
     EXPECT_EQ(v.bookmark(0).line, 1);
     EXPECT_EQ(v.bookmark(1).line, 4);
+}
+
+// --- hex mode --------------------------------------------------------
+
+TEST(Viewer, StartsInTextMode) {
+    Viewer v = make_viewer("hello\n");
+    EXPECT_EQ(v.display_mode(), DisplayMode::Text);
+}
+
+TEST(Viewer, HexLineCountForEmptyBufferIsZero) {
+    Viewer v = make_viewer("");
+    EXPECT_EQ(v.hex_line_count(), 0);
+}
+
+TEST(Viewer, HexLineCountIsExactMultipleOfSixteen) {
+    Viewer v = make_viewer(std::string(32, 'x'));
+    EXPECT_EQ(v.hex_line_count(), 2);
+}
+
+TEST(Viewer, HexLineCountRoundsUpForPartialFinalLine) {
+    Viewer v = make_viewer(std::string(17, 'x'));
+    EXPECT_EQ(v.hex_line_count(), 2);
+}
+
+TEST(Viewer, HexLineBytesReturnsSixteenBytesForFullLine) {
+    Viewer v = make_viewer(std::string(16, 'a') + std::string(16, 'b'));
+    EXPECT_EQ(v.hex_line_bytes(0), std::string(16, 'a'));
+    EXPECT_EQ(v.hex_line_bytes(1), std::string(16, 'b'));
+}
+
+TEST(Viewer, HexLineBytesReturnsPartialBytesForFinalLine) {
+    Viewer v = make_viewer(std::string(16, 'a') + "xyz");
+    ASSERT_EQ(v.hex_line_count(), 2);
+    EXPECT_EQ(v.hex_line_bytes(1), "xyz");
+}
+
+TEST(Viewer, SwitchToHexModeSetsDisplayMode) {
+    Viewer v = make_viewer(std::string(64, 'x'));
+    v.switch_to_hex_mode();
+    EXPECT_EQ(v.display_mode(), DisplayMode::Hex);
+}
+
+TEST(Viewer, SwitchToHexModePositionsNearestRowToCurrentTopLine) {
+    // 3 lines of 20 bytes each ("a"*19 + "\n"); top_line 1 starts at byte
+    // offset 20, which falls inside hex row 1 (bytes 16-31), rounded up
+    // per the original's calcNearestHexTopLine.
+    std::string line(19, 'a');
+    Viewer v = make_viewer(line + "\n" + line + "\n" + line + "\n");
+    v.goto_line(1);
+    v.switch_to_hex_mode();
+    EXPECT_EQ(v.hex_top_line(), 2);  // offset 20 -> 20/16=1, remainder -> +1
+}
+
+TEST(Viewer, SwitchToTextModePositionsNearestLineToHexOffset) {
+    std::string line(19, 'a');
+    Viewer v = make_viewer(line + "\n" + line + "\n" + line + "\n");
+    // hex_goto_offset(20) snaps down to row offset 16 (nearest lower
+    // 16-byte boundary), which precedes line 1's start (offset 20).
+    v.hex_goto_offset(20);
+    v.switch_to_text_mode();
+    EXPECT_EQ(v.top_line(), 0);
+}
+
+TEST(Viewer, HexGotoOffsetSnapsToContainingSixteenByteRow) {
+    Viewer v = make_viewer(std::string(64, 'x'));
+    v.hex_goto_offset(37);
+    EXPECT_EQ(v.hex_top_line(), 2);  // 37 / 16 == 2
+}
+
+TEST(Viewer, HexGotoOffsetClampsToLastByte) {
+    Viewer v = make_viewer(std::string(20, 'x'));
+    v.hex_goto_offset(1000);
+    EXPECT_EQ(v.hex_top_line(), 1);  // last valid offset (19) is in row 1
+}
+
+TEST(Viewer, HexScrollLineDownAdvancesOneRow) {
+    Viewer v = make_viewer(std::string(64, 'x'));  // 4 hex rows
+    EXPECT_TRUE(v.hex_scroll_line_down(2));
+    EXPECT_EQ(v.hex_top_line(), 1);
+}
+
+TEST(Viewer, HexScrollLineDownStopsAtLastFullPage) {
+    Viewer v = make_viewer(std::string(32, 'x'));  // 2 hex rows
+    EXPECT_FALSE(v.hex_scroll_line_down(2));
+    EXPECT_EQ(v.hex_top_line(), 0);
+}
+
+TEST(Viewer, HexScrollLineUpStopsAtTop) {
+    Viewer v = make_viewer(std::string(64, 'x'));
+    EXPECT_FALSE(v.hex_scroll_line_up());
+}
+
+TEST(Viewer, HexScrollPageDownAndUpRoundTrip) {
+    Viewer v = make_viewer(std::string(320, 'x'));  // 20 hex rows
+    EXPECT_TRUE(v.hex_scroll_page_down(5));
+    int after_down = v.hex_top_line();
+    EXPECT_GT(after_down, 0);
+    EXPECT_TRUE(v.hex_scroll_page_up(5));
+    EXPECT_EQ(v.hex_top_line(), 0);
+}
+
+TEST(Viewer, HexScrollToBottomClampsToLastFullPage) {
+    Viewer v = make_viewer(std::string(320, 'x'));  // 20 hex rows
+    EXPECT_TRUE(v.hex_scroll_to_bottom(5));
+    EXPECT_EQ(v.hex_top_line(), 15);
+}
+
+TEST(Viewer, HexScrollToTopReturnsFalseWhenAlreadyAtTop) {
+    Viewer v = make_viewer(std::string(64, 'x'));
+    EXPECT_FALSE(v.hex_scroll_to_top());
+}
+
+TEST(Viewer, HexScrollToTopMovesFromNonZero) {
+    Viewer v = make_viewer(std::string(64, 'x'));
+    v.hex_goto_offset(48);
+    EXPECT_TRUE(v.hex_scroll_to_top());
+    EXPECT_EQ(v.hex_top_line(), 0);
 }

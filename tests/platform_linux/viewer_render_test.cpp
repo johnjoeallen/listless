@@ -95,3 +95,53 @@ TEST_F(ViewerRenderTest, GotoLineHighlightsWholeLine) {
     EXPECT_EQ((first & A_ATTRIBUTES),
               (last & A_ATTRIBUTES));  // whole line, same highlight throughout
 }
+
+TEST_F(ViewerRenderTest, HexModeDrawsOffsetHexBytesAndAsciiGutter) {
+    Viewer v("ABCDEFGHIJKLMNOP", "t");
+    v.switch_to_hex_mode();
+    render_viewer(v, *terminal_);
+
+    std::string row1 = row_text(1, 80);
+    EXPECT_NE(row1.find("00000000"), std::string::npos);
+    EXPECT_NE(row1.find("41 42 43 44"), std::string::npos);  // 'A' 'B' 'C' 'D' in hex
+    EXPECT_NE(row1.find("|ABCDEFGHIJKLMNOP|"), std::string::npos);
+}
+
+TEST_F(ViewerRenderTest, HexModeNonPrintableBytesShowAsDotInGutter) {
+    std::string data;
+    data.push_back('\x01');
+    data.append(15, 'z');
+    Viewer v(data, "t");
+    v.switch_to_hex_mode();
+    render_viewer(v, *terminal_);
+
+    std::string row1 = row_text(1, 80);
+    EXPECT_NE(row1.find("|.zzzzzzzzzzzzzzz|"), std::string::npos);
+}
+
+TEST_F(ViewerRenderTest, HexModeFinalPartialRowPadsMissingBytes) {
+    Viewer v("ABC", "t");
+    v.switch_to_hex_mode();
+    render_viewer(v, *terminal_);
+
+    std::string row1 = row_text(1, 80);
+    EXPECT_NE(row1.find("41 42 43"), std::string::npos);
+    EXPECT_NE(row1.find("|ABC             |"), std::string::npos);
+}
+
+TEST_F(ViewerRenderTest, HexModeScrollingChangesWhichRowIsDrawn) {
+    Viewer v(std::string(160, 'x'), "t");  // 10 hex rows
+    v.switch_to_hex_mode();
+    v.hex_scroll_line_down(4);  // room to scroll: 10 rows > 4 visible
+    render_viewer(v, *terminal_);
+
+    std::string row1 = row_text(1, 80);
+    EXPECT_NE(row1.find("00000010"), std::string::npos);  // row 1 now shows offset 0x10
+}
+
+TEST_F(ViewerRenderTest, TextModeUnaffectedByHexModeExistence) {
+    Viewer v("plain text\n", "t");
+    render_viewer(v, *terminal_);
+
+    EXPECT_EQ(row_text(1, 10), "plain text");
+}

@@ -825,3 +825,48 @@ contained). Rendering `highlight_line`'s output to a real terminal, and
 wiring `F2`-`F7`/`Ctrl+S`/per-file-type style selection into an
 interactive session, both remain blocked on the `App`/main-loop
 subsystem (issue #24).
+
+## 2026-08-19 — Subsystem 10: hex-mode viewer (issue #10)
+
+**Objective:** a second display mode on the viewer core (subsystem 07)
+— the same loaded file shown as a 16-bytes-per-row hex dump — per
+`docs/10-hex-mode-viewer.md`.
+
+**Changes:**
+- `src/viewer.hpp`/`src/viewer.cpp`: `DisplayMode` (`Text`/`Hex`) and
+  `kBytesPerHexLine = 16` on `Viewer`. `switch_to_hex_mode`/
+  `switch_to_text_mode` port `calcNearestHexTopLine`/the text-mode
+  scan-back directly, translating between the text viewport's current
+  line and the hex viewport's byte offset. `hex_line_count`,
+  `hex_line_bytes`, and `hex_scroll_to_top/bottom`,
+  `hex_scroll_page_up/down`, `hex_scroll_line_up/down` mirror
+  `hexLineCount`/`displayHexLine`/`handleKeyInHexMode`'s scroll branches,
+  using the same "return true iff the position changed" contract as
+  subsystem 07's text-mode `scroll_*()`. `hex_goto_offset` ports the
+  `g`/`G` handler's clamp-and-round-to-16-byte-boundary math, minus the
+  `LineEdit` prompt/parsing (an `App`/main-loop concern, issue #24).
+- `src/viewer_render.cpp`/`.hpp`: `format_hex_line`/`draw_hex_line` — a
+  standard hex-dump row (8-hex-digit offset, 16 bytes grouped in 4s,
+  ASCII gutter). `render_viewer` dispatches on `Viewer::display_mode()`
+  to this or the existing text-mode renderer.
+
+**Deviations:** the original's stray non-ASCII separator byte between
+offset and hex bytes (a mojibake artifact, not a deliberate glyph) is
+dropped in favour of a plain gap; an ASCII gutter is added even though
+the original's hex view has none (a genuine addition, not a port, since
+every other hex viewer has one and there's no faithfulness reason to
+omit it); the `DISPLAY_END_OF_FILE` marker row is skipped (undefined in
+the original's shipped build, so no observable behaviour exists to
+port); selection highlighting in hex mode is not implemented (hex mode
+has no byte-range selection concept yet). Full rationale in
+`docs/10-hex-mode-viewer.md`'s "narrowed or deferred" section.
+
+**Bug fixed:** none — a direct port of working original logic.
+
+**Tests:** 22 new (`Viewer.Hex*` in `tests/core`, `ViewerRenderTest.Hex*`
+in `tests/platform_linux`) — 223 total. Pass under GCC plain.
+
+**Next steps:** all remaining ported subsystems (viewer text/hex modes,
+syntax highlighting, style config, file list UI) are now blocked on the
+`App`/main-loop subsystem (issue #24) to wire keyboard input, mode
+switching, and per-file style selection into an interactive session.
