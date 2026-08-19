@@ -870,3 +870,69 @@ in `tests/platform_linux`) — 223 total. Pass under GCC plain.
 syntax highlighting, style config, file list UI) are now blocked on the
 `App`/main-loop subsystem (issue #24) to wire keyboard input, mode
 switching, and per-file style selection into an interactive session.
+
+## 2026-08-19 — App entry point / main loop (issue #24)
+
+**Objective:** the first runnable `listless` binary, wiring
+`FileManager` (06) and `Viewer`+hex mode (07/09/10) into a real
+interactive session, per `docs/app-main-loop.md`. Unlike every
+subsystem before it, this one isn't in `docs/architecture.md`'s
+numbered 1-12 breakdown -- it's the cross-cutting App/main-loop layer
+every one of those subsystem docs explicitly deferred to.
+
+**Changes:**
+- `src/line_edit.hpp`/`.cpp`: `line_edit_key` -- the original's
+  `LineEdit` modal-prompt widget's key-handling core as a pure function
+  (append/backspace/submit/cancel), no history.
+- `src/app_actions.hpp`/`.cpp`: `handle_browsing_key`/
+  `handle_viewing_key` -- pure key-dispatch tables ported from the
+  reachable-key subset of `FileManager::Activate`'s and
+  `Viewer::handleKey`'s switch statements, unit-tested against real
+  `FileManager`/`Viewer` instances (18 new cases).
+- `src/file_manager_render.hpp`/`.cpp`: `render_file_manager` --
+  `FileManager`'s status line plus column-major grid, the renderer
+  subsystem 06 never built. Modeled on `viewer_render.cpp`'s shape (5
+  new `tests/platform_linux` cases).
+- `src/app.hpp`/`.cpp`, `src/main.cpp`: `App` -- owns `Terminal`/
+  `Keyboard`/`FileManager`/a single `Viewer`, alternating browsing and
+  viewing screens; `run_prompt()` drives `line_edit_key` for search,
+  case-insensitive search, hex goto-offset, and a new goto-line prompt.
+  Positional-path argument parsing (empty/directory/file) mirrors
+  `App::Init`'s dispatch, minus stdin piping and multi-file arguments.
+- Root `CMakeLists.txt`/`src/CMakeLists.txt`: new `listless` executable
+  target, the first binary besides the two test runners.
+
+**Deviations:** no `cViewedFiles` multi-buffer list (single active
+`Viewer`, replaced on open); no F2-F7 colour cycling; no `FileManager`
+command submenu; no syntax-highlighted rendering (renderer doesn't take
+a `Style` yet); narrower CLI surface (one positional path argument
+only, no `-ignorestdin`/`-raw`/`-nosyntax`/etc., no config-file
+loading); browsing type-ahead is file-only (no shift signal for plain
+letters over a terminal); bookmark jump uses a plain digit instead of
+the original's Alt+G+digit chord; a `:` goto-line prompt in text mode
+is a genuine addition, not a port. Full rationale in
+`docs/app-main-loop.md`'s "narrowed or deferred" section.
+
+**Bug fixed:** none in ported code. One caught during this work's own
+manual testing: an invented `Ctrl+Q`-quits-the-viewer binding never
+reached the app because `Terminal` runs ncurses in `cbreak()` mode,
+which leaves XON/XOFF flow control active -- dropped rather than
+chasing another Ctrl-chord equally likely to be intercepted.
+
+**Tests:** 23 new (`LineEdit.*`, `BrowsingActionsTest.*`/
+`ViewingActionsTest.*` in `tests/core`; `FileManagerRenderTest.*` in
+`tests/platform_linux`) -- 253 total. `App`'s main loop itself is
+deliberately not unit-tested (glue over already-tested pieces, coupled
+to a real terminal, the same limitation the original's `App::Run`/
+`FileManager::Activate` had) -- verified instead by manually driving
+the built `listless` binary in a real terminal (via `tmux send-keys`/
+`capture-pane`): browsing, entering directories, opening/closing a
+file, scrolling, searching, hex-mode toggling, and quitting from both
+entry points (`listless` and `listless <file>`) all confirmed working,
+including clean terminal restoration on exit.
+
+**Next steps:** multi-buffer switching, F2-F7 live colour cycling, the
+full original CLI flag surface and config-file loading, `FileManager`'s
+command submenu, and syntax-highlighted rendering are all real
+follow-up work now that there's a runnable binary to hang them off of;
+subsystem 11 (file operations) remains next in the numbered breakdown.
