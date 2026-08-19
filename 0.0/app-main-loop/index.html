@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/status/">
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/app-main-loop/">
       
       
-        <link rel="prev" href="../target/">
+        <link rel="prev" href="../10-hex-mode-viewer/">
       
-      
-        <link rel="next" href="../architecture/">
       
       
         
@@ -27,7 +25,7 @@
     
     
       
-        <title>Porting status - Listless</title>
+        <title>App entry point / main loop - Listless</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#porting-status" class="md-skip">
+        <a href="#app-entry-point-main-loop-issue-24" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Porting status
+              App entry point / main loop
             
           </span>
         </div>
@@ -266,11 +264,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../status/" class="md-tabs__link">
         
   
   
@@ -306,10 +302,12 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../01-string-container-primitives/" class="md-tabs__link">
           
   
@@ -511,37 +509,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Porting status
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -557,59 +528,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#landed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Landed
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#not-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Not started
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-done-means-here" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What "done" means here
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -645,24 +563,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -680,7 +603,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -975,10 +898,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../app-main-loop/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App entry point / main loop
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -994,6 +944,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original does
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1033,32 +1014,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#landed" class="md-nav__link">
+  <a href="#what-the-original-does" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Landed
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#not-started" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Not started
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-done-means-here" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What "done" means here
+        What the original does
       
     </span>
   </a>
@@ -1082,7 +1041,7 @@
 
 
   
-    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/status.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/app-main-loop.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1090,120 +1049,170 @@
   
 
 
-<h1 id="porting-status">Porting status<a class="headerlink" href="#porting-status" title="Permanent link">&para;</a></h1>
-<p>A snapshot of where the port currently stands. The full detail behind
-every entry here — objectives, decisions, bugs fixed, tests, and
-deviations from the original — lives in
-<a href="https://github.com/johnjoeallen/listless/blob/main/PORTING_JOURNEY.md"><code>PORTING_JOURNEY.md</code></a>,
-the project's append-only engineering log. This page summarizes it; it
-doesn't replace it.</p>
-<h2 id="landed">Landed<a class="headerlink" href="#landed" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Subsystem</th>
-<th>Doc</th>
-<th>PR</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>String/container primitives</td>
-<td><a href="../01-string-container-primitives/">01</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/17">#17</a></td>
-</tr>
-<tr>
-<td>2</td>
-<td>Search primitives</td>
-<td><a href="../02-search-primitives/">02</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/18">#18</a></td>
-</tr>
-<tr>
-<td>3</td>
-<td>Directory enumeration</td>
-<td><a href="../03-directory-enumeration/">03</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/19">#19</a></td>
-</tr>
-<tr>
-<td>4</td>
-<td>Console/terminal I/O</td>
-<td><a href="../04-console-terminal-io/">04</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/20">#20</a></td>
-</tr>
-<tr>
-<td>5</td>
-<td>Keyboard input</td>
-<td><a href="../05-keyboard-input/">05</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/21">#21</a></td>
-</tr>
-<tr>
-<td>7</td>
-<td>File viewer core</td>
-<td><a href="../07-file-viewer-core/">07</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/22">#22</a></td>
-</tr>
-<tr>
-<td>6</td>
-<td>File-list UI (<code>FileManager</code>)</td>
-<td><a href="../06-file-list-ui/">06</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/23">#23</a></td>
-</tr>
-<tr>
-<td>8</td>
-<td>Style/config system</td>
-<td><a href="../08-style-config/">08</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/25">#25</a></td>
-</tr>
-<tr>
-<td>9</td>
-<td>Syntax highlighting</td>
-<td><a href="../09-syntax-highlighting/">09</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/26">#26</a></td>
-</tr>
-<tr>
-<td>10</td>
-<td>Hex-mode viewer</td>
-<td><a href="../10-hex-mode-viewer/">10</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/27">#27</a></td>
-</tr>
-<tr>
-<td>—</td>
-<td>App entry point / main loop</td>
-<td><a href="../app-main-loop/">app-main-loop</a></td>
-<td><a href="https://github.com/johnjoeallen/listless/pull/28">#28</a></td>
-</tr>
-</tbody>
-</table>
-<p>Subsystem 7 landed ahead of subsystem 6 in numbering order — the file
-viewer core was sequenced before the file-list UI; see
-<code>PORTING_JOURNEY.md</code> for the rationale. App entry point / main loop
-(<a href="https://github.com/johnjoeallen/listless/issues/24">issue #24</a>) isn't
-in the numbered 1-12 breakdown at all — it's the cross-cutting
-App/main-loop layer every subsystem above deferred to, wiring
-<code>FileManager</code> and <code>Viewer</code> into the first runnable <code>lss</code> binary.</p>
-<h2 id="not-started">Not started<a class="headerlink" href="#not-started" title="Permanent link">&para;</a></h2>
+<h1 id="app-entry-point-main-loop-issue-24">App entry point / main loop (issue #24)<a class="headerlink" href="#app-entry-point-main-loop-issue-24" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/apps/onscreen/os.cpp</code> (<code>App::Init</code>, <code>App::Run</code>),
+<code>original/apps/onscreen/osview.cpp</code> (<code>Viewer::handleKey</code>,
+<code>handleKeyInHexMode</code>), <code>original/apps/onscreen/fileman.cpp</code>
+(<code>FileManager::Activate</code>). Unlike subsystems 01-10, this isn't in
+<code>docs/architecture.md</code>'s numbered 1-12 breakdown -- it's the
+cross-cutting piece every one of those subsystem docs explicitly
+deferred to "an App/main-loop subsystem" that didn't exist yet. This
+page wires <code>FileManager</code> (06) and <code>Viewer</code>+hex mode (07/09/10) into a
+real interactive session using <code>Terminal</code>/<code>Keyboard</code> (04/05), producing
+the first runnable <code>lss</code> binary.</p>
+<h2 id="what-the-original-does">What the original does<a class="headerlink" href="#what-the-original-does" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Syntax highlighting wiring</strong> (<a href="https://github.com/johnjoeallen/listless/issues/29">issue #29</a>)
-  — subsystem 9 produces colour spans (<code>highlight_line</code>); nothing calls
-  it from the renderer yet, so no file gets syntax colouring in the
-  running app regardless of type. Filed as a follow-up once the
-  App/main-loop layer existed to own <em>which</em> style is active per file.</li>
-<li><strong>Subsystem 11: file operations</strong> (copy/move/rename/delete/mkdir) —
-  deferred until everything above is stable, given the higher
-  regression-test scrutiny destructive operations warrant.</li>
-<li><strong>Subsystem 12: editor integration, shell escape, live style editing</strong>
-  — polish features, lowest risk if deferred; not started.</li>
+<li><strong><code>App::Init</code></strong> (<code>os.cpp:212-521</code>) does a lot in one function: screen
+  geometry checks, OS-specific hard-error suppression, building
+  <code>gDefaultStyle</code> (colours, tab width, syntax-highlighting defaults) and
+  loading <code>os.set</code> over it, a <code>getopt</code>-based CLI parse (<code>-ignorestdin</code>,
+  <code>-search regexp</code>, <code>-raw</code>, <code>-textwithlayout</code>, <code>-highbit</code>, `-nosyntax
+<br />
+<style>`, etc. -- `os.cpp:296-419`), allocating the screen buffer, and
+  finally mode dispatch: redirected stdin (not a tty) becomes a `Viewer`
+  over a synthetic "stdin" `FileInfo`; a single directory-path argument
+  (or no argument, when stdin *is* a tty) opens a `FileManager` via
+  `Activate()`; one or more file-path arguments load each into a
+  `Viewer` via `AddFileList`, appended to `cViewedFiles`
+  (`SList<Viewer>`).
+- **`App::Run`** (`os.cpp:530+`) is one large keyboard-driven loop over
+  `cViewedFiles`/`gCurrFile`: buffer switching (digit keys 1-9, Alt+N/P,
+  a buffer picker), tab-width and F2-F7 live-colour-cycling keys, search-
+  mode toggle, Alt+O shell escape, forwarding everything else to
+  `Viewer::handleKey`.
+- **`Viewer::handleKey`** (`osview.cpp:2650+`) dispatches search
+  (`/`/`s`/`S` case-sensitive, `f`/`F`/`\` case-insensitive, both
+  prompted via `LineEdit`), repeat-search (`a`/`A`, Alt+A, `^L`),
+  `h`/`H` to toggle hex/text mode (`osview.cpp:3077-3090`), Alt+E to
+  invoke an external editor, and falls through to
+  `handleKeyInTextMode`/`handleKeyInHexMode` for scrolling, bookmarks
+  (Alt+0-9 set, Alt+G+digit jump), and hex mode's `g`/`G` goto-offset
+  prompt (also via `LineEdit`).
+- **`FileManager::Activate`** (`fileman.cpp:1597+`, ~850 lines) is its
+  own separate keyboard loop: navigation, a `:`/`/` command submenu,
+  sort-key toggles, and `Enter` opening the selected entry (a directory
+  re-enters `Activate` on it; a file starts a `Viewer` and returns to
+  `App::Run`'s buffer-list handling).
+- **`LineEdit`** (`os.hpp`/`oswidget.cpp`) is a general single-line
+  modal prompt with its own history list per call site
+  (`searchTextHistory`, `gotoOffsetHistory`, etc.), used by every prompt
+  above.
+
+## What's ported here
+
+- **`App`** (`src/app.hpp`/`.cpp`, `src/main.cpp`) -- owns `Terminal`,
+  `Keyboard`, a `FileManager`, and a single `std::optional<Viewer>`
+  (no `cViewedFiles` buffer list -- see "narrowed" below), alternating
+  between a browsing screen and a viewing screen. `main.cpp` parses at
+  most one positional path argument: empty -> browse the current
+  directory; a directory -> browse it; a file -> open it in the
+  viewer, with `FileManager` positioned on its parent directory as
+  where `Close` (`q`/Escape from the viewer) returns to. This mirrors
+  `App::Init`'s directory-vs-file dispatch, minus the tty/stdin-piping
+  branch and the multi-file-argument case (both deferred).
+- **`handle_browsing_key`/`handle_viewing_key`**
+  (`src/app_actions.hpp`/`.cpp`) -- pure key-dispatch tables, direct
+  ports of the *reachable-key* subset of `FileManager::Activate`'s and
+  `Viewer::handleKey`'s switch statements, factored out so they're
+  unit-testable against real `FileManager`/`Viewer` instances without a
+  `Terminal`:
+  - Browsing: arrows/Home/End/PageUp/PageDown -> `FileManager::move_*`;
+    Enter -> `enter_selected()` on a directory, else `OpenSelected`
+    (App opens a `Viewer`); printable characters -> `type_ahead_append`
+    (files only -- see below); Backspace -> `type_ahead_backspace`;
+    `q`/`Q`/Escape -> `Quit`.
+  - Viewing: arrows/PageUp/PageDown/Home/End/Left/Right -> `scroll_*`/
+    `hex_scroll_*` depending on `display_mode()`; `h`/`H` -> direct
+    port of the hex/text toggle (`osview.cpp:3077-3090`); `s`/`S`/`/`
+    -> `PromptSearchForward` (case-sensitive, matches the original's
+    letters exactly); `f`/`F` -> `PromptSearchForwardCaseInsensitive`;
+    `a`/`A` -> `repeat_search(true/false)`, a direct port; `g`/`G` in
+    hex mode -> `PromptGotoOffset`, a direct port of
+    `handleKeyInHexMode`'s goto-offset prompt; plain `0`-`9` -> jump to
+    that bookmark slot, Alt+`0`-`9` -> set it at the current position;
+    `q`/`Q`/Escape -> `Close`.
+- **`line_edit_key`** (`src/line_edit.hpp`/`.cpp`) -- `LineEdit`'s
+  key-handling core as a pure function: appends printable ASCII,
+  Backspace pops a character, Enter submits, Escape cancels. `App`'s
+  `run_prompt()` drives it in a loop, rendering the prompt on the
+  terminal's last row, for all four call sites above (search pattern,
+  case-insensitive search pattern, hex goto-offset, and one addition --
+  see below).
+- **`render_file_manager`** (`src/file_manager_render.hpp`/`.cpp`) --
+  the renderer `FileManager` never had (subsystem 06 explicitly left
+  this for whoever built the screen loop): a status line plus
+  `FileManager`'s column-major grid, using `compute_grid()`'s geometry
+  exactly as computed. Modeled directly on `viewer_render.cpp`'s shape.
+- **The `lss` executable** -- `add_executable(lss src/main.cpp
+  src/app.cpp)` in the root `CMakeLists.txt`, the first binary target in
+  the project besides the two test runners.
+
+## What's deliberately narrowed or deferred
+
+- **No `cViewedFiles`/`gCurrFile` buffer list** -- `App` holds exactly
+  one `Viewer` at a time; opening a new file replaces it rather than
+  adding to a switchable list. Digit-key/Alt+N/Alt+P buffer switching
+  and the buffer picker are not implemented. A real multi-buffer design
+  is enough work (and enough new test surface) to be its own follow-up.
+- **No F2-F7 live colour cycling** -- depends on per-instance style
+  state (`setupInfo`) the same way subsystems 06/07 already deferred it;
+  `Style::cycle_color()` (subsystem 08) exists but nothing here calls
+  it yet.
+- **No `FileManager` `:`/`/` command submenu** -- `Activate()`'s command
+  menu (sort-key changes, explicit `cd`, file-spec filter entry) isn't
+  wired to any key; `FileManager::set_sort()`/`change_directory()`/
+  `set_file_spec()` are all ready for it, just not reachable yet.
+- **No file operations** -- copy/move/rename/delete/mkdir are already
+  explicitly subsystem 11 in `docs/architecture.md`, sequenced after
+  everything else for their destructive-operation regression-test
+  scrutiny; nothing here adds them.
+- **No syntax-highlighted rendering** -- `render_viewer`/`draw_text_line`
+  don't take a `Style` or call `highlight_line` (subsystem 09); wiring
+  colour spans into the text renderer (and deciding which `Style` is
+  active per file) is real work of its own, left for a follow-up.
+- **Narrower CLI surface** -- only a single optional positional path
+  argument. `-ignorestdin`, `-raw`, `-nosyntax <style>`, `-search
+  regexp`, `-textwithlayout`, `-highbit`, redirected-stdin piping, and
+  multiple file arguments are all unimplemented; there is no config-file
+  (`os.set`-equivalent) loading into `App` either (subsystem 08's
+  `load_config`/`StyleSet` exist but nothing here calls them).
+- **File-only type-ahead in browsing mode** -- the original splits
+  type-ahead between files and directories based on whether Shift is
+  held (`iCurTextFile` vs `iCurTextDir`); a terminal's key stream carries
+  no shift signal for plain letters, so this port always searches files.
+  Directories are still reachable via arrow keys.
+- **Alt+`0`-`9` bookmark jump uses a plain digit, not Alt+G+digit** --
+  the original's jump is a two-key chord (`Alt+G` then a digit); this
+  port binds a plain digit directly to "jump to that slot" instead,
+  simpler to implement and to discover, at the cost of an exact key-chord
+  match.
+- **`:` goto-line prompt in text mode is a genuine addition, not a
+  port** -- the original has no single keystroke for "jump to line N";
+  this reuses the already-tested `Viewer::goto_line` behind a `LineEdit`
+  prompt since it was nearly free to add once the prompt machinery
+  existed for search/goto-offset.
+- **No `LineEdit` history** -- `searchTextHistory`/`gotoOffsetHistory`
+  (recall a previous prompt entry with an up-arrow) aren't implemented;
+  `line_edit_key` has no history state to carry.
+- **No `Alt+E` external editor invocation**, **no `Alt+O` shell escape**
+  -- both spawn an external process from inside the session, out of
+  scope for getting a runnable binary working.
+- **`App`'s main loop itself is not unit-tested** -- it's glue over
+  already-tested pieces (`FileManager`, `Viewer`, `handle_browsing_key`/
+  `handle_viewing_key`, `line_edit_key`), coupled to a real `Terminal`/
+  `Keyboard`, the same limitation the original's `App::Run`/
+  `FileManager::Activate` had. Verified manually in a real terminal
+  instead (browsing, entering directories, opening/closing a file,
+  scrolling, searching, hex-mode toggling, and quitting all confirmed
+  working, including that the terminal is restored cleanly on exit).
+  One thing manual testing did catch: a `Ctrl+Q`-to-quit-from-viewer
+  binding was tried and dropped after finding `Terminal`'s `cbreak()`
+  ncurses mode leaves XON/XOFF flow control active, so `Ctrl+Q`/`Ctrl+S`
+  never reach the application at all.
+
+
+</li>
 </ul>
-<h2 id="what-done-means-here">What "done" means here<a class="headerlink" href="#what-done-means-here" title="Permanent link">&para;</a></h2>
-<p>A subsystem is "landed" once its port compiles, its tests pass, its
-documentation (this site's subsystem page plus the <code>PORTING_JOURNEY.md</code>
-entry) is written, and it's merged to <code>main</code> — not necessarily once
-every original behaviour is reproduced. Each subsystem page's own
-"deliberately narrowed or deferred" section is the authoritative list
-of exactly what that subsystem left out and why; this status page just
-tracks which subsystems exist yet, not their internal completeness.</p>
 
 
 
