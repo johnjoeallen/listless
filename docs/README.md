@@ -20,10 +20,12 @@ describe the new implementation — new behaviour and deviations belong in
   I/O, colours, and the ncurses backend decision.
 - [05-keyboard-input.md](05-keyboard-input.md) — the original's `0xFFxx`
   extended-keycode model and its ncurses-backed translation.
+- [06-file-list-ui.md](06-file-list-ui.md) — `FileManager`: directory
+  listing/sorting, the multi-column grid navigation model, and type-ahead
+  multi-select (ported after the viewer — see `PORTING_JOURNEY.md` for the
+  ordering rationale).
 - [07-file-viewer-core.md](07-file-viewer-core.md) — the line model,
-  scrolling, search, bookmarks, and rendering of the file viewer core
-  (subsystem 06, file-list UI, is not yet ported; the viewer landed
-  first — see `PORTING_JOURNEY.md` for the ordering rationale).
+  scrolling, search, bookmarks, and rendering of the file viewer core.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.

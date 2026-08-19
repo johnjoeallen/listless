@@ -2,6 +2,7 @@ add_executable(core_tests
     color_pair_table_test.cpp
     color_test.cpp
     directory_test.cpp
+    file_manager_test.cpp
     glob_test.cpp
     key_test.cpp
     search_test.cpp

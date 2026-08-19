@@ -532,3 +532,104 @@ a faithful reinterpretation rather than a literal port, given
 **Next steps:** subsystem 06, file-list UI (#6, `FileManager`) — the
 "ls" half. Also still open: the subsystem-06-behaviour doc (a separate
 earlier-filed issue) should land before or alongside that port.
+
+---
+
+## 2026-08-19 — File-list UI (issues #6, #8)
+
+**Objective:** port `FileManager` (`fileman.cpp`, 2484 lines), the "ls"
+half of Listless's primary deliverable, landing the documentation issue
+(#6) and the port (#8) together, per this project's usual pattern (see
+subsystems 04-07, where the doc and its port share one commit).
+
+**Changes:**
+- `docs/06-file-list-ui.md`: documents the original's two-pass directory
+  listing (directories unfiltered, files filtered by the glob file
+  spec), all four sort comparators (directories always first, always
+  name-ascending among themselves), the column-major grid navigation
+  model including a real off-by-one in the constructor's column-count
+  search (the pre-decrement-in-the-same-expression idiom means the
+  requested column count is never actually tried), type-ahead
+  multi-select's forward-wraps/backward-doesn't asymmetry, and a
+  reasoned reconstruction of what turned out to be a corrupted encoding
+  artifact in this checkout of `fileman.cpp` (`d.name()[1]` checks
+  against dropped non-ASCII bytes, evidence of a leading directory-marker
+  byte in the original `Dirent::name()` that has no counterpart in the
+  port's explicit `DirEntry::is_directory` bool).
+- `src/file_manager.hpp`/`.cpp`: `FileManager` — pure logic and state,
+  no terminal/rendering dependency (same split as `Viewer`/
+  `viewer_render` from subsystem 07). Listing/sorting (`refresh()`,
+  `set_sort()`), the grid navigation model (`move_up/down/left/right/
+  home/end/page_up/page_down`, `compute_grid()`, `select()`), type-ahead
+  multi-select (`type_ahead_append()`/`type_ahead_backspace()`/
+  `clear_type_ahead()`), navigation (`change_directory()` for a typed
+  path, `enter_selected()` for moving into the currently-selected
+  directory — kept as two methods because the original keeps them as two
+  distinct code paths with different behaviour, only one of which
+  re-selects the just-left child directory on `..`), and
+  `directory_history()`.
+- 28 new `FileManagerTest`/`FileManagerGridTest` cases in
+  `tests/core/file_manager_test.cpp` covering listing, all four sort
+  keys/directions, directory-unfiltered-by-spec, grid navigation (every
+  move direction, the Home/End two-step special cases, page up/down),
+  type-ahead (append/backspace/wraparound/mode-switch-off-a-file), and
+  navigation (`change_directory`/`enter_selected`/`set_file_spec`) —
+  153 total across `core_tests` and `platform_linux_tests`. Pass under
+  GCC (plain and under `-DLISTLESS_ENABLE_SANITIZERS=ON`, GCC's
+  ASan+UBSan); format-checked with `.clang-format`. Clang wasn't
+  available in this sandbox to reproduce CI's Clang leg locally; left
+  for CI to confirm.
+
+**Decisions:**
+- `change_directory()`/`enter_selected()` never call a real
+  `std::filesystem::current_path()`/`chdir()` — `FileManager` tracks
+  `current_directory()` as its own state, the same choice
+  `Directory`/`DirEntry` made in subsystem 03. A real process-wide
+  `chdir()` would be global, hard-to-reverse state that races across
+  parallel unit tests, for no benefit here.
+- File operations (Copy/Delete/Rename/Move/MakeDirectory) are not
+  ported at all — deferred to subsystem 11 per issue #8, given their
+  destructive nature and the higher regression-test scrutiny that
+  implies. `FileManager` exposes only the read-only surface.
+- `DisplayDisks()`'s drive-letter bar (and `Ctrl+A`-`Ctrl+Z` drive
+  jumps) is not reinterpreted for Linux yet, despite issue #6 asking for
+  that reinterpretation to at least be *documented*. It's documented (as
+  "deliberately not ported, no concrete rendering call site exists" in
+  `docs/06-file-list-ui.md`) but not designed or implemented — the same
+  call made for `Style`-dependent formatting in subsystem 07, since no
+  screen loop/`App` subsystem exists yet to actually draw it.
+- `LineEdit` (the modal prompt widget every `FileManager` command uses
+  for input) is out of scope — it's a general widget, not
+  `FileManager`-specific, and building it against just these call sites
+  would bake in assumptions better validated against a second concrete
+  need.
+- Case-insensitive type-ahead matching in both directions, not just
+  forward — the original's backward branch is `#if defined(__UNIX__)`
+  gated to case-sensitive `strstr`, but (per subsystem 03's finding) no
+  `__UNIX__` backend exists anywhere in `/original`, so that branch
+  never built or ran; not worth preserving as a real behaviour.
+
+**Bug fixed:** none new — `FileManager` is a new implementation over
+`Directory`'s already-ported listing primitive, not a line-by-line port
+of `fileman.cpp`'s DOS/OS2/Win32-specific state machine.
+
+**Tests:** 28 new (`FileManagerTest`/`FileManagerGridTest`) — 153 total
+across `core_tests` and `platform_linux_tests`. Pass under GCC, plain and
+under `-DLISTLESS_ENABLE_SANITIZERS=ON`; format-checked with
+`.clang-format`.
+
+**Behaviour notes:** the column-count search-from-`requested-1` off-by-one,
+the Home/End two-step special cases, and the forward-wraps/backward-
+doesn't type-ahead asymmetry are all preserved exactly rather than
+"fixed" — see `docs/06-file-list-ui.md`'s "What the original provides"
+section for the full reasoning on each.
+
+**Next steps:** subsystem 08, style/config system (`Style`, `Item<T>`
+inheritance, `os.set` load/save) — needed before syntax highlighting,
+and before `FileManager`'s per-instance color cycling (`F2`-`F6`) or a
+real `Style`-driven status line can be wired in. A future `App`/main-loop
+subsystem (not yet named in `docs/architecture.md`'s numbered breakdown)
+will need to exist before `FileManager`'s `Activate()`-equivalent
+keyboard loop, `file_manager_render`, the Linux disk-bar
+reinterpretation, or `viewedFiles`-backed View/Edit dispatch can be
+built.
