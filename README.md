@@ -53,6 +53,10 @@ Development will proceed subsystem by subsystem, using GitHub issues for traceab
 
 Each successful iteration should compile cleanly, pass tests and quality gates, update documentation where needed, append to `PORTING_JOURNEY.md`, and be committed and pushed independently.
 
+## Documentation
+
+`/docs` documents original OnScreen/2 behaviour, derived from `/original`, written before porting each subsystem. Start at [docs/README.md](docs/README.md).
+
 ## Porting Journal
 
 `PORTING_JOURNEY.md` records the engineering history of the project.
