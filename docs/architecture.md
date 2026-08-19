@@ -107,11 +107,25 @@ Linux-first, Windows/macOS-permanent port:
    in the status line, spawned via `_beginthread` on OS/2/Win32. Trivially
    portable via `std::jthread` + `std::chrono`.
 
-There is also a named OS mutex semaphore (`DosCreateMutexSem`/
-`CreateMutex`, `os.cpp:444-460`) whose exact purpose (guarding the screen
-buffer? shared with the time thread?) needs closer reading before it's
-designed out; `std::mutex` almost certainly suffices for a single-process
-port and the named-IPC semantics are not needed.
+There is also a named OS mutex semaphore (`hMtxListSync`, created via
+`DosCreateMutexSem`/`CreateMutex` in `os.cpp:444-460`), requested/released
+through the `WaitSync()`/`ClearSync()` wrappers (`osmisc.cpp:47-70`).
+**Investigated: it is a screen-write mutex, not IPC.** It brackets every
+direct screen-buffer write across `osview.cpp`, `fileman.cpp`,
+`picklist.cpp`, and `osedit.cpp`, and its actual reason for existing is
+`ostime.cpp`'s `displayTime()` — called roughly once a second from a
+background clock-update thread (`dispTime`, spawned via `_beginthread` in
+`os.cpp`) to redraw the status-line clock and check
+`Viewer::fileHasChanged()`. Its job is preventing the main thread's screen
+redraws from interleaving with that background thread's status-line
+writes; it's named/cross-process only incidentally to the OS/2 API shape
+(nothing in `/original` opens it from a second process). A plain
+`std::mutex` guarding the screen/terminal-write path is a sufficient
+replacement for subsystem 04 (console I/O) — and that subsystem should
+also decide whether the background clock-thread model is wanted at all in
+the Linux port, versus a single-threaded event loop with a timeout on
+input read (common in ncurses TUIs), which would remove the need for this
+synchronization entirely.
 
 ## Command-line surface to preserve
 
