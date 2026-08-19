@@ -1,4 +1,6 @@
 add_library(listless_core
+    color.cpp
+    color_pair_table.cpp
     directory.cpp
     glob.cpp
     search.cpp

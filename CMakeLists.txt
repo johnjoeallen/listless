@@ -32,6 +32,12 @@ endif()
 
 add_subdirectory(src)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    add_subdirectory(platform/linux)
+else()
+    message(FATAL_ERROR "Listless has no platform backend for ${CMAKE_SYSTEM_NAME} yet")
+endif()
+
 if(LISTLESS_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)

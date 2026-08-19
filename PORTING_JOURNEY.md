@@ -253,3 +253,98 @@ relevant to a Linux-first port).
 get/put/scroll, cursor movement, attributes, behind a `/platform/linux`
 implementation. Needs a decision first: ncurses vs. a custom
 termios+ANSI layer.
+
+---
+
+## 2026-08-19 — Subsystem 04: console/terminal I/O (issue #4)
+
+**Objective:** screen buffer get/put/scroll, cursor movement, and
+colour attributes, behind a `/platform/linux` implementation — per
+`docs/04-console-terminal-io.md`. Gates subsystems 06/07.
+
+**Decision: ncurses**, chosen over a custom termios+ANSI layer. Verified
+directly in this sandboxed environment (no real TTY attached to the tool
+shell) that `initscr()`/`endwin()` work correctly given `$TERM` is set —
+screen size falls back to a sane default (24x80) when the real terminal
+size can't be queried, colour support (`has_colors()`/`COLORS`/
+`COLOR_PAIRS`) populates correctly after `start_color()` (confirmed
+`COLORS=256`/`COLOR_PAIRS=256` under `TERM=xterm-256color`), and repeated
+`initscr()`/`endwin()` cycles within one process work — which is what
+makes the ncurses backend itself genuinely unit-testable rather than
+manual-verification-only.
+
+**Changes:**
+- `src/color.hpp`/`src/color.cpp`: `Color` (the original's 16-value
+  DOS/BIOS text-attribute palette, exact same numeric values 0-15,
+  preserved for future `Style` config compatibility) and `to_ansi()`, a
+  pure function mapping a `Color` to `{ANSI base 0-7, bright}` — a real
+  lookup, since DOS and ANSI order their 8 base hues differently.
+- `src/color_pair_table.hpp`/`src/color_pair_table.cpp`:
+  `ColorPairTable` — lazily allocates ncurses-style small integer "pair"
+  ids for `(fg, bg)` combinations, capacity-bounded with a documented
+  fallback to the default pair, pure logic with an injectable allocation
+  callback (no ncurses dependency, fully unit-tested).
+- `src/terminal.hpp`: `Terminal` — a Pimpl class declared once, 0-indexed
+  coordinates (no legacy 1-indexed DOS convention to preserve, since
+  this is a new interface with no existing call sites),
+  `width()`/`height()`/`move_cursor()`/`put_text()`/`clear_to_eol()`/
+  `clear()`/`scroll_region()`/`refresh()`.
+- `platform/linux/terminal.cpp`: the ncurses-backed `Terminal::Impl` —
+  `curses_color_number()` converts `to_ansi()`'s output to an actual
+  curses colour number (base, or base+8 for bright when `COLORS>=16`);
+  colours degrade to `A_NORMAL` if the terminal reports no colour
+  support.
+- `platform/linux/CMakeLists.txt`: new `listless_platform_linux` target,
+  `find_package(Curses)` with `CURSES_NEED_NCURSES` set (so it resolves
+  to the real ncurses library, not a generic `libcurses.so` alias);
+  publicly links `listless_core` (for `Color`/`ColorPairTable`) — the
+  dependency direction is platform → core, not core → platform, since
+  `listless_core` itself has no platform-specific code.
+- `tests/platform_linux/terminal_test.cpp` (new test binary,
+  `platform_linux_tests`): constructs a real `Terminal` per test (forcing
+  `TERM=xterm-256color` in `SetUp()` regardless of the ambient
+  environment) and verifies behaviour by reading back the actual ncurses
+  screen buffer via `mvinch()` — no mocking, this exercises the real
+  ncurses calls.
+- `.github/workflows/ci.yml`: installs `libncurses-dev` in the
+  build-and-test and sanitizers jobs.
+- `tests/core/color_test.cpp`, `tests/core/color_pair_table_test.cpp`:
+  full coverage of `to_ansi()`'s 16-entry mapping table and
+  `ColorPairTable`'s allocation/reuse/exhaustion/callback behaviour.
+
+**Decisions:**
+- `MoveTextBuf`'s generic rectangular block-move is narrowed to
+  `scroll_region(top, bottom, lines)` — full-width vertical scrolling
+  only, matching both the realistic use case (the file viewer scrolling
+  its text display) and what ncurses' `wscrl`/`wsetscrreg` natively
+  support.
+- `GetTextBuf` (arbitrary screen-region readback, e.g. for popup
+  save/restore) is not ported — ncurses' own windowing model
+  (subwindows/pads) is the idiomatic way to layer temporary UI without
+  manual buffer save/restore; no concrete call site exists yet to design
+  against.
+- The named screen-write mutex (`hMtxListSync`) is not carried forward
+  here as a synchronization primitive — whether a background
+  clock-update thread is even wanted in the Linux port (its original
+  purpose) is left open for whichever later subsystem needs a live
+  status line.
+
+**Bug fixed:** none new — `Terminal` is a new implementation, not a
+line-by-line port of `osvideo.cpp`'s Borland-`conio.h`/Win32-console
+backends.
+
+**Tests:** 23 new (7 `ColorPairTable*`, 16 parameterized `ToAnsiTest`
+cases, 7 `TerminalTest*` against the real ncurses backend) — 70 total
+across `core_tests` and the new `platform_linux_tests` binary. Pass
+under GCC, plain and under `-DLISTLESS_ENABLE_SANITIZERS=ON`
+(Clang+ASan+UBSan); format-checked with `.clang-format`.
+
+**Behaviour notes:** the original's `bg*16 + fg` packed-byte attribute
+encoding is not carried forward as a wire format — `Terminal::put_text()`
+takes `Color fg, Color bg` as separate arguments, matching how every
+other modern colour API (including ncurses' own pair model) represents
+this.
+
+**Next steps:** subsystem 05, keyboard input (#5) — normalized keycode
+model (reusing the original's synthetic `0xFFxx` extended-key space),
+ncurses backend, sharing `Terminal`'s already-initialized ncurses state.

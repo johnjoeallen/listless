@@ -16,6 +16,8 @@ describe the new implementation — new behaviour and deviations belong in
   (Boyer-Moore-Horspool) and the documented wildcard/glob syntax.
 - [03-directory-enumeration.md](03-directory-enumeration.md) — directory
   listing, `Directory`/`Dirent`, and path/filespec splitting.
+- [04-console-terminal-io.md](04-console-terminal-io.md) — screen buffer
+  I/O, colours, and the ncurses backend decision.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.
