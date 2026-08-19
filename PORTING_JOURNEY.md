@@ -633,3 +633,94 @@ will need to exist before `FileManager`'s `Activate()`-equivalent
 keyboard loop, `file_manager_render`, the Linux disk-bar
 reinterpretation, or `viewedFiles`-backed View/Edit dispatch can be
 built.
+
+## 2026-08-19 — Subsystem 08: style/config system (issue #9)
+
+**Objective:** port `Style` and the config load/save path
+(`os.hpp`/`osstyle.cpp`, 2054 lines combined) — the prototype-style
+inheritance mechanism and config file format that syntax highlighting
+(subsystem 09) and a real per-file-type status line depend on.
+
+**Changes:**
+- `docs/08-style-config.md`: documents `Item<T>`'s lazy-fallback
+  resolution (own value, else first non-null result walking base items
+  in *most-recently-added-first* order — `AddBaseItem` prepends), the
+  ~34-field `Style` record, `AddBaseStyle`'s field-by-field linking
+  (everything except `iExtensions`, which never inherits; `iReserved`
+  copies rather than links, marked `iInherited`), the hand-rolled
+  brace-delimited config grammar (`getSymbol`'s tokenizer, the `=>`
+  rest-of-line value capture, multi-line key continuation), and the
+  separate `Settings` block (FileManager UI colours/app toggles — out of
+  scope, `App`-level).
+- `src/style.hpp`/`src/style.cpp`: `Item<T>` (using `std::optional<T>`
+  and `std::vector<Item<T>*>` in place of the original's manually
+  `new`/`delete`d `T*` and `Set<Item<T>>`); `Style` with the same field
+  set, typed with subsystem 04's `Color` enum instead of a raw `BYTE`;
+  `StyleSet` (new — no direct original equivalent; owns every `Style`
+  behind `std::unique_ptr` since `Item<T>::add_base_item()` stores raw
+  pointers into other styles' members, so a `Style` must never move once
+  linked); `load_config()`/`save_config()`, a from-scratch parser/writer
+  producing the same brace-delimited shape (same section-key spellings,
+  `=>`, continuation lines) but not byte-identical output (no `.bak`
+  rotation, no tab-aligned columns); `cycle_color()`, the palette-cycling
+  primitive `F2`-`F7` would call once a keyboard loop exists to call it.
+- `tests/core/style_test.cpp` (new, 29 cases): `Item<T>` resolution
+  (unset, own-overrides-base, multi-level fallback, most-recent-base-
+  wins-ties), `Style::add_base_style` (linking, override, extensions-
+  don't-inherit, reserved-word inheritance/dedup), `StyleSet` (always
+  has `Default`, case-insensitive lookup, extension lookup),
+  `default_config_path()`'s `XDG_CONFIG_HOME` handling, and
+  `load_config`/`save_config` round-tripping (scalars, list fields
+  across continuation lines, base-style resolution, the `Default`-style-
+  reuses-the-built-in-instance special case, comment/blank-line
+  handling, and malformed-value-is-skipped-not-fatal).
+
+**Decisions:**
+- **Malformed config input is skipped, not fatal** — the original calls
+  `exit(3)` on the first parse error (invalid color name, missing `(`,
+  etc.), taking down the whole program over one bad line in a hand-
+  edited file. `load_config()` instead ignores the one bad key/value
+  pair and keeps parsing. A one-line intentional deviation, not an
+  oversight — see `docs/08-style-config.md`'s "narrowed" section.
+- **`extensions`/`open_comment`/`close_comment`/`eol_comment`/
+  `numeric_prefix` use `std::vector<std::string>`, not a `Set`** — every
+  real call site (iterate in insertion order, check membership by
+  linear scan for a handful of entries) never needed `Set`'s dedup
+  semantics; a `Set<Item<T>>` for `Item<T>`'s own base-item list becomes
+  a plain `std::vector<Item<T>*>` for the same reason (a style is only
+  ever linked as a base once in practice).
+- **The `Settings` block (FileManager UI colours, sound, search-mode
+  default) is out of scope** — it's `App`-level state on a global
+  `setupInfo` struct in the original, unrelated to any `Style`, and
+  there's no `App`/main-loop subsystem yet to own it (issue #24).
+  `load_config()` simply never matches the `Settings` keyword, so a
+  hand-edited file with one is silently skipped rather than parsed or
+  rejected.
+- **`F2`-`F7` colour cycling and `Ctrl+S` persistence are not wired to
+  any keybinding** — both are keyboard-loop features belonging to the
+  not-yet-built `App`/main-loop subsystem (issue #24). `cycle_color()`
+  is the primitive; wiring it to a real key is a small addition once
+  that loop exists, not a redesign.
+
+**Bug fixed:** none new — this is a from-scratch parser/writer over a
+new field-owning model, not a line-by-line port of `osstyle.cpp`'s
+`fscanf`-adjacent tokenizer.
+
+**Tests:** 29 new (`Item`/`Style`/`CycleColor`/`StyleSet`/
+`DefaultConfigPath`/`LoadConfig`/`SaveConfig`) — 182 total across
+`core_tests` and `platform_linux_tests`. Pass under GCC, plain and under
+`-DLISTLESS_ENABLE_SANITIZERS=ON`; format-checked with `.clang-format`.
+(Clang wasn't available in the environment this was ported in, so the
+Clang CI leg is unverified locally — CI will confirm.)
+
+**Behaviour notes:** `Item<T>`'s "most recently added base wins ties"
+resolution order, `AddBaseStyle`'s extensions-never-inherit /
+reserved-words-copy-not-link split, and the config format's exact
+section-key spellings and `=>`-continuation syntax are all preserved
+deliberately — see `docs/08-style-config.md` for the full reasoning.
+
+**Next steps:** subsystem 09, syntax highlighting (layers on `Style` +
+the viewer core). The `App`/main-loop subsystem (issue #24) remains a
+prerequisite for wiring any of `Style`'s live-editing features
+(`F2`-`F7` cycling, `Ctrl+S`) or `FileManager`/`Viewer`'s keyboard loops
+into an actual running program.

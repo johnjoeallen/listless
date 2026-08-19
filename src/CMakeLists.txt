@@ -6,6 +6,7 @@ add_library(listless_core
     glob.cpp
     key.cpp
     search.cpp
+    style.cpp
     text.cpp
     version.cpp
     viewer.cpp
