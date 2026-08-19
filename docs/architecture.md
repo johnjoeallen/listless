@@ -145,8 +145,11 @@ These are read as historical fact, not requirements — do not port them:
   "preserve behaviour, but fix genuine bugs" principle, with a regression
   test.
 - `apps/onscreen/install.cpp` (1300 lines) is a DOS/OS2/Win32 `.set`/`.ini`
-  installer — almost certainly out of scope for a modern CMake-built
-  binary; confirm with the maintainer before filing an issue for it.
+  installer, branded to the original product. **Out of scope, decided —
+  not being ported.** Listless will use native packaging per platform
+  instead: a `.deb` (and likely other distro packages later) on Linux, a
+  zip or `.msi` on Windows, and a to-be-decided format on macOS (`.pkg`
+  or a `.dmg`/`.app` bundle).
 
 ## Proposed subsystem breakdown (porting order)
 
