@@ -26,6 +26,8 @@ describe the new implementation — new behaviour and deviations belong in
   ordering rationale).
 - [07-file-viewer-core.md](07-file-viewer-core.md) — the line model,
   scrolling, search, bookmarks, and rendering of the file viewer core.
+- [08-style-config.md](08-style-config.md) — `Style`, `Item<T>`
+  prototype-style inheritance, and the config file load/save format.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.

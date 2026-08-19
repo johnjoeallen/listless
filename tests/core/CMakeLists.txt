@@ -6,6 +6,7 @@ add_executable(core_tests
     glob_test.cpp
     key_test.cpp
     search_test.cpp
+    style_test.cpp
     text_test.cpp
     version_test.cpp
     viewer_test.cpp
