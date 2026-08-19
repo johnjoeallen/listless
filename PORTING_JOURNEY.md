@@ -129,3 +129,60 @@ and is out of scope here too.
 (port `func/strsrch.cpp`'s Boyer-Moore-Horspool algorithm) and glob
 matching (replace `FileExp2RegExp`, resolving the non-functional
 `RegExp` blocker).
+
+---
+
+## 2026-08-19 — Subsystem 02: search primitives (issue #2)
+
+**Objective:** literal search and glob-pattern matching, replacing the
+non-functional `RegExp` (stub `class/regexp.cpp`) — per
+`docs/02-search-primitives.md`. Resolves the build blocker noted in
+`docs/architecture.md` for filename-glob use cases; in-file regex search
+mode is deferred to subsystem 07.
+
+**Changes:**
+- `src/search.hpp`/`src/search.cpp`: `HorspoolSearcher` — Boyer-Moore-
+  Horspool literal substring search, ported in behaviour (not
+  line-by-line) from `func/strsrch.cpp`'s `strsrch()`/`SearchExpression`.
+  Construct once per pattern, `find(haystack, start)` repeatedly for
+  "find next" style usage; optional case-insensitivity.
+- `src/glob.hpp`/`src/glob.cpp`: `glob_match()`/`glob_match_any()` — a
+  direct wildcard matcher (classic two-pointer backtracking algorithm,
+  no regex engine) implementing the wildcard syntax documented in
+  `os.man` section 2.1.1 (`*`, `?`, `[az]`, `[a-z]`, literal `.`).
+  `glob_match_any()` handles `;`-separated pattern lists as used for
+  file-manager filespecs.
+- `tests/core/search_test.cpp`, `tests/core/glob_test.cpp`: coverage
+  including the exact wildcard example from `os.man`
+  (`xxx.[qa]*.xyz`), start-offset "find next" behaviour, case
+  sensitivity in both directions, and edge cases (empty pattern,
+  pattern longer than haystack, unterminated bracket).
+- `docs/02-search-primitives.md` added and linked from `docs/README.md`.
+
+**Decisions:**
+- The original's undocumented `+`-suffix bracket-repetition-count syntax
+  (e.g. `[abc]+3`) in `FileExp2RegExp` is not reproduced — it isn't part
+  of the documented wildcard syntax in `os.man` and looks like an
+  incidental detail of the regex-translation approach, not a real
+  feature. Can be added later if a real use case appears.
+- Both `glob_match()` and `HorspoolSearcher` default to case-sensitive
+  (Linux's filesystem convention), with an explicit per-call
+  `case_sensitive` parameter rather than a global toggle, so a later
+  Windows/macOS platform layer can opt out per call site.
+- In-file regex search mode is out of scope here; `std::regex` is the
+  planned backend when subsystem 07 (file viewer core) needs it — no
+  reason to build a regex wrapper ahead of that concrete call site.
+
+**Tests:** `core_tests` — 12 new `GlobMatch*`/`GlobMatchAny*` cases, 10
+new `HorspoolSearcher*` cases, plus all prior tests (29 total). Pass
+under GCC, plain and under `-DLISTLESS_ENABLE_SANITIZERS=ON`
+(Clang+ASan+UBSan); format-checked with `.clang-format`.
+
+**Behaviour notes:** none diverging from `os.man`'s documented wildcard
+syntax; see the "deliberately not reproduced" decision above for the one
+piece of original behaviour intentionally dropped.
+
+**Next steps:** subsystem 03, directory enumeration (#3) — `Directory`/
+`Dirent`/`FileTreeWalker` with a new Linux backend via
+`std::filesystem`, using this subsystem's glob matching for filename
+filtering.
