@@ -2,6 +2,7 @@ add_library(listless_core
     color.cpp
     color_pair_table.cpp
     directory.cpp
+    file_manager.cpp
     glob.cpp
     key.cpp
     search.cpp
