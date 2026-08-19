@@ -38,7 +38,10 @@ against `kbdtab[]` and `ostxt.hpp`'s `VKALT_*` table, these are internally
 consistent standard PC/AT scan codes (F1=0x3B, Home=0x47, Up=0x48,
 PgUp=0x49, Left=0x4B, Right=0x4D, End=0x4F, Down=0x50, Insert=0x52,
 Delete=0x53, F2-F10=0x3C-0x44, F11=0x85, F12=0x86, Shift+Tab=0x0F, and the
-`VKALT_*` table for `Alt+A`-`Alt+Z`/`Alt+1`-`Alt+9`).
+`VKALT_*` table for `Alt+A`-`Alt+Z`/`Alt+1`-`Alt+9`, plus `Alt+0` at scan
+code `0x81` — no named `VKALT_0` constant exists, but this scan code is
+used at a real call site, subsystem 07's bookmark slot 0; see
+`docs/07-file-viewer-core.md`).
 
 ## What's ported here
 

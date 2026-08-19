@@ -53,8 +53,9 @@ constexpr KeyCode Unknown = 0xFFFF;
 }  // namespace Key
 
 // The Alt+<c> keycode, matching the original's VKALT_* table
-// (ostxt.hpp): valid for 'A'-'Z'/'a'-'z' and '1'-'9'. Returns
-// Key::Unknown for any other character.
+// (ostxt.hpp): valid for 'A'-'Z'/'a'-'z' and '0'-'9' (there's no named
+// VKALT_0, but scan code 0x81 is used for Alt+0 at a real call site --
+// see key.cpp). Returns Key::Unknown for any other character.
 KeyCode alt_key(char c);
 
 }  // namespace listless

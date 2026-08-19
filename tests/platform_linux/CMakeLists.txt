@@ -1,6 +1,7 @@
 add_executable(platform_linux_tests
     keyboard_test.cpp
     terminal_test.cpp
+    viewer_render_test.cpp
 )
 
 target_link_libraries(platform_linux_tests PRIVATE
