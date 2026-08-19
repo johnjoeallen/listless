@@ -435,3 +435,100 @@ file viewer core (#7) — text-mode display, scrolling, search, bookmarks —
 before subsystem 06 (file-list UI), since the viewer is simpler and more
 self-contained, and the file manager's "View" action ends up calling into
 it anyway.
+
+---
+
+## 2026-08-19 — Subsystem 07: file viewer core (issue #7)
+
+**Objective:** text-mode display, scrolling, search, bookmarks — the
+"less"-equivalent half of Listless, per `docs/07-file-viewer-core.md`.
+A full research pass over the whole of `osview.cpp` (3107 lines, the
+largest file in `/original`) preceded this iteration, since the file
+tangles viewer-core concerns with hex mode, syntax highlighting, and the
+`Style` system throughout; the doc records exactly where those seams
+are so later subsystems land against known integration points rather
+than rediscovering them.
+
+**Changes:**
+- `src/viewer.hpp`/`src/viewer.cpp`: `Viewer` — pure logic and state, no
+  ncurses dependency, fully unit-tested in `tests/core` (35 new cases).
+  Line model as `offset+length` spans (`LineSpan`) into a loaded
+  `std::string`, replacing the original's in-place-NUL-termination trick
+  (which existed only to let text/hex mode share one `char*` buffer —
+  spans don't need it). Word wrap: simplified greedy word-wrap kept
+  separate from the original (unwrapped) line spans, so disabling it
+  restores exact original line boundaries. Viewport (`top_line()`/
+  `column()`) with `scroll_line_up/down`, `scroll_page_up/down`,
+  `scroll_to_top/bottom`, `scroll_left/right` (10-column steps,
+  1024-column cap, matching the original) — all return `bool` (did the
+  position change) so a caller can show "already at top/bottom"-style
+  messages. Search (`search_forward`/`search_backward`/`repeat_search`)
+  built on subsystem 02's `HorspoolSearcher`; goto-line and per-`Viewer`
+  bookmarks (`Alt+0`-`Alt+9` toggle, `Alt+G`+digit jump) ported directly
+  with no `Style` dependency.
+- `src/viewer_render.hpp`/`src/viewer_render.cpp`: a minimal renderer
+  (tested against the real `Terminal` in `tests/platform_linux`, 6 new
+  cases) doing exactly the style-independent subset identified in the
+  survey: iterate visible lines, fixed-width tab expansion, the
+  selection-range highlight overlay, one status-line format. Explicitly
+  designed to be extended, not rewritten, once subsystems 08/09 add real
+  styling.
+- `src/key.cpp`: corrected `alt_key()` to cover `'0'`-`'9'` (was
+  `'1'`-`'9'`) — the survey found `Alt+0` (scan code `0x81`) is a real
+  bookmark-slot-0 binding in `osview.cpp`, contradicting subsystem 05's
+  docs, which claimed no `VKALT_0` exists. `docs/05-keyboard-input.md`
+  corrected to match. `tests/core/key_test.cpp` updated accordingly.
+
+**Decisions:**
+- Search "backward" visits lines in decreasing order, taking each
+  line's leftmost match (via `HorspoolSearcher`, which is forward-only)
+  rather than a true "rightmost match" reverse search — a faithful-
+  enough reading of the original, which also reused its forward-only
+  `strsrch` per line, differing only in which lines it visited. "Repeat,
+  continuing on the same line" for the backward case needed "the
+  rightmost match strictly before the current one," which
+  `HorspoolSearcher` doesn't expose directly — built as a small
+  accumulate-until-limit loop (`find_last_before()`) rather than adding
+  a new primitive to subsystem 02 for one call site.
+- `ensure_selection_visible()` is a separate method from the `search_*()`
+  calls, rather than folding viewport repositioning into search itself
+  (as the original's `AdjustRowAndColumn` does inline) — keeps "was a
+  match found" and "how do we scroll to show it" independently
+  testable, and lets a caller choose not to auto-scroll if it wants
+  different behaviour later.
+- One status-line format, not the original's three `Style`-selected
+  alternates — the cycling mechanism lives on `Style`, which doesn't
+  exist yet. A fixed-width (8-column) tab width for the same reason.
+  Both are one-line changes to wire in real configured values once
+  subsystem 08 lands, not a redesign.
+- No incremental scroll-region rendering optimization (the original
+  shifts existing screen content for single-line scrolls) — always a
+  full redraw of the visible page. Performance optimization, not a
+  correctness concern; `Terminal::scroll_region` remains available to
+  add this later without changing `Viewer`'s interface.
+- No live file-change detection/reload, no external-filter/`d`/`D`
+  reload feature (both `Style`/App-level concerns), no stdin/pipe
+  loading plumbing (Windows-console-specific in the original; `Viewer`
+  supports being constructed directly from an in-memory buffer, so an
+  `App`-level stdin reader can hand it one without a real path).
+
+**Bug fixed:** none new — `Viewer` is a new implementation over a
+different line-storage model, not a line-by-line port of `osview.cpp`'s
+NUL-termination-based buffer.
+
+**Tests:** 41 new (35 `Viewer.*` covering line model, word wrap,
+scrolling, search, goto-line, bookmarks; 6 `ViewerRenderTest.*` against
+the real ncurses backend; `AltKey` test set updated for the `Alt+0`
+fix) — 125 total across `core_tests` and `platform_linux_tests`. Pass
+under GCC, plain and under `-DLISTLESS_ENABLE_SANITIZERS=ON`
+(Clang+ASan+UBSan); format-checked with `.clang-format`.
+
+**Behaviour notes:** default sort/search case-sensitivity, horizontal
+scroll step/cap, and the search-continuation semantics all match the
+original; see "Decisions" above for the two places search behaviour is
+a faithful reinterpretation rather than a literal port, given
+`HorspoolSearcher`'s forward-only API.
+
+**Next steps:** subsystem 06, file-list UI (#6, `FileManager`) — the
+"ls" half. Also still open: the subsystem-06-behaviour doc (a separate
+earlier-filed issue) should land before or alongside that port.

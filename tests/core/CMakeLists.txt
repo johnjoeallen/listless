@@ -7,6 +7,7 @@ add_executable(core_tests
     search_test.cpp
     text_test.cpp
     version_test.cpp
+    viewer_test.cpp
 )
 
 target_link_libraries(core_tests PRIVATE

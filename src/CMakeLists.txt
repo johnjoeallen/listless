@@ -7,6 +7,8 @@ add_library(listless_core
     search.cpp
     text.cpp
     version.cpp
+    viewer.cpp
+    viewer_render.cpp
 )
 
 target_include_directories(listless_core PUBLIC

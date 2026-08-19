@@ -25,8 +25,13 @@ TEST(AltKey, DigitsMatchOriginalVkaltTable) {
     EXPECT_EQ(alt_key('9'), 0xFF80);
 }
 
-TEST(AltKey, ZeroAndOtherCharactersAreUnknown) {
-    EXPECT_EQ(alt_key('0'), Key::Unknown);
+TEST(AltKey, ZeroMatchesBookmarkSlotZeroScanCode) {
+    // No named VKALT_0 in the original, but scan code 0x81 is used for
+    // Alt+0 at a real call site (Viewer's bookmark slot 0).
+    EXPECT_EQ(alt_key('0'), 0xFF81);
+}
+
+TEST(AltKey, OtherCharactersAreUnknown) {
     EXPECT_EQ(alt_key(' '), Key::Unknown);
     EXPECT_EQ(alt_key('!'), Key::Unknown);
 }
