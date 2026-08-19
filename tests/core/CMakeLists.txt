@@ -1,4 +1,5 @@
 add_executable(core_tests
+    text_test.cpp
     version_test.cpp
 )
 
