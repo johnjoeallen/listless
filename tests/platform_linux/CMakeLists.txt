@@ -1,4 +1,5 @@
 add_executable(platform_linux_tests
+    keyboard_test.cpp
     terminal_test.cpp
 )
 

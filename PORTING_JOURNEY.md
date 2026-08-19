@@ -348,3 +348,90 @@ this.
 **Next steps:** subsystem 05, keyboard input (#5) — normalized keycode
 model (reusing the original's synthetic `0xFFxx` extended-key space),
 ncurses backend, sharing `Terminal`'s already-initialized ncurses state.
+
+---
+
+## 2026-08-19 — Subsystem 05: keyboard input (issue #5)
+
+**Objective:** normalized keycode model reusing the original's synthetic
+`0xFFxx` extended-key space, ncurses-backed, sharing `Terminal`'s
+already-initialized state — per `docs/05-keyboard-input.md`.
+
+**What the original's keycode model actually is:** `getKey()`
+(`osmisc.cpp:104-147`) calls `getch()`, and if it returns `0` (the PC
+BIOS extended-key sentinel), calls it again and adds `0xFF00`. This means
+`0xFFxx` values throughout `os.cpp`'s key-dispatch `switch` statements
+(`case 0xFF3B: // F1`, `case 0xFF47: // Home`, etc.) are literal **PC/AT
+keyboard Set-1 scan codes** — cross-checked and confirmed internally
+consistent against both `osgetch.cpp`'s Win32 `kbdtab[]` (which maps NT
+virtual keycodes back to these same BIOS scan-code values) and
+`ostxt.hpp`'s `VKALT_*` table.
+
+**Changes:**
+- `src/key.hpp`/`src/key.cpp`: `KeyCode` (a plain `int` alias) and a
+  `Key` namespace of named constants using the exact numeric values the
+  original's `switch` statements already use (`Up`, `Down`, `Left`,
+  `Right`, `Home`, `End`, `PageUp`, `PageDown`, `Insert`, `Delete`,
+  `ShiftTab`, `F1`-`F12`), plus `Key::Resize` (new — no BIOS scan code
+  existed for "the window changed size") and `Key::Unknown` (an honest
+  sentinel for anything unmapped, not a silent drop). `alt_key(char)`
+  returns `Alt+<letter/digit>`, matching `ostxt.hpp`'s `VKALT_*` table.
+- `src/keyboard.hpp`: `Keyboard` — a Pimpl class taking a `Terminal&` in
+  its constructor purely to enforce, at the type level, that ncurses is
+  already initialized before keyboard input is read. `read_key()`
+  (blocking) and `key_available()` (`kbhit()`-equivalent).
+- `platform/linux/keyboard.cpp`: `translate_curses_key()` maps ncurses'
+  `KEY_*` constants to the `Key` constants above; `read_key()` handles
+  Alt-key detection by peeking (via `nodelay`) for a byte immediately
+  following a bare `ESC` — verified directly in this sandboxed
+  environment using ncurses' own `ungetch()` to inject `ESC`+`'a'` and
+  confirm it resolves to `Alt+A`, and that a lone `ESC` with nothing
+  queued resolves to plain `Escape`.
+- `tests/platform_linux/keyboard_test.cpp`: constructs a real
+  `Terminal`+`Keyboard` per test and injects input via ncurses'
+  `ungetch()` — plain characters, control characters, `KEY_*` specials,
+  function keys, an unrecognized special key, a lone `Escape`, an
+  `Alt+<letter>` sequence, and `key_available()`'s non-consuming peek —
+  exercising the real ncurses input path end-to-end, not a mock.
+- `tests/core/key_test.cpp`: `alt_key()` and the `Key` constants,
+  cross-checked directly against the original's `VKALT_*` table and
+  `os.cpp`'s literal `case` values.
+
+**Decisions:**
+- Modifier-combined extended keys beyond the base set above
+  (`Shift+F1`-`F10`, `Ctrl+PgUp`/`PgDn`, etc. — present as scattered
+  literals in the original's `os.cpp`) are **not** predefined here.
+  Unlike arrows/function/editing keys, ncurses' reporting of *modified*
+  navigation/function keys is terminal-(terminfo-)dependent, not a
+  universal scan code the way DOS BIOS gave every program for free —
+  better verified against a real terminal when a concrete keybinding
+  needs it (subsystems 06/07) than guessed at now. `Key::Unknown` is the
+  honest answer for these today.
+- The original's `ungetch(int c)` (push one character back for the next
+  `getch()`) is not exposed at the `Keyboard` level — no concrete call
+  site needs it; the original's own usage is internal to its `getch()`
+  implementation, not something the app calls directly.
+
+**Bug fixed:** none new — `Keyboard` is a new implementation, not a
+line-by-line port of `osgetch.cpp`'s Win32/DPMI32 backends (which don't
+target Linux anyway).
+
+**Tests:** 22 new (5 `AltKey*`, 1 `Key.ExtendedConstantsMatchOriginalLiterals`,
+8 `KeyboardTest*` against the real ncurses input path) — 83 total across
+`core_tests` and `platform_linux_tests`. Pass under GCC, plain and under
+`-DLISTLESS_ENABLE_SANITIZERS=ON` (Clang+ASan+UBSan); format-checked
+with `.clang-format`.
+
+**Behaviour notes:** Alt-key detection relies on the terminal sending
+`ESC` as a Meta/Alt prefix (standard for terminal emulators) rather than
+the original's Win32 console API `dwControlKeyState` flag — functionally
+equivalent from the app's perspective (`Alt+<key>` still resolves to the
+same `0xFFxx` value), but the detection mechanism itself is necessarily
+different since there is no Linux terminal equivalent of a per-keystroke
+modifier-state field.
+
+**Next steps:** Phase 2 (I/O layer) is complete. Next is subsystem 07,
+file viewer core (#7) — text-mode display, scrolling, search, bookmarks —
+before subsystem 06 (file-list UI), since the viewer is simpler and more
+self-contained, and the file manager's "View" action ends up calling into
+it anyway.

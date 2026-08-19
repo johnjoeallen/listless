@@ -18,6 +18,8 @@ describe the new implementation — new behaviour and deviations belong in
   listing, `Directory`/`Dirent`, and path/filespec splitting.
 - [04-console-terminal-io.md](04-console-terminal-io.md) — screen buffer
   I/O, colours, and the ncurses backend decision.
+- [05-keyboard-input.md](05-keyboard-input.md) — the original's `0xFFxx`
+  extended-keycode model and its ncurses-backed translation.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.
