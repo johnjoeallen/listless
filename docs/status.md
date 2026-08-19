@@ -21,21 +21,15 @@ doesn't replace it.
 | 8 | Style/config system | [08](08-style-config.md) | [#25](https://github.com/johnjoeallen/listless/pull/25) |
 | 9 | Syntax highlighting | [09](09-syntax-highlighting.md) | [#26](https://github.com/johnjoeallen/listless/pull/26) |
 | 10 | Hex-mode viewer | [10](10-hex-mode-viewer.md) | [#27](https://github.com/johnjoeallen/listless/pull/27) |
+| — | App entry point / main loop | [app-main-loop](app-main-loop.md) | [#28](https://github.com/johnjoeallen/listless/pull/28) |
 
 Subsystem 7 landed ahead of subsystem 6 in numbering order — the file
 viewer core was sequenced before the file-list UI; see
-`PORTING_JOURNEY.md` for the rationale.
-
-## In flight
-
-- **App entry point / main loop** ([issue #24](https://github.com/johnjoeallen/listless/issues/24))
-  — wires `FileManager` and `Viewer` into the first runnable `lss`
-  binary: a `FileManager` renderer, a minimal modal-prompt widget, pure
-  key-dispatch tables for browsing/viewing, and a real executable
-  target. Implemented in
-  [PR #28](https://github.com/johnjoeallen/listless/pull/28), open at
-  time of writing. Its subsystem doc will appear here as
-  `app-main-loop.md` once merged.
+`PORTING_JOURNEY.md` for the rationale. App entry point / main loop
+([issue #24](https://github.com/johnjoeallen/listless/issues/24)) isn't
+in the numbered 1-12 breakdown at all — it's the cross-cutting
+App/main-loop layer every subsystem above deferred to, wiring
+`FileManager` and `Viewer` into the first runnable `lss` binary.
 
 ## Not started
 

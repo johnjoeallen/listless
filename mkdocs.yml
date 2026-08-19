@@ -61,3 +61,4 @@ nav:
       - "08. Style/config system": 08-style-config.md
       - "09. Syntax highlighting": 09-syntax-highlighting.md
       - "10. Hex-mode viewer": 10-hex-mode-viewer.md
+      - "App entry point / main loop": app-main-loop.md
