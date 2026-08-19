@@ -1,4 +1,5 @@
 add_executable(core_tests
+    directory_test.cpp
     glob_test.cpp
     search_test.cpp
     text_test.cpp

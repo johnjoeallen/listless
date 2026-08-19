@@ -14,6 +14,8 @@ describe the new implementation — new behaviour and deviations belong in
   `SList`/`DList`/`Set`, `RefPtr`, `Date`/`Time`, etc).
 - [02-search-primitives.md](02-search-primitives.md) — literal search
   (Boyer-Moore-Horspool) and the documented wildcard/glob syntax.
+- [03-directory-enumeration.md](03-directory-enumeration.md) — directory
+  listing, `Directory`/`Dirent`, and path/filespec splitting.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.

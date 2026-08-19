@@ -186,3 +186,70 @@ piece of original behaviour intentionally dropped.
 `Dirent`/`FileTreeWalker` with a new Linux backend via
 `std::filesystem`, using this subsystem's glob matching for filename
 filtering.
+
+---
+
+## 2026-08-19 — Subsystem 03: directory enumeration (issue #3)
+
+**Objective:** `Directory`/`Dirent` listing with a new Linux backend via
+`std::filesystem`, per `docs/03-directory-enumeration.md`. Listless's
+core "ls" behaviour; depends on subsystems 01 and 02.
+
+**Changes:**
+- `src/directory.hpp`/`src/directory.cpp`: `DirEntry` (name, path, size,
+  `std::filesystem::file_time_type`, `is_directory`/`is_read_only`) and
+  `Directory` (`fill(pattern, case_sensitive)`, `size()`, `operator[]`,
+  `sort()` with a default case-sensitive name comparator and an optional
+  custom one). `fill()` filters via subsystem 02's `glob_match()`, and
+  silently skips entries that can't be stat'd (e.g. a broken symlink)
+  rather than failing the whole listing.
+- `split_path_and_pattern()`: splits a filespec argument (e.g.
+  `/home/user/*.cpp`) into `(directory, pattern)` — the Linux-relevant
+  subset of the original's `splitPath()`, with no drive-letter parsing.
+- `tests/core/directory_test.cpp`: coverage using a real scratch
+  directory (created/torn down per test) — listing, glob filtering,
+  directory-vs-file flagging, default and custom sort, a missing
+  directory yielding an empty listing rather than throwing,
+  out-of-range indexing throwing `std::out_of_range`, and
+  `split_path_and_pattern()`'s three cases.
+
+**Decisions:**
+- `FileTreeWalker` is **not ported**. Grepped the entire `/original`
+  tree — zero use sites anywhere, in either `apps/onscreen` or `class`.
+  It's dead/unused infrastructure in the shipped source. If a real
+  recursive-walk need appears later (recursive copy/delete in #11, or a
+  recursive search feature), it'll be built as callbacks against that
+  concrete call site rather than revived as a virtual-inheritance
+  extension point with no other subclasses to justify the design.
+- Drive-letter path logic (`splitPath`/`changeDir`/`queryCurrentDir`/
+  `queryCurrentDisk`'s DOS/OS2/Win32 concepts) and `expandDir()`
+  (wildcard-directory-component resolution — obscure, undocumented,
+  no found call site) are not ported. `std::filesystem::path` operations
+  replace `mergePath`/`nativePathName`/`unixPathName`/`dosPathName`/
+  `conv2NativePathSep` directly — callers use `std::filesystem`, no
+  Listless-specific wrapper.
+- No `/platform/linux` implementation for this subsystem —
+  `std::filesystem` is already portable across the three target
+  platforms, so there's no OS-specific seam to isolate here. `/platform`
+  is reserved for genuinely OS-specific APIs (console/keyboard I/O,
+  subsystems 04/05).
+
+**Bug fixed:** none — no OnScreen/2 directory-enumeration behaviour was
+carried forward literally enough to inherit a bug from it; `Directory`
+is a new implementation over `std::filesystem`, not a port of the
+DOS/OS2/Win32 `FindFirst`-family backends (none of which target Linux
+anyway).
+
+**Tests:** `core_tests` — 11 new `DirectoryTest*`/`SplitPathAndPattern*`
+cases, plus all prior tests (40 total). Pass under GCC, plain and under
+`-DLISTLESS_ENABLE_SANITIZERS=ON` (Clang+ASan+UBSan); format-checked
+with `.clang-format`.
+
+**Behaviour notes:** default sort order is case-sensitive by name,
+matching the original's `__UNIX__` branch (the only original branch
+relevant to a Linux-first port).
+
+**Next steps:** subsystem 04, console/terminal I/O (#4) — screen buffer
+get/put/scroll, cursor movement, attributes, behind a `/platform/linux`
+implementation. Needs a decision first: ncurses vs. a custom
+termios+ANSI layer.
