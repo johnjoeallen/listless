@@ -35,11 +35,11 @@ add_subdirectory(src)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     add_subdirectory(platform/linux)
 
-    add_executable(listless
+    add_executable(lss
         src/main.cpp
         src/app.cpp
     )
-    target_link_libraries(listless PRIVATE
+    target_link_libraries(lss PRIVATE
         listless_platform_linux
         listless_warnings
         listless_sanitizers

@@ -873,7 +873,7 @@ switching, and per-file style selection into an interactive session.
 
 ## 2026-08-19 — App entry point / main loop (issue #24)
 
-**Objective:** the first runnable `listless` binary, wiring
+**Objective:** the first runnable `lss` binary, wiring
 `FileManager` (06) and `Viewer`+hex mode (07/09/10) into a real
 interactive session, per `docs/app-main-loop.md`. Unlike every
 subsystem before it, this one isn't in `docs/architecture.md`'s
@@ -899,7 +899,7 @@ every one of those subsystem docs explicitly deferred to.
   case-insensitive search, hex goto-offset, and a new goto-line prompt.
   Positional-path argument parsing (empty/directory/file) mirrors
   `App::Init`'s dispatch, minus stdin piping and multi-file arguments.
-- Root `CMakeLists.txt`/`src/CMakeLists.txt`: new `listless` executable
+- Root `CMakeLists.txt`/`src/CMakeLists.txt`: new `lss` executable
   target, the first binary besides the two test runners.
 
 **Deviations:** no `cViewedFiles` multi-buffer list (single active
@@ -925,10 +925,10 @@ chasing another Ctrl-chord equally likely to be intercepted.
 deliberately not unit-tested (glue over already-tested pieces, coupled
 to a real terminal, the same limitation the original's `App::Run`/
 `FileManager::Activate` had) -- verified instead by manually driving
-the built `listless` binary in a real terminal (via `tmux send-keys`/
+the built `lss` binary in a real terminal (via `tmux send-keys`/
 `capture-pane`): browsing, entering directories, opening/closing a
 file, scrolling, searching, hex-mode toggling, and quitting from both
-entry points (`listless` and `listless <file>`) all confirmed working,
+entry points (`lss` and `lss <file>`) all confirmed working,
 including clean terminal restoration on exit.
 
 **Next steps:** multi-buffer switching, F2-F7 live colour cycling, the

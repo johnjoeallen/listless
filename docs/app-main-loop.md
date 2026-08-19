@@ -9,7 +9,7 @@ cross-cutting piece every one of those subsystem docs explicitly
 deferred to "an App/main-loop subsystem" that didn't exist yet. This
 page wires `FileManager` (06) and `Viewer`+hex mode (07/09/10) into a
 real interactive session using `Terminal`/`Keyboard` (04/05), producing
-the first runnable `listless` binary.
+the first runnable `lss` binary.
 
 ## What the original does
 
@@ -93,7 +93,7 @@ the first runnable `listless` binary.
   this for whoever built the screen loop): a status line plus
   `FileManager`'s column-major grid, using `compute_grid()`'s geometry
   exactly as computed. Modeled directly on `viewer_render.cpp`'s shape.
-- **The `listless` executable** -- `add_executable(listless src/main.cpp
+- **The `lss` executable** -- `add_executable(lss src/main.cpp
   src/app.cpp)` in the root `CMakeLists.txt`, the first binary target in
   the project besides the two test runners.
 

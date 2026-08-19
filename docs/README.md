@@ -34,7 +34,7 @@ describe the new implementation — new behaviour and deviations belong in
   hex-dump display mode layered on the viewer core.
 - [app-main-loop.md](app-main-loop.md) — the `App`/main-loop layer
   (issue #24, not in the numbered breakdown above) that wires
-  `FileManager` and `Viewer` into the first runnable `listless` binary.
+  `FileManager` and `Viewer` into the first runnable `lss` binary.
 
 Subsystem docs are added in porting order; see `architecture.md` for the
 full ordered list and the rationale behind it.
