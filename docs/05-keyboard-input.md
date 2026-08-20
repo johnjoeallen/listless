@@ -58,7 +58,7 @@ implements that:
   reuse the original's `case` literals directly. `alt_key(char)` returns
   the `Alt+<letter/digit>` keycode from the same `VKALT_*` table.
 - **`Keyboard`** (`src/Keyboard.hpp`, implemented in
-  `platform/linux/Keyboard.cpp`) — a Pimpl class, constructed with a
+  `src/platform/linux/Keyboard.cpp`) — a Pimpl class, constructed with a
   `Terminal&` purely to enforce (at the type level and in practice) that
   ncurses is already initialized before keyboard input is read. Two
   operations: `read_key()` (blocking read, translated into the `KeyCode`
@@ -102,7 +102,7 @@ implements that:
   real terminals, which is better done against the concrete keybinding
   that needs it (subsystems 06/07) than guessed at now. `Key::Unknown`
   is the honest answer for these today; a later subsystem can extend
-  `translate_curses_key()` (`platform/linux/Keyboard.cpp`) once a real
+  `translate_curses_key()` (`src/platform/linux/Keyboard.cpp`) once a real
   terminal's actual reporting for a specific combination is confirmed.
 - **`ungetch()`/pushback of a Listless `KeyCode`** — the original's
   `ungetch(int c)` pushes one raw platform character back for the next

@@ -9,7 +9,7 @@ namespace listless {
 
 // Keyboard input, translated into Listless's KeyCode space (see
 // key.hpp). One implementation file per platform
-// (platform/<os>/keyboard.cpp) defines Impl and every method body.
+// (src/platform/<os>/keyboard.cpp) defines Impl and every method body.
 //
 // Takes a Terminal& purely to enforce -- at the type level, and by
 // requiring one to already exist -- that the terminal session (and so

@@ -68,7 +68,7 @@ just manually verifiable.
   default pair once exhausted, rather than failing), fully unit-tested
   with an injected allocation callback standing in for `init_pair()`.
 - **`Terminal`** (`src/Terminal.hpp`, implemented in
-  `platform/linux/Terminal.cpp`) — a Pimpl-style class (declared once in
+  `src/platform/linux/Terminal.cpp`) — a Pimpl-style class (declared once in
   `/src`, one implementation file per platform selected by CMake, no
   `#ifdef` in the shared header): `width()`/`height()`, `move_cursor(x, y)`
   (0-indexed — new code, no reason to keep the DOS 1-indexing

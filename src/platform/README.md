@@ -1,9 +1,9 @@
 # Platform interfaces
 
-Thin, platform-specific implementations behind interfaces declared in
-`/src`. No `#ifdef`-per-platform logic in `/src` itself — each platform
-directory provides a complete implementation of the same interface, and
-CMake selects which one to build.
+Thin, platform-specific implementations behind interfaces declared in the
+parent `/src` directory. No `#ifdef`-per-platform logic in shared source
+files — each platform directory provides a complete implementation of the
+same interface, and CMake selects which one to build.
 
 - `linux/` — the first target platform; implementations land alongside
   the subsystems that need them (directory enumeration, console I/O,

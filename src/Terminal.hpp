@@ -10,7 +10,7 @@ namespace listless {
 // A screen-buffer terminal, RAII-owning the terminal session for its
 // lifetime (constructing enters the alternate screen / raw mode;
 // destructing restores the terminal). One implementation file per
-// platform (platform/<os>/terminal.cpp) defines Impl and every method
+// platform (src/platform/<os>/terminal.cpp) defines Impl and every method
 // body -- this header has no platform-specific code in it.
 //
 // Coordinates are 0-indexed, unlike the original's DOS/conio 1-indexed

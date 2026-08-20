@@ -936,3 +936,22 @@ full original CLI flag surface and config-file loading, `FileManager`'s
 command submenu, and syntax-highlighted rendering are all real
 follow-up work now that there's a runnable binary to hang them off of;
 subsystem 11 (file operations) remains next in the numbered breakdown.
+
+## 2026-08-20 — Source-tree platform layout (issue #81)
+
+**Objective:** consolidate all implementation code beneath `/src` while
+preserving the platform-specific build boundary.
+
+**Changes:** moved the former top-level `/platform` tree to
+`/src/platform`. Linux CMake wiring now selects `src/platform/linux`;
+the Terminal and Keyboard interface comments and the subsystem docs use
+the new paths. The Linux, Windows, and macOS platform subdirectories and
+their ownership model are otherwise unchanged.
+
+**Decisions:** this is a source-layout-only refactor. Platform-specific
+implementations remain separate from portable `/src` code, and CMake
+continues to select one backend per target platform; no interface or
+runtime behaviour changes.
+
+**Tests:** reconfigured CMake from the moved source path, then built and
+ran the full suite successfully (279 tests).
