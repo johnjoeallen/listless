@@ -1041,3 +1041,30 @@ each implementation is complete.
 
 **Verification:** `mkdocs build --strict` verifies the theme assets,
 platform icon rendering, and documentation links.
+
+## 2026-08-20 — Documentation navigation and references (issue #90)
+
+**Changes:** added the Listless logo to the repository README and linked the
+README from both the documentation home page and site navigation. Enabled
+Material's navigation footer so published documentation pages expose visible
+previous and next links.
+
+**Verification:** `mkdocs build --strict` verifies the README links and the
+navigation configuration.
+
+## 2026-08-20 — OnScreen/2 reference links (issue #90)
+
+**Changes:** added annotated links to the preserved OS2World source
+repository, Lost Archives distribution, and OS2World wiki article on the
+documentation home page.
+
+**Verification:** `mkdocs build --strict` verifies the external links are
+valid documentation markup.
+
+## 2026-08-20 — Port authorship wording (issue #90)
+
+**Changes:** clarified that Listless is an AI-assisted, from-scratch modern
+port by the original author, using the OnScreen/2 codebase as a reference.
+
+**Verification:** `mkdocs build --strict` verifies the revised Porting Record
+page.

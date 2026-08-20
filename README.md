@@ -1,5 +1,7 @@
 # Listless
 
+<img src="docs/assets/listless-icon.png" alt="Listless logo" width="128">
+
 **A portable file and directory viewer for Linux, Windows, and macOS.**
 
 > **Project status: just beginning**
