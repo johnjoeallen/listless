@@ -936,3 +936,49 @@ full original CLI flag surface and config-file loading, `FileManager`'s
 command submenu, and syntax-highlighted rendering are all real
 follow-up work now that there's a runnable binary to hang them off of;
 subsystem 11 (file operations) remains next in the numbered breakdown.
+
+## 2026-08-20 — Structured-text syntax highlighting (issue #78)
+
+**Objective:** add generic, configurable structural syntax rules suited
+to YAML, JSON, and XML without introducing a language-specific lexer.
+
+**Changes:**
+- `Style` and its config parser now support contextual key-before-
+  delimiter, line-start prefix, prefix-token, block-text, and associated
+  colour rules. The syntax scanner carries block-text indentation state
+  across lines and handles multiple nested flow-collection keys while
+  respecting quoted delimiters.
+- The bundled YAML, JSON, and XML styles use those shared rules. YAML
+  now distinguishes mapping keys, sequence markers/data, block scalar
+  text, and anchors/tags/aliases/directives; JSON colours quoted object
+  keys; XML has a baseline configured style.
+- `docs/08-style-config.md` documents the contextual rule vocabulary and
+  `docs/09-syntax-highlighting.md` records its activation semantics.
+
+**Decisions:** the scanner remains generic rather than growing a YAML
+parser. It supports explicit block scalars and common structured tokens;
+unusual YAML constructs requiring full grammar knowledge remain outside
+the intended highlighting fidelity.
+
+**Tests:** contextual keys (including quoted and nested flow keys),
+block indentation, structural prefixes, sequence data, prefix tokens,
+and structured scalar values. The full suite passed with 279 tests.
+
+## 2026-08-20 — Standard pager navigation (issue #39)
+
+**Objective:** make the viewer follow familiar `less`/`more` navigation
+conventions while preserving existing Listless bindings.
+
+**Changes:** Space/Ctrl+F page down; `b`/`B`/Ctrl+B page up; `d`/Ctrl+D
+and `u`/Ctrl+U move by half a page; Enter/`j`/`k` move one line; and
+text-mode `g`/`G` move to the top/bottom. Each navigation binding uses
+the existing text or hex scrolling operation as appropriate. `n`/`N`
+also alias the already-supported next/previous search-repeat actions.
+
+**Decisions:** `f`/`F` and `h`/`H` retain their existing search and
+text/hex-toggle meanings. `?` is deferred: a genuine backward search
+needs a reverse-search prompt, not merely a key-dispatch alias.
+
+**Tests:** action-level coverage exercises every new page, half-page,
+and line navigation alias in both text and hex modes, text-mode `g`/`G`,
+and `n`/`N` search repetition. The full suite passed with 282 tests.

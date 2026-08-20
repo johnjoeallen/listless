@@ -72,11 +72,14 @@ the first runnable `lss` binary.
     (files only -- see below); Backspace -> `type_ahead_backspace`;
     `q`/`Q`/Escape -> `Quit`.
   - Viewing: arrows/PageUp/PageDown/Home/End/Left/Right -> `scroll_*`/
-    `hex_scroll_*` depending on `display_mode()`; `h`/`H` -> direct
+    `hex_scroll_*` depending on `display_mode()`; Space and Ctrl+F page
+    down, `b`/`B` and Ctrl+B page up, `d`/Ctrl+D and `u`/Ctrl+U move by
+    half a page, Enter/`j`/`k` move a line, and text-mode `g`/`G` move to
+    the top/bottom; `h`/`H` -> direct
     port of the hex/text toggle (`osview.cpp:3077-3090`); `s`/`S`/`/`
     -> `PromptSearchForward` (case-sensitive, matches the original's
     letters exactly); `f`/`F` -> `PromptSearchForwardCaseInsensitive`;
-    `a`/`A` -> `repeat_search(true/false)`, a direct port; `g`/`G` in
+    `a`/`A`/`n`/`N` -> `repeat_search(true/false)`; `g`/`G` in
     hex mode -> `PromptGotoOffset`, a direct port of
     `handleKeyInHexMode`'s goto-offset prompt; plain `0`-`9` -> jump to
     that bookmark slot, Alt+`0`-`9` -> set it at the current position;

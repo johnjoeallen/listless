@@ -1,5 +1,6 @@
 #include "AppActions.hpp"
 
+#include <algorithm>
 #include <cctype>
 
 namespace listless {
@@ -81,9 +82,11 @@ bool is_bookmark_set_key(KeyCode key, int& slot) {
 
 ViewingAction handle_viewing_key(Viewer& v, int visible_lines, int visible_width, KeyCode key) {
     bool hex = v.display_mode() == DisplayMode::Hex;
+    int half_page = std::max(1, visible_lines / 2);
 
     switch (key) {
         case Key::Up:
+        case 'k':
             if (hex) {
                 v.hex_scroll_line_up();
             } else {
@@ -91,6 +94,9 @@ ViewingAction handle_viewing_key(Viewer& v, int visible_lines, int visible_width
             }
             return ViewingAction::None;
         case Key::Down:
+        case '\r':
+        case '\n':
+        case 'j':
             if (hex) {
                 v.hex_scroll_line_down(visible_lines);
             } else {
@@ -98,6 +104,9 @@ ViewingAction handle_viewing_key(Viewer& v, int visible_lines, int visible_width
             }
             return ViewingAction::None;
         case Key::PageUp:
+        case 'b':
+        case 'B':
+        case 2:  // Ctrl+B
             if (hex) {
                 v.hex_scroll_page_up(visible_lines);
             } else {
@@ -105,10 +114,28 @@ ViewingAction handle_viewing_key(Viewer& v, int visible_lines, int visible_width
             }
             return ViewingAction::None;
         case Key::PageDown:
+        case ' ':
+        case 6:  // Ctrl+F
             if (hex) {
                 v.hex_scroll_page_down(visible_lines);
             } else {
                 v.scroll_page_down(visible_lines);
+            }
+            return ViewingAction::None;
+        case 'u':
+        case 21:  // Ctrl+U
+            if (hex) {
+                v.hex_scroll_page_up(half_page);
+            } else {
+                v.scroll_page_up(half_page);
+            }
+            return ViewingAction::None;
+        case 'd':
+        case 4:  // Ctrl+D
+            if (hex) {
+                v.hex_scroll_page_down(half_page);
+            } else {
+                v.scroll_page_down(half_page);
             }
             return ViewingAction::None;
         case Key::Home:
@@ -153,17 +180,25 @@ ViewingAction handle_viewing_key(Viewer& v, int visible_lines, int visible_width
         case 'F':
             return ViewingAction::PromptSearchForwardCaseInsensitive;
         case 'a':
+        case 'n':
             v.repeat_search(/*forward=*/true);
             return ViewingAction::None;
         case 'A':
+        case 'N':
             v.repeat_search(/*forward=*/false);
             return ViewingAction::None;
 
         case 'g':
+            if (hex) {
+                return ViewingAction::PromptGotoOffset;
+            }
+            v.scroll_to_top();
+            return ViewingAction::None;
         case 'G':
             if (hex) {
                 return ViewingAction::PromptGotoOffset;
             }
+            v.scroll_to_bottom(visible_lines);
             return ViewingAction::None;
 
         case ':':
