@@ -33,7 +33,8 @@ class App {
     // Constructs a viewer-only session over already-read stdin content
     // (`display_name` shown on the status line). Closing this directly
     // opened viewer exits the program.
-    App(std::string stdin_content, std::string display_name);
+    App(std::string stdin_content, std::string display_name,
+        std::optional<std::string> syntax_style = std::nullopt);
 
     // Runs the interactive loop until the user quits. Returns a process
     // exit code (always 0 -- there is no failure path once the session
@@ -82,6 +83,7 @@ class App {
 
     StyleSet styles_;
     Style* current_style_ = &styles_.default_style();
+    std::optional<std::string> requested_style_;
     HighlightCache highlight_cache_;
 };
 

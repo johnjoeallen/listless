@@ -4,23 +4,37 @@
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <optional>
 #include <sstream>
 #include <system_error>
 
 #include "App.hpp"
 
 int main(int argc, char** argv) {
-    if (argc > 2) {
-        std::cerr << "usage: lss [path]\n";
-        return 1;
+    std::optional<std::string> syntax_style;
+    std::optional<std::filesystem::path> start_path;
+    for (int i = 1; i < argc; ++i) {
+        std::string_view argument = argv[i];
+        if (argument == "--syntax") {
+            if (++i == argc) {
+                std::cerr << "lss: --syntax requires a style name\n";
+                return 1;
+            }
+            syntax_style = argv[i];
+        } else if (argument.starts_with('-') || start_path) {
+            std::cerr << "usage: lss [--syntax style]\n";
+            return 1;
+        } else {
+            start_path = argv[i];
+        }
     }
 
-    if (argc == 1 && !isatty(fileno(stdin))) {
+    if (!start_path && !isatty(fileno(stdin))) {
         std::ostringstream buffer;
         buffer << std::cin.rdbuf();
 
         try {
-            listless::App app(buffer.str(), "(stdin)");
+            listless::App app(buffer.str(), "(stdin)", std::move(syntax_style));
             return app.run();
         } catch (const std::exception& e) {
             std::cerr << "lss: " << e.what() << "\n";
@@ -28,19 +42,24 @@ int main(int argc, char** argv) {
         }
     }
 
-    std::filesystem::path start_path;
-    if (argc == 2) {
-        start_path = argv[1];
+    if (syntax_style) {
+        std::cerr << "lss: --syntax requires piped stdin\n";
+        return 1;
+    }
+
+    std::filesystem::path path;
+    if (start_path) {
+        path = *start_path;
 
         std::error_code ec;
-        if (!std::filesystem::exists(start_path, ec)) {
-            std::cerr << "lss: " << start_path.string() << ": no such file or directory\n";
+        if (!std::filesystem::exists(path, ec)) {
+            std::cerr << "lss: " << path.string() << ": no such file or directory\n";
             return 1;
         }
     }
 
     try {
-        listless::App app(start_path);
+        listless::App app(path);
         return app.run();
     } catch (const std::exception& e) {
         std::cerr << "lss: " << e.what() << "\n";
