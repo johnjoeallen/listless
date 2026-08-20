@@ -146,6 +146,26 @@ TEST(HighlightLine, BeforeDelimiterCanRequireWhitespaceAfterTheDelimiter) {
                              [](const ColorSpan& span) { return span.color == Color::Blue; }));
 }
 
+TEST(HighlightLine, SequenceDataAndSequenceMappingsUseDifferentRules) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.before_delimiter_color.set(Color::Blue);
+    s.line_start_prefix.set("-");
+    s.line_start_prefix_requires_space.set(true);
+    s.line_start_data_color.set(Color::Green);
+    HighlightState state;
+
+    auto scalar = highlight_line("- write:pets", s, state);
+    ASSERT_GE(scalar.size(), 2u);
+    EXPECT_EQ(scalar.back().color, Color::Green);
+
+    auto mapping = highlight_line("- write: pets", s, state);
+    EXPECT_TRUE(std::any_of(mapping.begin(), mapping.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }));
+}
+
 TEST(HighlightLine, BeforeDelimiterIgnoresQuotedScalarContent) {
     Style s("Generic");
     s.syntax_highlight_enabled.set(true);
