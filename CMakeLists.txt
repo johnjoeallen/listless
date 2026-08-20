@@ -34,7 +34,7 @@ endif()
 add_subdirectory(src)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    add_subdirectory(platform/linux)
+    add_subdirectory(src/platform/linux)
 
     add_executable(lss
         src/main.cpp

@@ -20,6 +20,7 @@ doesn't replace it.
 | 6 | File-list UI (`FileManager`) | [06](06-file-list-ui.md) | [#23](https://github.com/johnjoeallen/listless/pull/23) |
 | 8 | Style/config system | [08](08-style-config.md) | [#25](https://github.com/johnjoeallen/listless/pull/25) |
 | 9 | Syntax highlighting | [09](09-syntax-highlighting.md) | [#26](https://github.com/johnjoeallen/listless/pull/26) |
+| — | Syntax highlighting integration | [09](09-syntax-highlighting.md) | [#35](https://github.com/johnjoeallen/listless/pull/35) |
 | 10 | Hex-mode viewer | [10](10-hex-mode-viewer.md) | [#27](https://github.com/johnjoeallen/listless/pull/27) |
 | — | App entry point / main loop | [app-main-loop](app-main-loop.md) | [#28](https://github.com/johnjoeallen/listless/pull/28) |
 
@@ -33,11 +34,6 @@ App/main-loop layer every subsystem above deferred to, wiring
 
 ## Not started
 
-- **Syntax highlighting wiring** ([issue #29](https://github.com/johnjoeallen/listless/issues/29))
-  — subsystem 9 produces colour spans (`highlight_line`); nothing calls
-  it from the renderer yet, so no file gets syntax colouring in the
-  running app regardless of type. Filed as a follow-up once the
-  App/main-loop layer existed to own *which* style is active per file.
 - **Subsystem 11: file operations** (copy/move/rename/delete/mkdir) —
   deferred until everything above is stable, given the higher
   regression-test scrutiny destructive operations warrant.
