@@ -142,6 +142,21 @@ TEST(HighlightLine, BeforeDelimiterIgnoresQuotedScalarContent) {
     }));
 }
 
+TEST(HighlightLine, BeforeDelimiterHighlightsQuotedKeys) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.string_delimiter.set("\"");
+    s.before_delimiter_color.set(Color::Blue);
+    s.string_color.set(Color::Green);
+    HighlightState state;
+
+    auto spans = highlight_line("\"name\": \"value\"", s, state);
+    ASSERT_GE(spans.size(), 2u);
+    EXPECT_EQ(spans.front().color, Color::Blue);
+    EXPECT_EQ(spans.back().color, Color::Green);
+}
+
 TEST(HighlightLine, ReservedWordRequiresWordBoundary) {
     Style s("C");
     init_c_style(s);
