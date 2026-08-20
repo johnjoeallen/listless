@@ -55,7 +55,7 @@ Each successful iteration should compile cleanly, pass tests and quality gates, 
 
 ## Documentation
 
-`/docs` documents original OnScreen/2 behaviour, derived from `/original`, written before porting each subsystem. Start at [docs/README.md](docs/README.md).
+`/docs` documents original OnScreen/2 behaviour, derived from `/original`, written before porting each subsystem. Start at [docs/README.md](docs/README.md), or browse the published site at <https://johnjoeallen.github.io/listless/>, which also covers the project's target and current porting status.
 
 ## Porting Journal
 

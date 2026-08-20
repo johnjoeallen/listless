@@ -1,0 +1,64 @@
+site_name: Listless
+site_description: >-
+  A portable file and directory viewer for Linux, Windows, and macOS —
+  the modern continuation of OnScreen/2.
+site_url: https://johnjoeallen.github.io/listless/
+repo_url: https://github.com/johnjoeallen/listless
+repo_name: johnjoeallen/listless
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.instant
+    - content.code.copy
+    - content.action.edit
+    - search.suggest
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - tables
+  - toc:
+      permalink: true
+
+extra:
+  version:
+    provider: mike
+
+nav:
+  - Home: index.md
+  - About:
+      - "The original: OnScreen/2": original.md
+      - "The target: Listless": target.md
+  - Porting status: status.md
+  - Original architecture: architecture.md
+  - Subsystems:
+      - "01. String/container primitives": 01-string-container-primitives.md
+      - "02. Search primitives": 02-search-primitives.md
+      - "03. Directory enumeration": 03-directory-enumeration.md
+      - "04. Console/terminal I/O": 04-console-terminal-io.md
+      - "05. Keyboard input": 05-keyboard-input.md
+      - "06. File-list UI": 06-file-list-ui.md
+      - "07. File viewer core": 07-file-viewer-core.md
+      - "08. Style/config system": 08-style-config.md
+      - "09. Syntax highlighting": 09-syntax-highlighting.md
+      - "10. Hex-mode viewer": 10-hex-mode-viewer.md
+      - "App entry point / main loop": app-main-loop.md

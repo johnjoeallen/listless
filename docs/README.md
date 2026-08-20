@@ -1,5 +1,10 @@
 # Documentation index
 
+Also published as a browsable site at
+<https://johnjoeallen.github.io/listless/>, with an overview of the
+original, the project's target, and current porting status alongside
+these pages.
+
 This directory documents the *original* OnScreen/2 behaviour, read from
 `/original`, before each subsystem is ported to Listless. Pages here are
 written before the corresponding port begins, and are not modified to
