@@ -28,6 +28,10 @@ The command name is:
 lss
 ```
 
+It is also a nod to Vern Buerg's classic DOS `LIST` program. In the original
+author's account, OnScreen/2 began because OS/2 had no comparable LIST-style
+file viewer; Listless carries that lineage forward.
+
 ## Screenshots
 
 ### Directory browser

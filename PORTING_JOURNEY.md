@@ -1113,3 +1113,12 @@ platform status, and screenshot gallery to remain synchronized.
 
 **Verification:** `mkdocs build --strict` verifies the gallery assets and
 home-page links.
+
+## 2026-08-20 — LIST and OnScreen/2 inspiration (issue #101)
+
+**Changes:** documented that the Listless name nods to Vern Buerg's DOS
+`LIST` program. Recorded the original author's account that OnScreen/2 was
+created to provide the LIST-style file viewer OS/2 lacked, and that the
+original distribution described OnScreen/2 as roughly similar to `LIST`.
+
+**Verification:** `mkdocs build --strict` verifies the revised documentation.
