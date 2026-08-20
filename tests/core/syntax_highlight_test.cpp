@@ -97,6 +97,7 @@ TEST(HighlightLine, PositionalPrefixRulesHighlightStructuralTokens) {
     Style s("Generic");
     s.syntax_highlight_enabled.set(true);
     s.line_start_prefix.set("-");
+    s.line_start_prefix_requires_space.set(true);
     s.prefix_token.set("&!");
     s.reserved_color.set(Color::Blue);
     HighlightState state;

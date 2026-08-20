@@ -149,6 +149,7 @@ class Style {
     Item<bool> before_delimiter_requires_space;
     Item<std::string> block_text_start;
     Item<std::string> line_start_prefix;
+    Item<bool> line_start_prefix_requires_space;
     Item<std::string> prefix_token;
     Item<bool> case_sensitive;
     Item<bool> case_convert;

@@ -141,6 +141,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     char escape = get_or(style.escape, '\0');
     const std::string* block_text_start = style.block_text_start.get();
     const std::string* line_start_prefix = style.line_start_prefix.get();
+    bool line_start_prefix_requires_space = get_or(style.line_start_prefix_requires_space, false);
     const std::string* prefix_token = style.prefix_token.get();
     std::size_t first_content = text.find_first_not_of(" \t");
     int indent = first_content == std::string_view::npos ? 0 : static_cast<int>(first_content);
@@ -157,9 +158,11 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     std::size_t contextual_start = n;
     std::size_t contextual_end = n;
     std::size_t line_start_data = n;
-    bool has_line_start_prefix = first_content != std::string_view::npos &&
-                                 line_start_prefix != nullptr &&
-                                 line_start_prefix->find(text[first_content]) != std::string::npos;
+    bool has_line_start_prefix =
+        first_content != std::string_view::npos && line_start_prefix != nullptr &&
+        line_start_prefix->find(text[first_content]) != std::string::npos &&
+        (!line_start_prefix_requires_space || first_content + 1 == n ||
+         std::isspace(static_cast<unsigned char>(text[first_content + 1])));
     std::size_t payload_start =
         has_line_start_prefix ? text.find_first_not_of(" \t", first_content + 1) : first_content;
     if (before_delimiter != nullptr && !before_delimiter->empty()) {

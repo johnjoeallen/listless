@@ -197,6 +197,10 @@ const std::vector<FieldSpec>& field_table() {
          [](Style& s, std::string_view v) { return apply_string(s.block_text_start, v); }},
         {"LineStartPrefix",
          [](Style& s, std::string_view v) { return apply_string(s.line_start_prefix, v); }},
+        {"LineStartPrefixRequiresSpace",
+         [](Style& s, std::string_view v) {
+             return apply_bool(s.line_start_prefix_requires_space, v);
+         }},
         {"PrefixToken",
          [](Style& s, std::string_view v) { return apply_string(s.prefix_token, v); }},
         {"OpenPreProcessor",
@@ -420,6 +424,7 @@ void Style::add_base_style(Style& base) {
     before_delimiter_requires_space.add_base_item(&base.before_delimiter_requires_space);
     block_text_start.add_base_item(&base.block_text_start);
     line_start_prefix.add_base_item(&base.line_start_prefix);
+    line_start_prefix_requires_space.add_base_item(&base.line_start_prefix_requires_space);
     prefix_token.add_base_item(&base.prefix_token);
     case_sensitive.add_base_item(&base.case_sensitive);
     case_convert.add_base_item(&base.case_convert);
@@ -684,6 +689,7 @@ void save_config(const StyleSet& styles, const std::filesystem::path& path) {
         write_bool("BeforeDelimiterRequiresSpace", style->before_delimiter_requires_space);
         write_string("BlockTextStart", style->block_text_start);
         write_string("LineStartPrefix", style->line_start_prefix);
+        write_bool("LineStartPrefixRequiresSpace", style->line_start_prefix_requires_space);
         write_string("PrefixToken", style->prefix_token);
         write_bool("CaseSensitive", style->case_sensitive);
         write_bool("CaseConvert", style->case_convert);
