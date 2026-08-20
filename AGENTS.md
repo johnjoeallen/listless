@@ -20,3 +20,4 @@ For all C++ code, use the following naming conventions consistently:
 
 * Every code change must be tied to a GitHub issue. Before making changes, confirm there's an open issue that covers the work; if none exists, create one first (or ask the user to point at one) rather than making changes with no issue reference.
 * If the user requests a change that doesn't appear to belong to the issue currently being worked, say so explicitly and check whether they want to: (a) file a new issue for it, (b) confirm it's actually in scope of the current issue, or (c) proceed anyway. Don't silently fold unrelated work into the current issue's commits/PR.
+* When Codex makes code changes, credit Codex in the associated commit or pull request.
