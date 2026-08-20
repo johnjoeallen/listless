@@ -52,7 +52,6 @@ extra:
 
 nav:
   - Home: index.md
-  - Repository README: https://github.com/johnjoeallen/listless/blob/main/README.md
   - Listless guide:
       - Getting started: getting-started.md
       - Usage: usage.md
