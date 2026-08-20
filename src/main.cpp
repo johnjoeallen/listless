@@ -1,7 +1,10 @@
+#include <unistd.h>
+
 #include <cstdlib>
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <sstream>
 #include <system_error>
 
 #include "app.hpp"
@@ -10,6 +13,19 @@ int main(int argc, char** argv) {
     if (argc > 2) {
         std::cerr << "usage: lss [path]\n";
         return 1;
+    }
+
+    if (argc == 1 && !isatty(fileno(stdin))) {
+        std::ostringstream buffer;
+        buffer << std::cin.rdbuf();
+
+        try {
+            listless::App app(buffer.str(), "(stdin)");
+            return app.run();
+        } catch (const std::exception& e) {
+            std::cerr << "lss: " << e.what() << "\n";
+            return 1;
+        }
     }
 
     std::filesystem::path start_path;

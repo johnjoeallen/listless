@@ -17,7 +17,12 @@ namespace listless {
 // convention -- there are no legacy call sites to preserve here.
 class Terminal {
   public:
-    Terminal();
+    // `read_from_tty`: when true, keyboard input is read from the
+    // controlling terminal (/dev/tty) instead of stdin -- used when the
+    // caller has already consumed stdin for piped content (see App's
+    // stdin-viewer constructor), leaving stdin unusable as a keyboard
+    // source.
+    explicit Terminal(bool read_from_tty = false);
     ~Terminal();
 
     Terminal(const Terminal&) = delete;
@@ -29,7 +34,8 @@ class Terminal {
     int height() const;
 
     void move_cursor(int x, int y);
-    void put_text(int x, int y, std::string_view text, Color fg, Color bg);
+    void put_text(int x, int y, std::string_view text, Color fg, Color bg, bool bold = false,
+                  bool underlined = false);
     void clear_to_eol(int x, int y, Color fg, Color bg);
     void clear();
 

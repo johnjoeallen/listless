@@ -17,97 +17,101 @@ constexpr Color kSelectedBg = Color::LightGray;
 
 struct ExpandedLine {
     std::string text;
-    std::size_t sel_start = std::string::npos;
-    std::size_t sel_end = std::string::npos;
+    // raw_to_expanded[i] is the expanded-text column that raw byte index
+    // i (0..raw.size(), inclusive) maps to -- lets any raw byte offset
+    // (a selection bound, a ColorSpan bound) be translated to where it
+    // lands once tabs are expanded.
+    std::vector<std::size_t> raw_to_expanded;
 };
 
-// Expands tabs to kTabWidth-aligned stops, tracking where the selected
-// range (if any) lands in the expanded output -- selection_.pos/count
-// are byte offsets into the raw line, which shift once tabs expand.
-ExpandedLine expand_line(std::string_view raw, bool has_selection, std::size_t sel_pos,
-                         std::size_t sel_len) {
+ExpandedLine expand_line(std::string_view raw) {
     ExpandedLine result;
     result.text.reserve(raw.size());
+    result.raw_to_expanded.reserve(raw.size() + 1);
+    result.raw_to_expanded.push_back(0);
 
-    bool whole_line = has_selection && sel_len == kWholeLine;
-
-    for (std::size_t i = 0; i < raw.size(); ++i) {
-        if (has_selection && !whole_line && i == sel_pos) {
-            result.sel_start = result.text.size();
-        }
-        if (has_selection && !whole_line && sel_len != std::string::npos &&
-            i == sel_pos + sel_len) {
-            result.sel_end = result.text.size();
-        }
-
-        if (raw[i] == '\t') {
+    for (char c : raw) {
+        if (c == '\t') {
             std::size_t next_stop = ((result.text.size() / kTabWidth) + 1) * kTabWidth;
             result.text.append(next_stop - result.text.size(), ' ');
         } else {
-            result.text.push_back(raw[i]);
+            result.text.push_back(c);
         }
-    }
-
-    if (has_selection && !whole_line && result.sel_start != std::string::npos &&
-        result.sel_end == std::string::npos) {
-        result.sel_end = result.text.size();  // match runs to end of line
-    }
-
-    if (whole_line) {
-        result.sel_start = 0;
-        result.sel_end = result.text.size();
+        result.raw_to_expanded.push_back(result.text.size());
     }
 
     return result;
 }
 
-void draw_text_line(Terminal& terminal, int row, const Viewer& viewer, int line_index, int column,
-                    int width) {
-    bool has_selection = viewer.selection().line == line_index;
-    ExpandedLine expanded = expand_line(viewer.line_text(line_index), has_selection,
-                                        viewer.selection().pos, viewer.selection().count);
+// Paints text[seg_start, seg_end) with one attribute, clipped to the
+// visible [column, column+width) window.
+void paint_run(Terminal& terminal, int row, int column, int width, std::string_view text,
+              std::size_t seg_start, std::size_t seg_end, Color fg, Color bg, bool bold,
+              bool underlined) {
+    std::size_t win_start = std::max(seg_start, static_cast<std::size_t>(column));
+    std::size_t win_end = std::min(seg_end, static_cast<std::size_t>(column) + static_cast<std::size_t>(width));
+    if (win_start >= win_end) return;
 
-    std::string_view visible = expanded.text;
-    if (static_cast<std::size_t>(column) < visible.size()) {
-        visible = visible.substr(static_cast<std::size_t>(column));
-    } else {
-        visible = {};
+    terminal.put_text(static_cast<int>(win_start - static_cast<std::size_t>(column)), row,
+                      text.substr(win_start, win_end - win_start), fg, bg, bold, underlined);
+}
+
+// Paints one syntax-coloured span [exp_start, exp_end), splitting out
+// the portion (if any) that overlaps [sel_start, sel_end) to draw in
+// reverse video instead -- selection wins within its range, syntax
+// colour shows through everywhere else on the line.
+void paint_span(Terminal& terminal, int row, int column, int width, std::string_view text,
+                std::size_t exp_start, std::size_t exp_end, Color color, bool bold,
+                bool underlined, bool has_selection, std::size_t sel_start, std::size_t sel_end) {
+    if (has_selection && sel_start < sel_end) {
+        std::size_t inter_start = std::max(exp_start, sel_start);
+        std::size_t inter_end = std::min(exp_end, sel_end);
+        if (inter_start < inter_end) {
+            if (exp_start < inter_start) {
+                paint_run(terminal, row, column, width, text, exp_start, inter_start, color, kNormalBg,
+                         bold, underlined);
+            }
+            paint_run(terminal, row, column, width, text, inter_start, inter_end, kSelectedFg,
+                     kSelectedBg, /*bold=*/false, /*underlined=*/false);
+            if (inter_end < exp_end) {
+                paint_run(terminal, row, column, width, text, inter_end, exp_end, color, kNormalBg, bold,
+                         underlined);
+            }
+            return;
+        }
     }
-    if (visible.size() > static_cast<std::size_t>(width)) {
-        visible = visible.substr(0, static_cast<std::size_t>(width));
+
+    paint_run(terminal, row, column, width, text, exp_start, exp_end, color, kNormalBg, bold, underlined);
+}
+
+void draw_text_line(Terminal& terminal, int row, const Viewer& viewer, int line_index, int column,
+                    int width, const std::vector<ColorSpan>& spans) {
+    std::string_view raw = viewer.line_text(line_index);
+    ExpandedLine expanded = expand_line(raw);
+
+    bool has_selection = viewer.selection().line == line_index;
+    std::size_t sel_start = 0;
+    std::size_t sel_end = 0;
+    if (has_selection) {
+        const Selection& sel = viewer.selection();
+        std::size_t raw_start = std::min(sel.pos, raw.size());
+        std::size_t raw_end =
+            sel.count == kWholeLine ? raw.size() : std::min(sel.pos + sel.count, raw.size());
+        sel_start = expanded.raw_to_expanded[raw_start];
+        sel_end = expanded.raw_to_expanded[raw_end];
     }
 
     terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);
 
-    auto clamp_to_visible = [&](std::size_t abs_col) -> std::size_t {
-        if (abs_col < static_cast<std::size_t>(column)) {
-            return 0;
-        }
-        std::size_t rel = abs_col - static_cast<std::size_t>(column);
-        return std::min(rel, visible.size());
-    };
+    for (const ColorSpan& span : spans) {
+        std::size_t raw_start = std::min(span.offset, raw.size());
+        std::size_t raw_end = std::min(span.offset + span.length, raw.size());
+        if (raw_start >= raw_end) continue;
 
-    std::size_t sel_start = expanded.sel_start == std::string::npos
-                                ? visible.size()
-                                : clamp_to_visible(expanded.sel_start);
-    std::size_t sel_end =
-        expanded.sel_end == std::string::npos ? visible.size() : clamp_to_visible(expanded.sel_end);
-
-    if (sel_start >= sel_end || !has_selection) {
-        if (!visible.empty()) {
-            terminal.put_text(0, row, visible, kNormalFg, kNormalBg);
-        }
-        return;
-    }
-
-    if (sel_start > 0) {
-        terminal.put_text(0, row, visible.substr(0, sel_start), kNormalFg, kNormalBg);
-    }
-    terminal.put_text(static_cast<int>(sel_start), row,
-                      visible.substr(sel_start, sel_end - sel_start), kSelectedFg, kSelectedBg);
-    if (sel_end < visible.size()) {
-        terminal.put_text(static_cast<int>(sel_end), row, visible.substr(sel_end), kNormalFg,
-                          kNormalBg);
+        std::size_t exp_start = expanded.raw_to_expanded[raw_start];
+        std::size_t exp_end = expanded.raw_to_expanded[raw_end];
+        paint_span(terminal, row, column, width, expanded.text, exp_start, exp_end, span.color,
+                  span.bold, span.underlined, has_selection, sel_start, sel_end);
     }
 }
 
@@ -181,34 +185,69 @@ void draw_status_line(Terminal& terminal, const Viewer& viewer, int width) {
     terminal.put_text(0, 0, status, kSelectedFg, kSelectedBg);
 }
 
+void render_text_mode(const Viewer& viewer, Terminal& terminal, int width, int height,
+                      const Style& style, HighlightCache& highlight_cache) {
+    HighlightState state = highlight_cache.state_before(viewer, style, viewer.top_line());
+
+    for (int row = 1; row < height; ++row) {
+        int line_index = viewer.top_line() + (row - 1);
+        if (line_index < viewer.line_count()) {
+            std::vector<ColorSpan> spans = highlight_line(viewer.line_text(line_index), style, state);
+            draw_text_line(terminal, row, viewer, line_index, viewer.column(), width, spans);
+        } else {
+            terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);
+        }
+    }
+}
+
+void render_hex_mode(const Viewer& viewer, Terminal& terminal, int width, int height) {
+    for (int row = 1; row < height; ++row) {
+        int line_index = viewer.hex_top_line() + (row - 1);
+        if (line_index < viewer.hex_line_count()) {
+            draw_hex_line(terminal, row, viewer, line_index, width);
+        } else {
+            terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);
+        }
+    }
+}
+
 }  // namespace
 
+void HighlightCache::reset() { end_states_.clear(); }
+
+HighlightState HighlightCache::state_before(const Viewer& viewer, const Style& style, int line) {
+    if (line <= 0) return HighlightState{};
+
+    std::size_t target = static_cast<std::size_t>(line) - 1;
+    if (target < end_states_.size()) return end_states_[target];
+
+    HighlightState state = end_states_.empty() ? HighlightState{} : end_states_.back();
+    for (std::size_t i = end_states_.size(); i <= target; ++i) {
+        highlight_line(viewer.line_text(static_cast<int>(i)), style, state);
+        end_states_.push_back(state);
+    }
+    return end_states_[target];
+}
+
 void render_viewer(const Viewer& viewer, Terminal& terminal) {
+    static const Style kUnstyled("Default");
+    HighlightCache throwaway_cache;
+    render_viewer(viewer, terminal, kUnstyled, throwaway_cache);
+}
+
+void render_viewer(const Viewer& viewer, Terminal& terminal, const Style& style,
+                   HighlightCache& highlight_cache) {
     int width = terminal.width();
     int height = terminal.height();
 
     draw_status_line(terminal, viewer, width);
 
     if (viewer.display_mode() == DisplayMode::Hex) {
-        for (int row = 1; row < height; ++row) {
-            int line_index = viewer.hex_top_line() + (row - 1);
-            if (line_index < viewer.hex_line_count()) {
-                draw_hex_line(terminal, row, viewer, line_index, width);
-            } else {
-                terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);
-            }
-        }
+        render_hex_mode(viewer, terminal, width, height);
         return;
     }
 
-    for (int row = 1; row < height; ++row) {
-        int line_index = viewer.top_line() + (row - 1);
-        if (line_index < viewer.line_count()) {
-            draw_text_line(terminal, row, viewer, line_index, viewer.column(), width);
-        } else {
-            terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);
-        }
-    }
+    render_text_mode(viewer, terminal, width, height, style, highlight_cache);
 }
 
 }  // namespace listless

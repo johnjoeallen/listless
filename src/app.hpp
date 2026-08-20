@@ -7,8 +7,10 @@
 
 #include "file_manager.hpp"
 #include "keyboard.hpp"
+#include "style.hpp"
 #include "terminal.hpp"
 #include "viewer.hpp"
+#include "viewer_render.hpp"
 
 namespace listless {
 
@@ -28,6 +30,12 @@ class App {
     // file that can't be opened (propagated from Viewer's constructor).
     explicit App(std::filesystem::path start_path);
 
+    // Constructs a viewer-only session over already-read stdin content
+    // (`display_name` shown on the status line). Browses the current
+    // directory as the "close viewer" fallback, matching the
+    // empty-`start_path` case above.
+    App(std::string stdin_content, std::string display_name);
+
     // Runs the interactive loop until the user quits. Returns a process
     // exit code (always 0 -- there is no failure path once the session
     // is running).
@@ -39,6 +47,12 @@ class App {
     void run_browsing();
     void run_viewing();
     void open_selected();
+
+    // Resolves and switches to the Style matching `viewer_`'s file
+    // extension (the default style if none matches, or no path at all --
+    // e.g. the stdin-viewer case), and resets highlight_cache_ since it's
+    // indexed by the outgoing file's line numbering.
+    void restyle_for_viewer();
 
     // Drives line_edit_key() in a loop, rendering the prompt on the
     // terminal's last row. Returns the submitted text, or nullopt if
@@ -55,6 +69,10 @@ class App {
     std::optional<Viewer> viewer_;
     Mode mode_ = Mode::Browsing;
     bool quit_ = false;
+
+    StyleSet styles_;
+    Style* current_style_ = &styles_.default_style();
+    HighlightCache highlight_cache_;
 };
 
 }  // namespace listless

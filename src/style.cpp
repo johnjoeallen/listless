@@ -447,6 +447,14 @@ bool load_config(StyleSet& styles, const std::filesystem::path& path) {
                 current_key = token;
             }
         }
+
+        // Matches the original's loadConfig (osstyle.cpp:1309-1313):
+        // there's no explicit config key for iSyntaxHighlightEnabled (see
+        // docs/08-style-config.md), it's switched on implicitly for any
+        // style that ends up with reserved words.
+        if (!style.reserved.empty()) {
+            style.syntax_highlight_enabled.set(true);
+        }
     }
 
     return true;

@@ -12,6 +12,8 @@ namespace listless {
 
 App::App(std::filesystem::path start_path)
     : keyboard_(terminal_), file_manager_(std::filesystem::current_path()) {
+    load_config(styles_, default_config_path());
+
     if (start_path.empty()) {
         return;
     }
@@ -26,6 +28,18 @@ App::App(std::filesystem::path start_path)
     file_manager_.change_directory(parent);
     viewer_.emplace(start_path);
     mode_ = Mode::Viewing;
+    restyle_for_viewer();
+}
+
+App::App(std::string stdin_content, std::string display_name)
+    : terminal_(/*read_from_tty=*/true),
+      keyboard_(terminal_),
+      file_manager_(std::filesystem::current_path()) {
+    load_config(styles_, default_config_path());
+
+    viewer_.emplace(std::move(stdin_content), std::move(display_name));
+    mode_ = Mode::Viewing;
+    restyle_for_viewer();
 }
 
 int App::run() {
@@ -63,10 +77,21 @@ void App::run_browsing() {
     }
 }
 
+void App::restyle_for_viewer() {
+    current_style_ = &styles_.default_style();
+    if (viewer_ && viewer_->path().has_extension()) {
+        if (Style* match = styles_.style_for_extension(viewer_->path().extension().string())) {
+            current_style_ = match;
+        }
+    }
+    highlight_cache_.reset();
+}
+
 void App::open_selected() {
     try {
         viewer_.emplace(file_manager_.selected().path);
         mode_ = Mode::Viewing;
+        restyle_for_viewer();
     } catch (const std::exception& e) {
         std::string msg = std::string("Error: ") + e.what();
         terminal_.clear_to_eol(0, 0, Color::White, Color::Black);
@@ -81,7 +106,7 @@ void App::run_viewing() {
         int visible_lines = std::max(0, terminal_.height() - 1);
         int visible_width = terminal_.width();
 
-        render_viewer(*viewer_, terminal_);
+        render_viewer(*viewer_, terminal_, *current_style_, highlight_cache_);
         terminal_.refresh();
 
         KeyCode key = keyboard_.read_key();
