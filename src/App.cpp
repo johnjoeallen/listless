@@ -31,10 +31,12 @@ App::App(std::filesystem::path start_path)
     restyle_for_viewer();
 }
 
-App::App(std::string stdin_content, std::string display_name)
+App::App(std::string stdin_content, std::string display_name,
+         std::optional<std::string> syntax_style)
     : terminal_(/*read_from_tty=*/true),
       keyboard_(terminal_),
-      file_manager_(std::filesystem::current_path()) {
+      file_manager_(std::filesystem::current_path()),
+      requested_style_(std::move(syntax_style)) {
     load_styles();
 
     viewer_.emplace(std::move(stdin_content), std::move(display_name));
@@ -85,7 +87,13 @@ void App::run_browsing() {
 
 void App::restyle_for_viewer() {
     current_style_ = &styles_.default_style();
-    if (viewer_ && viewer_->path().has_extension()) {
+    if (requested_style_) {
+        Style* match = styles_.find(*requested_style_);
+        if (!match) {
+            throw std::runtime_error("unknown syntax style: " + *requested_style_);
+        }
+        current_style_ = match;
+    } else if (viewer_ && viewer_->path().has_extension()) {
         if (Style* match = styles_.style_for_extension(viewer_->path().extension().string())) {
             current_style_ = match;
         }
