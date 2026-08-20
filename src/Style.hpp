@@ -191,8 +191,26 @@ class StyleSet {
 // $XDG_CONFIG_HOME/listless/style.conf, or ~/.config/listless/style.conf
 // if XDG_CONFIG_HOME is unset -- a deliberate reinterpretation of the
 // original's `os.set` (a fixed path next to the DOS/OS2 executable),
-// which has no Linux equivalent.
+// which has no Linux equivalent. Superseded by default_styles_dir()
+// (a directory of *.conf files) as the preferred personal config
+// location, but still loaded for backward compatibility -- see
+// docs/08-style-config.md.
 std::filesystem::path default_config_path();
+
+// $XDG_CONFIG_HOME/listless/styles/, or ~/.config/listless/styles/ if
+// XDG_CONFIG_HOME is unset -- the personal counterpart to
+// system_styles_dir(), loaded after it so a user's own styles take
+// precedence over (or extend, via BaseStyle) the system defaults.
+std::filesystem::path default_styles_dir();
+
+// The read-only, package-installed styles directory -- baked in at
+// build time from CMAKE_INSTALL_PREFIX (see CMakeLists.txt's
+// LISTLESS_SYSTEM_STYLES_DIR compile definition), defaulting to
+// /usr/local/share/listless/styles if the definition is absent (e.g.
+// a build system that doesn't set it). Loaded first, so personal
+// styles (default_styles_dir(), default_config_path()) can override or
+// extend anything shipped here by reusing a style's name.
+std::filesystem::path system_styles_dir();
 
 // Parses `path` into `styles`, adding/updating styles by name (matching
 // existing ones case-insensitively, same as `loadConfig`). Returns false
@@ -202,6 +220,17 @@ std::filesystem::path default_config_path();
 // from the original's `exit(3)`-on-error behaviour (see
 // docs/08-style-config.md).
 bool load_config(StyleSet& styles, const std::filesystem::path& path);
+
+// Loads every *.conf file directly inside `dir` (not recursive) into
+// `styles`, in filename order. Unlike calling load_config() once per
+// file in a loop, style names are pre-registered across every file in
+// `dir` *before* any file's fields/BaseStyle links are parsed, so a
+// style in one file can serve as a BaseStyle for a style in another
+// file regardless of which file loads first (see
+// docs/08-style-config.md's "Cross-file inheritance" section). Returns
+// false without modifying `styles` if `dir` doesn't exist -- not an
+// error, matching load_config()'s missing-file handling.
+bool load_config_dir(StyleSet& styles, const std::filesystem::path& dir);
 
 // Writes every style's own (non-inherited) fields to `path`, in the same
 // `Style Name (ext...) BaseStyle...  { Key => Value }` shape

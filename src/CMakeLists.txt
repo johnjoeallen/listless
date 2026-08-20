@@ -25,3 +25,11 @@ target_link_libraries(listless_core PRIVATE
     listless_warnings
     listless_sanitizers
 )
+
+# Bakes the install destination of style/syntax/*.conf (see the root
+# CMakeLists.txt's install(DIRECTORY ...) rule) into Style.cpp's
+# system_styles_dir(), so an installed `lss` finds its packaged default
+# styles regardless of CMAKE_INSTALL_PREFIX.
+target_compile_definitions(listless_core PRIVATE
+    LISTLESS_SYSTEM_STYLES_DIR="${CMAKE_INSTALL_FULL_DATADIR}/listless/styles"
+)

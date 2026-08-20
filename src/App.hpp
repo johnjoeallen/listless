@@ -44,6 +44,16 @@ class App {
   private:
     enum class Mode { Browsing, Viewing };
 
+    // Loads styles_ from, in override order: the package-installed
+    // system_styles_dir(), the legacy single-file default_config_path()
+    // (kept for backward compatibility), then the user's
+    // default_styles_dir() -- the newest and most-specific source wins,
+    // so a directory-based personal config overrides anything from the
+    // legacy file or the system defaults (see docs/08-style-config.md).
+    // Later sources override/extend earlier ones by reusing a style's
+    // name.
+    void load_styles();
+
     void run_browsing();
     void run_viewing();
     void open_selected();
