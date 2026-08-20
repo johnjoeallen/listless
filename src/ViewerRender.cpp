@@ -46,10 +46,11 @@ ExpandedLine expand_line(std::string_view raw) {
 // Paints text[seg_start, seg_end) with one attribute, clipped to the
 // visible [column, column+width) window.
 void paint_run(Terminal& terminal, int row, int column, int width, std::string_view text,
-              std::size_t seg_start, std::size_t seg_end, Color fg, Color bg, bool bold,
-              bool underlined) {
+               std::size_t seg_start, std::size_t seg_end, Color fg, Color bg, bool bold,
+               bool underlined) {
     std::size_t win_start = std::max(seg_start, static_cast<std::size_t>(column));
-    std::size_t win_end = std::min(seg_end, static_cast<std::size_t>(column) + static_cast<std::size_t>(width));
+    std::size_t win_end =
+        std::min(seg_end, static_cast<std::size_t>(column) + static_cast<std::size_t>(width));
     if (win_start >= win_end) return;
 
     terminal.put_text(static_cast<int>(win_start - static_cast<std::size_t>(column)), row,
@@ -61,27 +62,28 @@ void paint_run(Terminal& terminal, int row, int column, int width, std::string_v
 // reverse video instead -- selection wins within its range, syntax
 // colour shows through everywhere else on the line.
 void paint_span(Terminal& terminal, int row, int column, int width, std::string_view text,
-                std::size_t exp_start, std::size_t exp_end, Color color, bool bold,
-                bool underlined, bool has_selection, std::size_t sel_start, std::size_t sel_end) {
+                std::size_t exp_start, std::size_t exp_end, Color color, bool bold, bool underlined,
+                bool has_selection, std::size_t sel_start, std::size_t sel_end) {
     if (has_selection && sel_start < sel_end) {
         std::size_t inter_start = std::max(exp_start, sel_start);
         std::size_t inter_end = std::min(exp_end, sel_end);
         if (inter_start < inter_end) {
             if (exp_start < inter_start) {
-                paint_run(terminal, row, column, width, text, exp_start, inter_start, color, kNormalBg,
-                         bold, underlined);
+                paint_run(terminal, row, column, width, text, exp_start, inter_start, color,
+                          kNormalBg, bold, underlined);
             }
             paint_run(terminal, row, column, width, text, inter_start, inter_end, kSelectedFg,
-                     kSelectedBg, /*bold=*/false, /*underlined=*/false);
+                      kSelectedBg, /*bold=*/false, /*underlined=*/false);
             if (inter_end < exp_end) {
-                paint_run(terminal, row, column, width, text, inter_end, exp_end, color, kNormalBg, bold,
-                         underlined);
+                paint_run(terminal, row, column, width, text, inter_end, exp_end, color, kNormalBg,
+                          bold, underlined);
             }
             return;
         }
     }
 
-    paint_run(terminal, row, column, width, text, exp_start, exp_end, color, kNormalBg, bold, underlined);
+    paint_run(terminal, row, column, width, text, exp_start, exp_end, color, kNormalBg, bold,
+              underlined);
 }
 
 void draw_text_line(Terminal& terminal, int row, const Viewer& viewer, int line_index, int column,
@@ -111,7 +113,7 @@ void draw_text_line(Terminal& terminal, int row, const Viewer& viewer, int line_
         std::size_t exp_start = expanded.raw_to_expanded[raw_start];
         std::size_t exp_end = expanded.raw_to_expanded[raw_end];
         paint_span(terminal, row, column, width, expanded.text, exp_start, exp_end, span.color,
-                  span.bold, span.underlined, has_selection, sel_start, sel_end);
+                   span.bold, span.underlined, has_selection, sel_start, sel_end);
     }
 }
 
@@ -192,7 +194,8 @@ void render_text_mode(const Viewer& viewer, Terminal& terminal, int width, int h
     for (int row = 1; row < height; ++row) {
         int line_index = viewer.top_line() + (row - 1);
         if (line_index < viewer.line_count()) {
-            std::vector<ColorSpan> spans = highlight_line(viewer.line_text(line_index), style, state);
+            std::vector<ColorSpan> spans =
+                highlight_line(viewer.line_text(line_index), style, state);
             draw_text_line(terminal, row, viewer, line_index, viewer.column(), width, spans);
         } else {
             terminal.clear_to_eol(0, row, kNormalFg, kNormalBg);

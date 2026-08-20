@@ -1,8 +1,8 @@
-#include "ColorPairTable.hpp"
-
 #include <gtest/gtest.h>
 
 #include <vector>
+
+#include "ColorPairTable.hpp"
 
 using listless::Color;
 using listless::ColorPairTable;
