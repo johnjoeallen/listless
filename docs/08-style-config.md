@@ -137,7 +137,48 @@ and reuses subsystem 04's `Color` enum (`src/Color.hpp`) for the palette.
   reinterpretation, not a literal port: the original's `os.set` lived in
   a fixed location next to the DOS/OS2/Win32 executable, which has no
   meaningful Linux equivalent (no "next to the binary" convention, and
-  `/usr/bin` isn't writable by a normal user besides).
+  `/usr/bin` isn't writable by a normal user besides). Superseded by the
+  directory-based model below as the preferred way to configure styles,
+  but still loaded (at lower precedence) for backward compatibility.
+
+## Directory-based styles (issue #32)
+
+Rather than one config file, `App` assembles its `StyleSet` from up to
+three sources, each loaded via `load_config_dir()`/`load_config()` in
+increasing precedence (a later source overrides or extends an earlier
+one by reusing a style's name):
+
+1. **`system_styles_dir()`** — the package-installed, read-only styles
+   directory. Baked in at build time from `CMAKE_INSTALL_PREFIX` via the
+   `LISTLESS_SYSTEM_STYLES_DIR` compile definition (`src/CMakeLists.txt`);
+   defaults to `/usr/local/share/listless/styles` if that definition is
+   absent. Populated from this repo's `style/syntax/*.conf` by the root
+   `CMakeLists.txt`'s `install(DIRECTORY style/syntax/ ...)` rule --
+   `cmake --install` (and eventually a `.deb`) drops each file there
+   individually, rather than one shared file competing with a user's own
+   edits.
+2. **`default_config_path()`** — the legacy single `style.conf`, kept
+   for backward compatibility.
+3. **`default_styles_dir()`** — `$XDG_CONFIG_HOME/listless/styles/`
+   (falling back to `~/.config/listless/styles/`), a directory of the
+   user's own `*.conf` files. Highest precedence, since it's the newest
+   and most specific source.
+
+`load_config_dir(StyleSet&, dir)` loads every `*.conf` file directly
+inside `dir` (not recursive) in filename order, but **not** via a naive
+single pass per file -- it pre-registers every style name defined
+anywhere in `dir` first (mirroring `load_config()`'s own token
+traversal, so a field value that happens to contain the word "Style"
+can't be misread as a new style header), *then* parses each file's
+fields and `BaseStyle` links. That means a style in one file can serve
+as a `BaseStyle` for a style in another file regardless of which file
+happens to load first -- see this repo's `style/syntax/common.conf`
+(a shared base with no extensions of its own) and `cpp.conf`/
+`python.conf`/`shell.conf` (each declaring `Common` as a `BaseStyle`,
+despite `common.conf` sorting after all three alphabetically), and
+`LoadConfigDir.BaseStyleInAnotherFileResolvesRegardlessOfLoadOrder` in
+`tests/core/style_test.cpp`, which pins this down by disabling the
+pre-registration pass and confirming the test then fails.
 
 ## What's deliberately narrowed or deferred
 

@@ -302,6 +302,49 @@ class ConfigLexer {
     std::size_t pos_ = 0;
 };
 
+// Scans `content` for every "Style <name> (...)" header and registers
+// the name in `styles` (get_or_create(), skipping "Default" which
+// already exists), without applying any fields or BaseStyle links --
+// load_config_dir()'s first pass, so that once every file in a
+// directory has been scanned this way, a style in one file can serve
+// as a BaseStyle for a style in another file regardless of which file
+// happens to load first. Mirrors load_config()'s token traversal
+// (including consuming field values via rest_of_line()) so a value
+// that happens to contain the word "Style" can't be misread as a new
+// style header.
+void pre_register_style_names(StyleSet& styles, const std::string& content) {
+    ConfigLexer lexer(preprocess_lines(content));
+
+    while (!lexer.at_end()) {
+        std::string_view keyword = lexer.next_token();
+        if (!same_name(keyword, "Style")) continue;
+
+        std::string_view style_name = lexer.next_token();
+        if (style_name.empty()) break;
+
+        if (!same_name(style_name, kDefaultStyleName)) {
+            styles.get_or_create(style_name);
+        }
+
+        if (lexer.next_token() != "(") continue;  // malformed; skip this Style block's header
+
+        std::string_view ext;
+        do {
+            ext = lexer.next_token();
+        } while (!ext.empty() && ext != ")");
+
+        std::string_view token = lexer.next_token();
+        while (!token.empty() && token != "{") {
+            token = lexer.next_token();
+        }
+
+        for (token = lexer.next_token(); !token.empty() && token != "}";
+             token = lexer.next_token()) {
+            if (token == "=>") lexer.rest_of_line();
+        }
+    }
+}
+
 }  // namespace
 
 void Style::add_reserved_word(std::string keyword, bool inherited) {
@@ -404,6 +447,22 @@ std::filesystem::path default_config_path() {
     return std::filesystem::path(home ? home : "") / ".config" / "listless" / "style.conf";
 }
 
+std::filesystem::path default_styles_dir() {
+    if (const char* xdg = std::getenv("XDG_CONFIG_HOME"); xdg && *xdg) {
+        return std::filesystem::path(xdg) / "listless" / "styles";
+    }
+    const char* home = std::getenv("HOME");
+    return std::filesystem::path(home ? home : "") / ".config" / "listless" / "styles";
+}
+
+std::filesystem::path system_styles_dir() {
+#ifdef LISTLESS_SYSTEM_STYLES_DIR
+    return std::filesystem::path(LISTLESS_SYSTEM_STYLES_DIR);
+#else
+    return std::filesystem::path("/usr/local/share/listless/styles");
+#endif
+}
+
 bool load_config(StyleSet& styles, const std::filesystem::path& path) {
     std::ifstream file(path, std::ios::binary);
     if (!file) return false;
@@ -455,6 +514,39 @@ bool load_config(StyleSet& styles, const std::filesystem::path& path) {
         if (!style.reserved.empty()) {
             style.syntax_highlight_enabled.set(true);
         }
+    }
+
+    return true;
+}
+
+bool load_config_dir(StyleSet& styles, const std::filesystem::path& dir) {
+    std::error_code ec;
+    if (!std::filesystem::is_directory(dir, ec)) return false;
+
+    std::vector<std::filesystem::path> files;
+    for (const auto& entry : std::filesystem::directory_iterator(dir, ec)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".conf") {
+            files.push_back(entry.path());
+        }
+    }
+    std::sort(files.begin(), files.end());
+
+    // Pass 1: register every style name defined anywhere in `dir` before
+    // any file's fields/BaseStyle links are parsed, so a style in one
+    // file can be a BaseStyle for a style in another file regardless of
+    // which file loads first.
+    for (const auto& file : files) {
+        std::ifstream in(file, std::ios::binary);
+        if (!in) continue;
+        std::ostringstream buffer;
+        buffer << in.rdbuf();
+        pre_register_style_names(styles, buffer.str());
+    }
+
+    // Pass 2: parse fields and BaseStyle links now that every name in
+    // `dir` is guaranteed to already exist.
+    for (const auto& file : files) {
+        load_config(styles, file);
     }
 
     return true;
