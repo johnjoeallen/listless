@@ -186,6 +186,8 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
                 line_start_data = payload_start;
             }
         }
+    } else if (has_line_start_prefix && payload_start != std::string_view::npos) {
+        line_start_data = payload_start;
     }
 
     bool starts_block_text = false;
@@ -265,8 +267,20 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
             i = contextual_end;
             seen_non_space = true;
         } else if (i == line_start_data) {
-            push(i, n - i, line_start_data_color);
-            i = n;
+            if (prefix_token != nullptr && prefix_token->find(c) != std::string::npos) {
+                std::size_t start = i++;
+                while (i < n && (is_identifier_char(text[i]) || text[i] == '-' || text[i] == ':')) {
+                    ++i;
+                }
+                push(start, i - start, prefix_token_color);
+                if (i < n) {
+                    push(i, n - i, line_start_data_color);
+                }
+                i = n;
+            } else {
+                push(i, n - i, line_start_data_color);
+                i = n;
+            }
         } else if (i == first_content && line_start_prefix != nullptr &&
                    line_start_prefix->find(c) != std::string::npos) {
             push(i, 1, line_start_prefix_color);

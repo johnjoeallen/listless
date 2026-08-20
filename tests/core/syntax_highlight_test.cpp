@@ -166,6 +166,22 @@ TEST(HighlightLine, SequenceDataAndSequenceMappingsUseDifferentRules) {
                             [](const ColorSpan& span) { return span.color == Color::Blue; }));
 }
 
+TEST(HighlightLine, SequenceDataCanStartWithAPrefixToken) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.line_start_prefix.set("-");
+    s.line_start_prefix_requires_space.set(true);
+    s.line_start_data_color.set(Color::Green);
+    s.prefix_token.set("&");
+    s.prefix_token_color.set(Color::Blue);
+    HighlightState state;
+
+    auto spans = highlight_line("- &shared value", s, state);
+    EXPECT_TRUE(std::any_of(spans.begin(), spans.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }));
+    EXPECT_EQ(spans.back().color, Color::Green);
+}
+
 TEST(HighlightLine, BeforeDelimiterIgnoresQuotedScalarContent) {
     Style s("Generic");
     s.syntax_highlight_enabled.set(true);
