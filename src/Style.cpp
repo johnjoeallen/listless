@@ -449,10 +449,11 @@ std::filesystem::path default_config_path() {
 
 std::filesystem::path default_styles_dir() {
     if (const char* xdg = std::getenv("XDG_CONFIG_HOME"); xdg && *xdg) {
-        return std::filesystem::path(xdg) / "listless" / "styles";
+        return std::filesystem::path(xdg) / "listless" / "styles" / "syntax";
     }
     const char* home = std::getenv("HOME");
-    return std::filesystem::path(home ? home : "") / ".config" / "listless" / "styles";
+    return std::filesystem::path(home ? home : "") / ".config" / "listless" / "styles" /
+           "syntax";
 }
 
 std::filesystem::path system_styles_dir() {

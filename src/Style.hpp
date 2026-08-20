@@ -197,7 +197,8 @@ class StyleSet {
 // docs/08-style-config.md.
 std::filesystem::path default_config_path();
 
-// $XDG_CONFIG_HOME/listless/styles/, or ~/.config/listless/styles/ if
+// $XDG_CONFIG_HOME/listless/styles/syntax/, or
+// ~/.config/listless/styles/syntax/ if
 // XDG_CONFIG_HOME is unset -- the personal counterpart to
 // system_styles_dir(), loaded after it so a user's own styles take
 // precedence over (or extend, via BaseStyle) the system defaults.
