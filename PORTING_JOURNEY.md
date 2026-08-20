@@ -948,7 +948,8 @@ architecture, subsystem, target, and status material moved under
 `docs/porting/`; MkDocs presents it as a distinct Porting Record section.
 The roadmap uses red **not implemented** and **upcoming feature** tags,
 including a plain-language explanation of the unimplemented F2–F7 live
-colour cycling feature.
+colour cycling feature and why the original fixed-key model cannot be
+reused unchanged with Listless's extended style palette.
 
 **Decisions:** planned features may appear in product documentation only
 when visibly marked as unavailable. The Porting Journey remains the

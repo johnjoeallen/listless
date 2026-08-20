@@ -7,11 +7,13 @@
     External-editor launch, shell escape, and live style editing are planned.
 
 !!! danger "**Not implemented** — live colour cycling"
-    In OnScreen/2, F2–F7 immediately rotated the active style's foreground,
-    background, selected-text, selected-background, bold, and underline
-    colours through the 16-colour palette, allowing a live preview while
-    viewing. Ctrl+S then saved the chosen style. Listless has the palette
-    primitive but does not bind F2–F7 or persistence yet.
+    OnScreen/2 exposed a small fixed set of colour fields through F2–F7,
+    rotating the selected field through the palette for an immediate preview;
+    Ctrl+S then saved it. Listless now has a broader set of style colours,
+    including contextual syntax colours, so directly reusing those function
+    keys would be incomplete and confusing. A future design needs a way to
+    select which colour field is being edited before offering live preview
+    and persistence.
 
 !!! danger "**Upcoming feature** — wider platform support"
     Windows and macOS platform backends remain planned.
