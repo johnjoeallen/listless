@@ -1093,3 +1093,13 @@ bundle the full OnScreen/2 source tree and linked the preserved OS2World
 repository as the source of record.
 
 **Verification:** `mkdocs build --strict` verifies the revised links.
+
+## 2026-08-20 — Product screenshots (issue #97)
+
+**Changes:** added captures of the current Linux directory browser,
+syntax-highlighted C++ viewer, and hex viewer to the product documentation.
+The images are recorded from the compiled ncurses application rather than
+mockups.
+
+**Verification:** `mkdocs build --strict` verifies the documentation assets
+and links.

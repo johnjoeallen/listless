@@ -29,3 +29,24 @@ In hex view, `g` and `G` open the offset prompt.
 
 !!! danger "**Upcoming feature**"
     A fresh backward-search prompt (`?`) is not available yet.
+
+## Screenshots
+
+### Directory browser
+
+![Listless showing the src directory in its column-major browser](assets/screenshots/directory-browser.png)
+
+The current browser displays one directory at a time and marks the selected
+entry with a reverse-video highlight.
+
+### Syntax-highlighted viewer
+
+![Listless rendering App.cpp with C++ syntax highlighting](assets/screenshots/syntax-highlighted-viewer.png)
+
+Styles are selected from the filename extension or with `--syntax`.
+
+### Hex viewer
+
+![Listless rendering App.cpp in hexadecimal view](assets/screenshots/hex-viewer.png)
+
+The hex view shows byte offsets, hexadecimal byte values, and the text column.
