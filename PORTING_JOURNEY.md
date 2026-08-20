@@ -1068,3 +1068,20 @@ port by the original author, using the OnScreen/2 codebase as a reference.
 
 **Verification:** `mkdocs build --strict` verifies the revised Porting Record
 page.
+
+## 2026-08-20 — Documentation accuracy audit (issue #92)
+
+**Objective:** align product and Porting Record claims with the current
+Listless implementation and the original OnScreen/2 source.
+
+**Changes:** clarified that OnScreen/2's `FileManager` is a single
+directory listing displayed in multiple columns, not a dual-pane manager. It
+used glob file filtering and incremental type-ahead selection, not multi-file
+tagging. Updated the product guide and README to describe the working Linux
+viewer and read-only browser accurately. Corrected stale Porting Record
+claims: the current app captures redirected stdin, loads styles, renders
+syntax colouring, and draws a file-manager screen; original-only multi-buffer,
+command-menu, external-editor, drive-bar, and filesystem-operation behaviours
+remain deferred.
+
+**Verification:** `mkdocs build --strict` verifies the revised site.

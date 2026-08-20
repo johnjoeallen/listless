@@ -4,6 +4,9 @@ Listless (`lss`) is a terminal file and directory viewer. It combines
 directory browsing with a pager-style file viewer, text and hex views,
 searching, and configurable syntax highlighting.
 
+The current implementation runs on Linux. Windows and macOS are target
+platforms whose backends are still to be completed.
+
 ## Start here
 
 - [Getting started](getting-started.md)

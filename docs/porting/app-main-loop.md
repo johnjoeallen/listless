@@ -57,9 +57,10 @@ the first runnable `lss` binary.
   most one positional path argument: empty -> browse the current
   directory; a directory -> browse it; a file -> open it in the
   viewer, with `FileManager` positioned on its parent directory as
-  where `Close` (`q`/Escape from the viewer) returns to. This mirrors
-  `App::Init`'s directory-vs-file dispatch, minus the tty/stdin-piping
-  branch and the multi-file-argument case (both deferred).
+  where `Close` (`q`/Escape from the viewer) returns to. Redirected stdin
+  opens a viewer over the captured input. This mirrors `App::Init`'s
+  directory-vs-file dispatch, while retaining the deliberate single-file
+  limit for positional arguments.
 - **`handle_browsing_key`/`handle_viewing_key`**
   (`src/AppActions.hpp`/`.cpp`) -- pure key-dispatch tables, direct
   ports of the *reachable-key* subset of `FileManager::Activate`'s and
@@ -99,6 +100,11 @@ the first runnable `lss` binary.
 - **The `lss` executable** -- `add_executable(lss src/main.cpp
   src/App.cpp)` in the root `CMakeLists.txt`, the first binary target in
   the project besides the two test runners.
+- **Style selection and highlighted rendering** -- `App::load_styles()`
+  loads system, legacy single-file, and personal style sources; it then
+  selects a style by file extension or the case-insensitive `--syntax`
+  override. `render_viewer()` receives that style and a `HighlightCache`,
+  so text-mode rendering paints syntax spans in the interactive program.
 
 ## What's deliberately narrowed or deferred
 
@@ -119,16 +125,11 @@ the first runnable `lss` binary.
   explicitly subsystem 11 in `docs/architecture.md`, sequenced after
   everything else for their destructive-operation regression-test
   scrutiny; nothing here adds them.
-- **No syntax-highlighted rendering** -- `render_viewer`/`draw_text_line`
-  don't take a `Style` or call `highlight_line` (subsystem 09); wiring
-  colour spans into the text renderer (and deciding which `Style` is
-  active per file) is real work of its own, left for a follow-up.
 - **Narrower CLI surface** -- only a single optional positional path
-  argument. `-ignorestdin`, `-raw`, `-nosyntax <style>`, `-search
-  regexp`, `-textwithlayout`, `-highbit`, redirected-stdin piping, and
-  multiple file arguments are all unimplemented; there is no config-file
-  (`os.set`-equivalent) loading into `App` either (subsystem 08's
-  `load_config`/`StyleSet` exist but nothing here calls them).
+  argument. Redirected stdin, `--syntax <style>`, and
+  `--syntax-dir <path>` are supported. The original's `-ignorestdin`,
+  `-raw`, `-nosyntax`, `-search`, `-textwithlayout`, and `-highbit`
+  options, plus multiple file arguments, are not implemented.
 - **File-only type-ahead in browsing mode** -- the original splits
   type-ahead between files and directories based on whether Shift is
   held (`iCurTextFile` vs `iCurTextDir`); a terminal's key stream carries

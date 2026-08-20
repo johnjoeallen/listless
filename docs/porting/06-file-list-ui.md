@@ -174,8 +174,12 @@ otherwise.
   and directory history (`directory_history()`, appended to on every
   successful `change_directory()`, mirroring `directoryHistory`). No
   terminal/rendering dependency, matching the `Viewer`/`viewer_render`
-  split from subsystem 07 — a `file_manager_render` layer is left for
-  whichever subsystem first wires a real screen loop.
+  split from subsystem 07.
+- **Browser rendering and session wiring** -- `FileManagerRender` draws the
+  status line and the single directory's column-major grid, while `App`
+  drives it as the browsing screen and opens the selected regular file in one
+  `Viewer`. This deliberately remains a read-only browser rather than a
+  second directory pane or a full file-operation manager.
 - **`enter_selected()`** — separate from `change_directory()` (a typed
   path), matching the original keeping the Enter-key handler
   (`fileman.cpp:1938-1990`) and the typed-path `ChangeDirectory()`
@@ -206,34 +210,23 @@ otherwise.
   test scrutiny that implies. `FileManager` exposes only the read-only
   surface (listing, sorting, selecting, navigating); there is no
   `copy_file()`/`delete_file()`/etc. here to accidentally call.
-- **`EditFile`/`ViewFile`** — both depend on `viewedFiles`/`currFile`
-  buffer-list bookkeeping that belongs to an `App`/main-loop subsystem
-  that doesn't exist yet (no subsystem in `docs/architecture.md`'s
-  breakdown has landed a `main()` that owns a `SList<Viewer>` the way the
-  original's `os.cpp` does). `FileManager` surfaces enough to let a future
-  caller build this (`selected()`, `selected().is_directory`) without
-  committing to a buffer-list design here.
+- **Original `EditFile`/`ViewFile` workflow** — Listless can open the
+  selected regular file in its one active viewer, but does not reproduce the
+  original external-editor action or its multi-buffer `viewedFiles`/
+  `currFile` bookkeeping.
 - **`DisplayDisks()`/drive-letter bar, and `Ctrl+A`-`Ctrl+Z` drive
   jumps** — meaningless on Linux, which has one filesystem namespace, not
   lettered drives. A Linux-relevant reinterpretation (a bar of mounted
   filesystems, or of frequently-used directories) is real UI design work
-  with no concrete rendering call site yet (no screen loop exists to draw
-  it in) — deferred rather than guessed at now, the same call made for
-  `Style`-dependent formatting in `docs/07-file-viewer-core.md`.
+  — deferred rather than guessed at now.
 - **Per-instance `F2`-`F6` color cycling** — depends on `setupInfo`
   (subsystem 08, not yet ported), exactly as subsystem 07 deferred its
   three `Style`-selected status-line formats for the same reason.
-- **`LineEdit`** — a general modal-prompt widget, not specific to
-  `FileManager`; out of scope here. A caller wiring `change_directory()`/
-  `set_file_spec()` to a real keyboard loop will need some prompt input
-  mechanism, but building it against this one call site would bake in
-  assumptions; better built (or reused, if another subsystem needs it
-  first) against a second concrete call site.
-- **`Activate()`'s keyboard-loop dispatch itself** — the giant `switch` in
-  `fileman.cpp:1649-2472` is what a future screen-loop/`App` subsystem
-  will translate into calls against `FileManager`'s ported surface (plus
-  whatever `file_manager_render` eventually draws). Documented above for
-  that future work's reference; not itself code to port, since it's
-  entirely glue over pieces (menu prompts, color cycling, drive bar, file
-  operations, `viewedFiles`) that are either deferred or don't exist yet.
+- **File-manager prompts and command submenu** — `LineEdit` now exists for
+  viewer prompts, but the browser does not yet bind it to typed directory,
+  file-spec, or file-operation commands.
+- **Most of `Activate()`'s keyboard dispatch** — `AppActions` ports the
+  read-only navigation and open-selected subset. The original command
+  submenu, drive controls, colour cycling, and file-operation bindings remain
+  deferred.
 </content>

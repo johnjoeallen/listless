@@ -10,7 +10,9 @@ Listless is the modern continuation of the historic **OnScreen/2**.
 
 Its primary purpose is to view files. When started without a file argument or redirected input, it acts as a directory viewer, allowing files to be selected and opened interactively.
 
-The project is currently at the very start of its modernisation and portability work. There is not yet a finished Listless release.
+Listless has a working Linux ncurses implementation. Windows and macOS
+backends, along with advanced file-management workflows, remain porting work;
+there is not yet a finished Listless release.
 
 ## Why Listless?
 
@@ -71,7 +73,8 @@ It is created once and then only appended to, recording the related issue, objec
 
 ## Status
 
-Listless is currently in the **initial analysis and setup phase**.
+Listless is in active porting and refinement, with the Linux viewer and
+read-only directory browser available for use.
 
 Expect the architecture, build system, and repository structure to evolve as the original implementation is understood.
 

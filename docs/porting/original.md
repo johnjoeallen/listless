@@ -24,10 +24,12 @@ into it.
 OnScreen/2 is two halves sharing one process:
 
 - **A file manager** (`FileManager`, `apps/onscreen/fileman.cpp`,
-  2,484 lines) — a multi-column, sortable directory listing (by name,
-  extension, date, or size), glob-pattern multi-select, a DOS/OS2/Win32
-  drive-letter bar, and direct file operations (copy, delete, rename,
-  move, make-directory) driven by a `:`/`/`-triggered command submenu.
+  2,484 lines) — one multi-column, sortable directory listing (by name,
+  extension, date, or size), not two independently navigable directory
+  panes. It includes glob-pattern file filtering and incremental type-ahead
+  selection, a DOS/OS2/Win32 drive-letter bar, and direct file operations
+  (copy, delete, rename, move,
+  make-directory) driven by a `:`/`/`-triggered command submenu.
 - **A file viewer** (`Viewer`, `apps/onscreen/osview.cpp`, 3,107
   lines) — text-mode display with word wrap, scrolling, bookmarks, and
   literal/regex search; a 16-bytes-per-row hex-dump mode; and
