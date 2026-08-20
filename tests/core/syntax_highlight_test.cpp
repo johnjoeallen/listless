@@ -296,6 +296,17 @@ TEST(HighlightLine, DecimalNumber) {
     EXPECT_EQ(spans[0].color, Color::Yellow);
 }
 
+TEST(HighlightLine, DecimalNumberSupportsFractionsAndExponents) {
+    Style s("C");
+    init_c_style(s);
+    HighlightState state;
+
+    auto spans = highlight_line("3.14e-2", s, state);
+    ASSERT_EQ(spans.size(), 1u);
+    EXPECT_EQ(spans[0].length, 7u);
+    EXPECT_EQ(spans[0].color, Color::Yellow);
+}
+
 TEST(HighlightLine, StringWithEscape) {
     Style s("C");
     init_c_style(s);

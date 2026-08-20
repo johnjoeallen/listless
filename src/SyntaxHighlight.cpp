@@ -110,6 +110,29 @@ bool is_identifier_char(char c) {
     return std::isalnum(static_cast<unsigned char>(c)) != 0 || c == '_';
 }
 
+std::size_t match_decimal_number(std::string_view text) {
+    std::size_t i = 0;
+    bool has_digits = false;
+    while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) {
+        ++i;
+        has_digits = true;
+    }
+    if (i < text.size() && text[i] == '.') {
+        std::size_t fraction_start = ++i;
+        while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) ++i;
+        has_digits = has_digits || i > fraction_start;
+    }
+    if (!has_digits) return 0;
+    if (i < text.size() && (text[i] == 'e' || text[i] == 'E')) {
+        std::size_t exponent_start = i++;
+        if (i < text.size() && (text[i] == '+' || text[i] == '-')) ++i;
+        std::size_t exponent_digits = i;
+        while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) ++i;
+        if (i == exponent_digits) i = exponent_start;
+    }
+    return i;
+}
+
 // Highlights one line while syntax highlighting is enabled: the
 // per-character precedence chain from `Viewer::displayData`
 // (osview.cpp:836-1021), unified with the cross-line comment/
@@ -347,20 +370,19 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
                 ++i;
             }
             seen_non_space = true;
-        } else if (char_in_set(style.symbols, c)) {
-            push(i, 1, symbols_color);
-            ++i;
-            seen_non_space = true;
         } else if (std::size_t len = match_any(rest, style.numeric_prefix)) {
             std::size_t start = i;
             i += len;
             while (i < n && std::isxdigit(static_cast<unsigned char>(text[i]))) ++i;
             push(start, i - start, number_color);
             seen_non_space = true;
-        } else if (std::isdigit(static_cast<unsigned char>(c))) {
-            std::size_t start = i;
-            while (i < n && std::isdigit(static_cast<unsigned char>(text[i]))) ++i;
-            push(start, i - start, number_color);
+        } else if (std::size_t decimal_len = match_decimal_number(rest)) {
+            push(i, decimal_len, number_color);
+            i += decimal_len;
+            seen_non_space = true;
+        } else if (char_in_set(style.symbols, c)) {
+            push(i, 1, symbols_color);
+            ++i;
             seen_non_space = true;
         } else if (const std::string* kw = match_reserved(rest, style)) {
             push(i, kw->size(), reserved_color);
