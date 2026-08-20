@@ -152,7 +152,7 @@ otherwise.
 
 ## What's ported here
 
-- **`FileManager`** (`src/file_manager.hpp`/`.cpp`) — pure logic and
+- **`FileManager`** (`src/FileManager.hpp`/`.cpp`) — pure logic and
   state: listing (directories unfiltered, files filtered by the current
   glob file spec, exactly matching the original's two-pass `fill()`),
   sorting (`SortKey::Name`/`Extension`/`Date`/`Size`, ascending/descending,

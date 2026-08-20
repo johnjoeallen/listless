@@ -1,4 +1,4 @@
-#include "glob.hpp"
+#include "Glob.hpp"
 
 #include <gtest/gtest.h>
 

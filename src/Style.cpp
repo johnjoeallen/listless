@@ -1,4 +1,4 @@
-#include "style.hpp"
+#include "Style.hpp"
 
 #include <algorithm>
 #include <array>
@@ -9,7 +9,7 @@
 #include <functional>
 #include <sstream>
 
-#include "text.hpp"
+#include "Text.hpp"
 
 namespace listless {
 

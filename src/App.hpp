@@ -5,12 +5,12 @@
 #include <string>
 #include <string_view>
 
-#include "file_manager.hpp"
-#include "keyboard.hpp"
-#include "style.hpp"
-#include "terminal.hpp"
-#include "viewer.hpp"
-#include "viewer_render.hpp"
+#include "FileManager.hpp"
+#include "Keyboard.hpp"
+#include "Style.hpp"
+#include "Terminal.hpp"
+#include "Viewer.hpp"
+#include "ViewerRender.hpp"
 
 namespace listless {
 

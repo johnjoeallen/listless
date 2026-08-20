@@ -86,7 +86,7 @@ dump instead of text lines.
   (fewer than 16 for a partial final row) as a `std::string_view` into
   `data_`, the equivalent of `displayHexLine`'s `pData`/`pEnd` walk,
   minus the rendering.
-- **`format_hex_line`/`draw_hex_line`** (`viewer_render.cpp`) — a
+- **`format_hex_line`/`draw_hex_line`** (`ViewerRender.cpp`) — a
   standard hex-dump line: 8-hex-digit offset, 16 bytes in groups of 4,
   each as two uppercase hex digits, plus an ASCII gutter (printable
   bytes 0x20-0x7E as themselves, everything else as `.`). `render_viewer`

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "file_manager.hpp"
-#include "terminal.hpp"
+#include "FileManager.hpp"
+#include "Terminal.hpp"
 
 namespace listless {
 

@@ -1,4 +1,4 @@
-#include "keyboard.hpp"
+#include "Keyboard.hpp"
 
 #include <gtest/gtest.h>
 #include <ncurses.h>

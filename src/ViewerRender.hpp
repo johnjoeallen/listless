@@ -2,10 +2,10 @@
 
 #include <vector>
 
-#include "style.hpp"
-#include "syntax_highlight.hpp"
-#include "terminal.hpp"
-#include "viewer.hpp"
+#include "Style.hpp"
+#include "SyntaxHighlight.hpp"
+#include "Terminal.hpp"
+#include "Viewer.hpp"
 
 namespace listless {
 

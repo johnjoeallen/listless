@@ -1,10 +1,10 @@
-#include "file_manager.hpp"
+#include "FileManager.hpp"
 
 #include <algorithm>
 #include <cctype>
 
-#include "glob.hpp"
-#include "text.hpp"
+#include "Glob.hpp"
+#include "Text.hpp"
 
 namespace listless {
 

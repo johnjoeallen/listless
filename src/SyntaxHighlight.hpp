@@ -4,8 +4,8 @@
 #include <string_view>
 #include <vector>
 
-#include "color.hpp"
-#include "style.hpp"
+#include "Color.hpp"
+#include "Style.hpp"
 
 namespace listless {
 

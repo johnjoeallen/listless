@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "key.hpp"
-#include "terminal.hpp"
+#include "Key.hpp"
+#include "Terminal.hpp"
 
 namespace listless {
 

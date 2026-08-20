@@ -1,12 +1,12 @@
-#include "app.hpp"
+#include "App.hpp"
 
 #include <algorithm>
 #include <cstdlib>
 
-#include "app_actions.hpp"
-#include "file_manager_render.hpp"
-#include "line_edit.hpp"
-#include "viewer_render.hpp"
+#include "AppActions.hpp"
+#include "FileManagerRender.hpp"
+#include "LineEdit.hpp"
+#include "ViewerRender.hpp"
 
 namespace listless {
 

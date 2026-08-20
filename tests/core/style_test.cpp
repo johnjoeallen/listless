@@ -1,4 +1,4 @@
-#include "style.hpp"
+#include "Style.hpp"
 
 #include <gtest/gtest.h>
 

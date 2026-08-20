@@ -1,4 +1,4 @@
-#include "viewer.hpp"
+#include "Viewer.hpp"
 
 #include <algorithm>
 #include <fstream>
@@ -6,7 +6,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "search.hpp"
+#include "Search.hpp"
 
 namespace listless {
 

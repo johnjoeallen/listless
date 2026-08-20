@@ -3,7 +3,7 @@
 #include <memory>
 #include <string_view>
 
-#include "color.hpp"
+#include "Color.hpp"
 
 namespace listless {
 

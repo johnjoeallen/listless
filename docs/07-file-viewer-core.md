@@ -57,7 +57,7 @@ over the whole file, not repeated here)
 
 ## What's ported here
 
-- **`Viewer`** (`src/viewer.hpp`/`.cpp`) — pure logic and state, no
+- **`Viewer`** (`src/Viewer.hpp`/`.cpp`) — pure logic and state, no
   ncurses dependency, fully unit-tested in `tests/core`:
   - Line model as `offset+length` spans into a loaded `std::string`
     buffer (`LineSpan`), **not** the original's in-place-NUL-termination
@@ -96,7 +96,7 @@ over the whole file, not repeated here)
     small loop finding successive matches up to that limit.
   - Goto-line, bookmarks: direct, self-contained ports — no `Style`
     dependency.
-- **A minimal renderer** (`src/viewer_render.hpp`/`.cpp`, tested against
+- **A minimal renderer** (`src/ViewerRender.hpp`/`.cpp`, tested against
   the real `Terminal` in `tests/platform_linux`) doing exactly the four
   style-independent things identified above: iterate visible lines, a
   fixed-width (8-column, see below) tab expansion, the selection-range

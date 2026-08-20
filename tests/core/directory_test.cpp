@@ -1,4 +1,4 @@
-#include "directory.hpp"
+#include "Directory.hpp"
 
 #include <gtest/gtest.h>
 

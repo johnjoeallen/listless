@@ -38,14 +38,14 @@ This is Listless's core "ls" behaviour.
 
 ## What's ported here
 
-- **`DirEntry`** (`src/directory.hpp`) — name, full `std::filesystem::path`,
+- **`DirEntry`** (`src/Directory.hpp`) — name, full `std::filesystem::path`,
   size, `std::filesystem::file_time_type` (last write time — `std::chrono`
   directly, no separate `Date`/`Time` wrapper needed, per the subsystem 01
   decision to defer `Date`/`Time` until a concrete need appears), and
   `is_directory`/`is_read_only` booleans computed directly from
   `std::filesystem::directory_entry`'s status rather than reconstructed
   from a DOS-style attribute bitmask.
-- **`Directory`** (`src/directory.hpp`/`.cpp`) — `fill(pattern = "*")`
+- **`Directory`** (`src/Directory.hpp`/`.cpp`) — `fill(pattern = "*")`
   lists one directory level via `std::filesystem::directory_iterator`,
   filtered through subsystem 02's `glob_match()`; `size()`/`operator[]`;
   `sort()` with a default comparator (case-sensitive name order, matching
@@ -83,7 +83,7 @@ This is Listless's core "ls" behaviour.
 ## Platform note
 
 `Directory::fill()`'s `std::filesystem::directory_iterator`-based
-implementation lives directly in `src/directory.cpp`, not under
+implementation lives directly in `src/Directory.cpp`, not under
 `/platform/linux` — `std::filesystem` is already portable across Linux,
 Windows, and macOS, so there is no platform seam here to isolate. The
 `/platform` directories are for genuinely OS-specific APIs (console I/O,

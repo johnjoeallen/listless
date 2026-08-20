@@ -7,7 +7,7 @@
 #include <string_view>
 #include <vector>
 
-#include "color.hpp"
+#include "Color.hpp"
 
 namespace listless {
 

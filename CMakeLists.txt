@@ -37,7 +37,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     add_executable(lss
         src/main.cpp
-        src/app.cpp
+        src/App.cpp
     )
     target_link_libraries(lss PRIVATE
         listless_platform_linux

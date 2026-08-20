@@ -50,7 +50,7 @@ the first runnable `lss` binary.
 
 ## What's ported here
 
-- **`App`** (`src/app.hpp`/`.cpp`, `src/main.cpp`) -- owns `Terminal`,
+- **`App`** (`src/App.hpp`/`.cpp`, `src/main.cpp`) -- owns `Terminal`,
   `Keyboard`, a `FileManager`, and a single `std::optional<Viewer>`
   (no `cViewedFiles` buffer list -- see "narrowed" below), alternating
   between a browsing screen and a viewing screen. `main.cpp` parses at
@@ -61,7 +61,7 @@ the first runnable `lss` binary.
   `App::Init`'s directory-vs-file dispatch, minus the tty/stdin-piping
   branch and the multi-file-argument case (both deferred).
 - **`handle_browsing_key`/`handle_viewing_key`**
-  (`src/app_actions.hpp`/`.cpp`) -- pure key-dispatch tables, direct
+  (`src/AppActions.hpp`/`.cpp`) -- pure key-dispatch tables, direct
   ports of the *reachable-key* subset of `FileManager::Activate`'s and
   `Viewer::handleKey`'s switch statements, factored out so they're
   unit-testable against real `FileManager`/`Viewer` instances without a
@@ -81,20 +81,20 @@ the first runnable `lss` binary.
     `handleKeyInHexMode`'s goto-offset prompt; plain `0`-`9` -> jump to
     that bookmark slot, Alt+`0`-`9` -> set it at the current position;
     `q`/`Q`/Escape -> `Close`.
-- **`line_edit_key`** (`src/line_edit.hpp`/`.cpp`) -- `LineEdit`'s
+- **`line_edit_key`** (`src/LineEdit.hpp`/`.cpp`) -- `LineEdit`'s
   key-handling core as a pure function: appends printable ASCII,
   Backspace pops a character, Enter submits, Escape cancels. `App`'s
   `run_prompt()` drives it in a loop, rendering the prompt on the
   terminal's last row, for all four call sites above (search pattern,
   case-insensitive search pattern, hex goto-offset, and one addition --
   see below).
-- **`render_file_manager`** (`src/file_manager_render.hpp`/`.cpp`) --
+- **`render_file_manager`** (`src/FileManagerRender.hpp`/`.cpp`) --
   the renderer `FileManager` never had (subsystem 06 explicitly left
   this for whoever built the screen loop): a status line plus
   `FileManager`'s column-major grid, using `compute_grid()`'s geometry
-  exactly as computed. Modeled directly on `viewer_render.cpp`'s shape.
+  exactly as computed. Modeled directly on `ViewerRender.cpp`'s shape.
 - **The `lss` executable** -- `add_executable(lss src/main.cpp
-  src/app.cpp)` in the root `CMakeLists.txt`, the first binary target in
+  src/App.cpp)` in the root `CMakeLists.txt`, the first binary target in
   the project besides the two test runners.
 
 ## What's deliberately narrowed or deferred

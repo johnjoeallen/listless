@@ -1,8 +1,8 @@
-#include "syntax_highlight.hpp"
+#include "SyntaxHighlight.hpp"
 
 #include <gtest/gtest.h>
 
-#include "style.hpp"
+#include "Style.hpp"
 
 using listless::Color;
 using listless::ColorSpan;

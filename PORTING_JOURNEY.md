@@ -21,7 +21,7 @@ errors; clang-format enforced; ASan+UBSan on the Linux CI build).
   GCC/Clang, `/W4 /WX` on MSVC), applied via an interface target so every
   target opts in explicitly rather than via global flags.
 - `/src`: a `listless_core` library target with a placeholder
-  `version.hpp`/`.cpp`, just enough real code to prove the build and test
+  `Version.hpp`/`.cpp`, just enough real code to prove the build and test
   wiring end-to-end.
 - `/platform/{linux,windows,macos}`: empty directories (with a `README.md`
   explaining the intent) — implementations land alongside the subsystems
@@ -95,7 +95,7 @@ subsystem depends on this.
   twice.
 
 **Changes:**
-- `src/text.hpp`/`src/text.cpp`: `compare_ignore_case()` (case-insensitive
+- `src/Text.hpp`/`src/Text.cpp`: `compare_ignore_case()` (case-insensitive
   three-way comparison, matching the original `stricmp()`'s semantics —
   used throughout the original for filename sorting and comparison) and
   `trim()` (leading/trailing whitespace stripped from a
@@ -141,12 +141,12 @@ non-functional `RegExp` (stub `class/regexp.cpp`) — per
 mode is deferred to subsystem 07.
 
 **Changes:**
-- `src/search.hpp`/`src/search.cpp`: `HorspoolSearcher` — Boyer-Moore-
+- `src/Search.hpp`/`src/Search.cpp`: `HorspoolSearcher` — Boyer-Moore-
   Horspool literal substring search, ported in behaviour (not
   line-by-line) from `func/strsrch.cpp`'s `strsrch()`/`SearchExpression`.
   Construct once per pattern, `find(haystack, start)` repeatedly for
   "find next" style usage; optional case-insensitivity.
-- `src/glob.hpp`/`src/glob.cpp`: `glob_match()`/`glob_match_any()` — a
+- `src/Glob.hpp`/`src/Glob.cpp`: `glob_match()`/`glob_match_any()` — a
   direct wildcard matcher (classic two-pointer backtracking algorithm,
   no regex engine) implementing the wildcard syntax documented in
   `os.man` section 2.1.1 (`*`, `?`, `[az]`, `[a-z]`, literal `.`).
@@ -196,7 +196,7 @@ filtering.
 core "ls" behaviour; depends on subsystems 01 and 02.
 
 **Changes:**
-- `src/directory.hpp`/`src/directory.cpp`: `DirEntry` (name, path, size,
+- `src/Directory.hpp`/`src/Directory.cpp`: `DirEntry` (name, path, size,
   `std::filesystem::file_time_type`, `is_directory`/`is_read_only`) and
   `Directory` (`fill(pattern, case_sensitive)`, `size()`, `operator[]`,
   `sort()` with a default case-sensitive name comparator and an optional
@@ -274,22 +274,22 @@ makes the ncurses backend itself genuinely unit-testable rather than
 manual-verification-only.
 
 **Changes:**
-- `src/color.hpp`/`src/color.cpp`: `Color` (the original's 16-value
+- `src/Color.hpp`/`src/Color.cpp`: `Color` (the original's 16-value
   DOS/BIOS text-attribute palette, exact same numeric values 0-15,
   preserved for future `Style` config compatibility) and `to_ansi()`, a
   pure function mapping a `Color` to `{ANSI base 0-7, bright}` — a real
   lookup, since DOS and ANSI order their 8 base hues differently.
-- `src/color_pair_table.hpp`/`src/color_pair_table.cpp`:
+- `src/ColorPairTable.hpp`/`src/ColorPairTable.cpp`:
   `ColorPairTable` — lazily allocates ncurses-style small integer "pair"
   ids for `(fg, bg)` combinations, capacity-bounded with a documented
   fallback to the default pair, pure logic with an injectable allocation
   callback (no ncurses dependency, fully unit-tested).
-- `src/terminal.hpp`: `Terminal` — a Pimpl class declared once, 0-indexed
+- `src/Terminal.hpp`: `Terminal` — a Pimpl class declared once, 0-indexed
   coordinates (no legacy 1-indexed DOS convention to preserve, since
   this is a new interface with no existing call sites),
   `width()`/`height()`/`move_cursor()`/`put_text()`/`clear_to_eol()`/
   `clear()`/`scroll_region()`/`refresh()`.
-- `platform/linux/terminal.cpp`: the ncurses-backed `Terminal::Impl` —
+- `platform/linux/Terminal.cpp`: the ncurses-backed `Terminal::Impl` —
   `curses_color_number()` converts `to_ansi()`'s output to an actual
   curses colour number (base, or base+8 for bright when `COLORS>=16`);
   colours degrade to `A_NORMAL` if the terminal reports no colour
@@ -368,7 +368,7 @@ virtual keycodes back to these same BIOS scan-code values) and
 `ostxt.hpp`'s `VKALT_*` table.
 
 **Changes:**
-- `src/key.hpp`/`src/key.cpp`: `KeyCode` (a plain `int` alias) and a
+- `src/Key.hpp`/`src/Key.cpp`: `KeyCode` (a plain `int` alias) and a
   `Key` namespace of named constants using the exact numeric values the
   original's `switch` statements already use (`Up`, `Down`, `Left`,
   `Right`, `Home`, `End`, `PageUp`, `PageDown`, `Insert`, `Delete`,
@@ -376,11 +376,11 @@ virtual keycodes back to these same BIOS scan-code values) and
   existed for "the window changed size") and `Key::Unknown` (an honest
   sentinel for anything unmapped, not a silent drop). `alt_key(char)`
   returns `Alt+<letter/digit>`, matching `ostxt.hpp`'s `VKALT_*` table.
-- `src/keyboard.hpp`: `Keyboard` — a Pimpl class taking a `Terminal&` in
+- `src/Keyboard.hpp`: `Keyboard` — a Pimpl class taking a `Terminal&` in
   its constructor purely to enforce, at the type level, that ncurses is
   already initialized before keyboard input is read. `read_key()`
   (blocking) and `key_available()` (`kbhit()`-equivalent).
-- `platform/linux/keyboard.cpp`: `translate_curses_key()` maps ncurses'
+- `platform/linux/Keyboard.cpp`: `translate_curses_key()` maps ncurses'
   `KEY_*` constants to the `Key` constants above; `read_key()` handles
   Alt-key detection by peeking (via `nodelay`) for a byte immediately
   following a bare `ESC` — verified directly in this sandboxed
@@ -450,7 +450,7 @@ are so later subsystems land against known integration points rather
 than rediscovering them.
 
 **Changes:**
-- `src/viewer.hpp`/`src/viewer.cpp`: `Viewer` — pure logic and state, no
+- `src/Viewer.hpp`/`src/Viewer.cpp`: `Viewer` — pure logic and state, no
   ncurses dependency, fully unit-tested in `tests/core` (35 new cases).
   Line model as `offset+length` spans (`LineSpan`) into a loaded
   `std::string`, replacing the original's in-place-NUL-termination trick
@@ -466,14 +466,14 @@ than rediscovering them.
   built on subsystem 02's `HorspoolSearcher`; goto-line and per-`Viewer`
   bookmarks (`Alt+0`-`Alt+9` toggle, `Alt+G`+digit jump) ported directly
   with no `Style` dependency.
-- `src/viewer_render.hpp`/`src/viewer_render.cpp`: a minimal renderer
+- `src/ViewerRender.hpp`/`src/ViewerRender.cpp`: a minimal renderer
   (tested against the real `Terminal` in `tests/platform_linux`, 6 new
   cases) doing exactly the style-independent subset identified in the
   survey: iterate visible lines, fixed-width tab expansion, the
   selection-range highlight overlay, one status-line format. Explicitly
   designed to be extended, not rewritten, once subsystems 08/09 add real
   styling.
-- `src/key.cpp`: corrected `alt_key()` to cover `'0'`-`'9'` (was
+- `src/Key.cpp`: corrected `alt_key()` to cover `'0'`-`'9'` (was
   `'1'`-`'9'`) — the survey found `Alt+0` (scan code `0x81`) is a real
   bookmark-slot-0 binding in `osview.cpp`, contradicting subsystem 05's
   docs, which claimed no `VKALT_0` exists. `docs/05-keyboard-input.md`
@@ -556,7 +556,7 @@ subsystems 04-07, where the doc and its port share one commit).
   against dropped non-ASCII bytes, evidence of a leading directory-marker
   byte in the original `Dirent::name()` that has no counterpart in the
   port's explicit `DirEntry::is_directory` bool).
-- `src/file_manager.hpp`/`.cpp`: `FileManager` — pure logic and state,
+- `src/FileManager.hpp`/`.cpp`: `FileManager` — pure logic and state,
   no terminal/rendering dependency (same split as `Viewer`/
   `viewer_render` from subsystem 07). Listing/sorting (`refresh()`,
   `set_sort()`), the grid navigation model (`move_up/down/left/right/
@@ -652,7 +652,7 @@ inheritance mechanism and config file format that syntax highlighting
   rest-of-line value capture, multi-line key continuation), and the
   separate `Settings` block (FileManager UI colours/app toggles — out of
   scope, `App`-level).
-- `src/style.hpp`/`src/style.cpp`: `Item<T>` (using `std::optional<T>`
+- `src/Style.hpp`/`src/Style.cpp`: `Item<T>` (using `std::optional<T>`
   and `std::vector<Item<T>*>` in place of the original's manually
   `new`/`delete`d `T*` and `Set<Item<T>>`); `Style` with the same field
   set, typed with subsystem 04's `Color` enum instead of a raw `BYTE`;
@@ -744,7 +744,7 @@ and preprocessor state tracking, and the separate `BOLD_CODE`/
   same rule set — including the `iReserved.Size() > 0` quirk that
   silently falls back to layout-toggle mode when syntax highlighting is
   enabled but a style has zero reserved words.
-- `src/syntax_highlight.hpp`/`src/syntax_highlight.cpp` (new):
+- `src/SyntaxHighlight.hpp`/`src/SyntaxHighlight.cpp` (new):
   `highlight_line(text, style, state)`, unifying `scanData`'s state
   machine and `displayData`'s colouring chain into one pass over the
   line, since both need the same rule evaluations and the original only
@@ -833,7 +833,7 @@ subsystem (issue #24).
 `docs/10-hex-mode-viewer.md`.
 
 **Changes:**
-- `src/viewer.hpp`/`src/viewer.cpp`: `DisplayMode` (`Text`/`Hex`) and
+- `src/Viewer.hpp`/`src/Viewer.cpp`: `DisplayMode` (`Text`/`Hex`) and
   `kBytesPerHexLine = 16` on `Viewer`. `switch_to_hex_mode`/
   `switch_to_text_mode` port `calcNearestHexTopLine`/the text-mode
   scan-back directly, translating between the text viewport's current
@@ -845,7 +845,7 @@ subsystem (issue #24).
   subsystem 07's text-mode `scroll_*()`. `hex_goto_offset` ports the
   `g`/`G` handler's clamp-and-round-to-16-byte-boundary math, minus the
   `LineEdit` prompt/parsing (an `App`/main-loop concern, issue #24).
-- `src/viewer_render.cpp`/`.hpp`: `format_hex_line`/`draw_hex_line` — a
+- `src/ViewerRender.cpp`/`.hpp`: `format_hex_line`/`draw_hex_line` — a
   standard hex-dump row (8-hex-digit offset, 16 bytes grouped in 4s,
   ASCII gutter). `render_viewer` dispatches on `Viewer::display_mode()`
   to this or the existing text-mode renderer.
@@ -881,19 +881,19 @@ numbered 1-12 breakdown -- it's the cross-cutting App/main-loop layer
 every one of those subsystem docs explicitly deferred to.
 
 **Changes:**
-- `src/line_edit.hpp`/`.cpp`: `line_edit_key` -- the original's
+- `src/LineEdit.hpp`/`.cpp`: `line_edit_key` -- the original's
   `LineEdit` modal-prompt widget's key-handling core as a pure function
   (append/backspace/submit/cancel), no history.
-- `src/app_actions.hpp`/`.cpp`: `handle_browsing_key`/
+- `src/AppActions.hpp`/`.cpp`: `handle_browsing_key`/
   `handle_viewing_key` -- pure key-dispatch tables ported from the
   reachable-key subset of `FileManager::Activate`'s and
   `Viewer::handleKey`'s switch statements, unit-tested against real
   `FileManager`/`Viewer` instances (18 new cases).
-- `src/file_manager_render.hpp`/`.cpp`: `render_file_manager` --
+- `src/FileManagerRender.hpp`/`.cpp`: `render_file_manager` --
   `FileManager`'s status line plus column-major grid, the renderer
-  subsystem 06 never built. Modeled on `viewer_render.cpp`'s shape (5
+  subsystem 06 never built. Modeled on `ViewerRender.cpp`'s shape (5
   new `tests/platform_linux` cases).
-- `src/app.hpp`/`.cpp`, `src/main.cpp`: `App` -- owns `Terminal`/
+- `src/App.hpp`/`.cpp`, `src/main.cpp`: `App` -- owns `Terminal`/
   `Keyboard`/`FileManager`/a single `Viewer`, alternating browsing and
   viewing screens; `run_prompt()` drives `line_edit_key` for search,
   case-insensitive search, hex goto-offset, and a new goto-line prompt.
