@@ -1,9 +1,9 @@
 # OnScreen/2 architecture (as found in `/original`)
 
-Source: `/original/apps/onscreen` (application), `/original/class` and
-`/original/func` (implementation of the utility library),
-`/original/include` (headers for the utility library). Copyright
-1993-2006 John J. Allen, GPLv2 or later.
+Source: the [OS2World OnScreen/2 repository](https://github.com/OS2World/UTIL-FILEMANAGER-OnScreen2):
+`apps/onscreen` (application), `class` and `func` (implementation of the
+utility library), and `include` (headers). Copyright 1993-2006 John J.
+Allen, GPLv2 or later.
 
 ## Top-level program structure
 
