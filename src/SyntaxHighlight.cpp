@@ -142,7 +142,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     std::size_t first_content = text.find_first_not_of(" \t");
     int indent = first_content == std::string_view::npos ? 0 : static_cast<int>(first_content);
     if (state.block_text_base_indent >= 0) {
-        if (first_content == std::string_view::npos || indent > state.block_text_base_indent) {
+        if (first_content == std::string_view::npos || indent >= state.block_text_base_indent) {
             state.in_comment = false;
             state.in_preprocessor = false;
             return {{0, text.size(), block_text_color}};
@@ -195,6 +195,17 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
         if (block_value_start != std::string_view::npos && block_value_start < n) {
             starts_block_text =
                 block_text_start->find(text[block_value_start]) != std::string::npos;
+            if (starts_block_text) {
+                int additional_indent = 1;
+                for (std::size_t i = block_value_start + 1; i < n; ++i) {
+                    if (std::isdigit(static_cast<unsigned char>(text[i]))) {
+                        additional_indent = text[i] - '0';
+                        break;
+                    }
+                    if (text[i] != '+' && text[i] != '-') break;
+                }
+                state.block_text_base_indent = indent + additional_indent;
+            }
         }
     }
 
@@ -329,7 +340,6 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     }
     state.bold = false;
     state.underlined = false;
-    if (starts_block_text) state.block_text_base_indent = indent;
 
     return spans;
 }
