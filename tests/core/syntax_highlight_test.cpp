@@ -228,6 +228,23 @@ TEST(HighlightLine, BeforeDelimiterHighlightsQuotedKeys) {
     EXPECT_EQ(spans.back().color, Color::Green);
 }
 
+TEST(HighlightLine, BeforeDelimiterHighlightsNestedFlowCollectionKeys) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_color.set(Color::Blue);
+    s.string_delimiter.set("\"");
+    s.string_color.set(Color::Green);
+    s.symbols.set("{}[],:");
+    HighlightState state;
+
+    auto spans = highlight_line(
+        "{\"first\": {\"nested\": [1, {\"final\": true}]}, \"label, text\": \"value\"}", s, state);
+    EXPECT_EQ(std::count_if(spans.begin(), spans.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }),
+              4);
+}
+
 TEST(HighlightLine, ReservedWordRequiresWordBoundary) {
     Style s("C");
     init_c_style(s);

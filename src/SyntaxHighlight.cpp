@@ -143,6 +143,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     const std::string* line_start_prefix = style.line_start_prefix.get();
     bool line_start_prefix_requires_space = get_or(style.line_start_prefix_requires_space, false);
     const std::string* prefix_token = style.prefix_token.get();
+    const std::string* string_delimiters = style.string_delimiter.get();
     std::size_t first_content = text.find_first_not_of(" \t");
     int indent = first_content == std::string_view::npos ? 0 : static_cast<int>(first_content);
     if (state.block_text_base_indent >= 0) {
@@ -155,8 +156,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     }
     const std::string* before_delimiter = style.before_delimiter.get();
     bool before_delimiter_requires_space = get_or(style.before_delimiter_requires_space, false);
-    std::size_t contextual_start = n;
-    std::size_t contextual_end = n;
+    std::vector<std::pair<std::size_t, std::size_t>> contextual_ranges;
     std::size_t line_start_data = n;
     bool has_line_start_prefix =
         first_content != std::string_view::npos && line_start_prefix != nullptr &&
@@ -166,25 +166,52 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     std::size_t payload_start =
         has_line_start_prefix ? text.find_first_not_of(" \t", first_content + 1) : first_content;
     if (before_delimiter != nullptr && !before_delimiter->empty()) {
-        std::size_t delimiter =
-            find_outside_strings(text, *before_delimiter, style.string_delimiter, escape);
-        contextual_start = payload_start;
-        bool delimiter_is_mapping =
-            delimiter == std::string_view::npos || !before_delimiter_requires_space ||
-            delimiter + before_delimiter->size() == n ||
-            std::isspace(static_cast<unsigned char>(text[delimiter + before_delimiter->size()]));
-        if (delimiter_is_mapping && delimiter != std::string_view::npos &&
-            contextual_start != std::string_view::npos && contextual_start < delimiter) {
-            contextual_end = delimiter;
-            while (contextual_end > contextual_start &&
-                   std::isspace(static_cast<unsigned char>(text[contextual_end - 1]))) {
-                --contextual_end;
+        std::size_t search_start = 0;
+        while (search_start < n) {
+            std::size_t relative_delimiter = find_outside_strings(
+                text.substr(search_start), *before_delimiter, style.string_delimiter, escape);
+            if (relative_delimiter == std::string_view::npos) break;
+            std::size_t delimiter = search_start + relative_delimiter;
+            bool delimiter_is_mapping =
+                !before_delimiter_requires_space || delimiter + before_delimiter->size() == n ||
+                std::isspace(
+                    static_cast<unsigned char>(text[delimiter + before_delimiter->size()]));
+            std::size_t contextual_start = search_start == 0 ? payload_start : search_start;
+            if (delimiter_is_mapping && contextual_start != std::string_view::npos &&
+                contextual_start < delimiter) {
+                char quote = '\0';
+                for (std::size_t i = contextual_start; i < delimiter; ++i) {
+                    if (quote != '\0') {
+                        if (escape != '\0' && text[i] == escape && i + 1 < delimiter) {
+                            ++i;
+                        } else if (text[i] == quote) {
+                            quote = '\0';
+                        }
+                    } else if (string_delimiters != nullptr &&
+                               string_delimiters->find(text[i]) != std::string::npos) {
+                        quote = text[i];
+                    } else if (text[i] == '{' || text[i] == '[' || text[i] == ',') {
+                        contextual_start = i + 1;
+                    }
+                }
+                while (contextual_start < delimiter &&
+                       std::isspace(static_cast<unsigned char>(text[contextual_start]))) {
+                    ++contextual_start;
+                }
+                std::size_t contextual_end = delimiter;
+                while (contextual_end > contextual_start &&
+                       std::isspace(static_cast<unsigned char>(text[contextual_end - 1]))) {
+                    --contextual_end;
+                }
+                if (contextual_start < contextual_end) {
+                    contextual_ranges.emplace_back(contextual_start, contextual_end);
+                }
             }
-        } else {
-            contextual_start = n;
-            if (has_line_start_prefix && payload_start != std::string_view::npos) {
-                line_start_data = payload_start;
-            }
+            search_start = delimiter + before_delimiter->size();
+        }
+        if (contextual_ranges.empty() && has_line_start_prefix &&
+            payload_start != std::string_view::npos) {
+            line_start_data = payload_start;
         }
     } else if (has_line_start_prefix && payload_start != std::string_view::npos) {
         line_start_data = payload_start;
@@ -193,7 +220,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     bool starts_block_text = false;
     if (block_text_start != nullptr && !block_text_start->empty()) {
         std::size_t block_value_start = n;
-        if (contextual_end != n && before_delimiter != nullptr) {
+        if (!contextual_ranges.empty() && before_delimiter != nullptr) {
             std::size_t delimiter =
                 find_outside_strings(text, *before_delimiter, style.string_delimiter, escape);
             block_value_start = text.find_first_not_of(" \t", delimiter + before_delimiter->size());
@@ -228,6 +255,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     };
 
     std::size_t i = 0;
+    std::size_t contextual_range = 0;
     while (i < n) {
         std::string_view rest = text.substr(i);
         char c = text[i];
@@ -262,9 +290,12 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
         }
 
         // Mode::Text
-        if (i == contextual_start) {
+        if (contextual_range < contextual_ranges.size() &&
+            i == contextual_ranges[contextual_range].first) {
+            std::size_t contextual_end = contextual_ranges[contextual_range].second;
             push(i, contextual_end - i, before_delimiter_color);
             i = contextual_end;
+            ++contextual_range;
             seen_non_space = true;
         } else if (i == line_start_data) {
             if (prefix_token != nullptr && prefix_token->find(c) != std::string::npos) {
