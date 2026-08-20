@@ -96,6 +96,7 @@ void App::restyle_for_viewer() {
 void App::open_selected() {
     try {
         viewer_.emplace(file_manager_.selected().path);
+        viewer_opened_from_browsing_ = true;
         mode_ = Mode::Viewing;
         restyle_for_viewer();
     } catch (const std::exception& e) {
@@ -123,7 +124,11 @@ void App::run_viewing() {
         switch (handle_viewing_key(*viewer_, visible_lines, visible_width, key)) {
             case ViewingAction::Close:
                 viewer_.reset();
-                mode_ = Mode::Browsing;
+                if (viewer_opened_from_browsing_) {
+                    mode_ = Mode::Browsing;
+                } else {
+                    quit_ = true;
+                }
                 break;
             case ViewingAction::PromptSearchForward:
                 run_search_prompt(/*case_sensitive=*/true);
