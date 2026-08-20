@@ -1122,3 +1122,13 @@ created to provide the LIST-style file viewer OS/2 lacked, and that the
 original distribution described OnScreen/2 as roughly similar to `LIST`.
 
 **Verification:** `mkdocs build --strict` verifies the revised documentation.
+
+## 2026-08-20 — Remove legacy single-file configuration (issue #87)
+
+**Changes:** removed the legacy `style.conf` discovery and load path.
+Listless now loads packaged system styles followed by the user's
+`styles/syntax/` directory. Documentation includes migration guidance for
+moving old `Style` blocks into `.conf` files in that directory.
+
+**Verification:** the full test suite and `mkdocs build --strict` verify the
+directory-only configuration model.

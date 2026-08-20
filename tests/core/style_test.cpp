@@ -10,7 +10,6 @@
 
 using listless::Color;
 using listless::cycle_color;
-using listless::default_config_path;
 using listless::default_styles_dir;
 using listless::load_config;
 using listless::load_config_dir;
@@ -245,17 +244,6 @@ TEST(StyleSet, StyleForExtensionFindsMatch) {
 
     EXPECT_EQ(styles.style_for_extension(".cpp"), &cpp);
     EXPECT_EQ(styles.style_for_extension(".py"), nullptr);
-}
-
-TEST(DefaultConfigPath, RespectsXdgConfigHome) {
-#ifdef _WIN32
-    GTEST_SKIP();
-#else
-    setenv("XDG_CONFIG_HOME", "/tmp/listless-xdg-test", 1);
-    EXPECT_EQ(default_config_path(),
-              std::filesystem::path("/tmp/listless-xdg-test/listless/style.conf"));
-    unsetenv("XDG_CONFIG_HOME");
-#endif
 }
 
 TEST(DefaultStylesDir, RespectsXdgConfigHome) {
