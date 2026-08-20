@@ -1200,9 +1200,9 @@ This is Listless's core "ls" behaviour.</p>
 <h2 id="platform-note">Platform note<a class="headerlink" href="#platform-note" title="Permanent link">&para;</a></h2>
 <p><code>Directory::fill()</code>'s <code>std::filesystem::directory_iterator</code>-based
 implementation lives directly in <code>src/Directory.cpp</code>, not under
-<code>/platform/linux</code> — <code>std::filesystem</code> is already portable across Linux,
+<code>/src/platform/linux</code> — <code>std::filesystem</code> is already portable across Linux,
 Windows, and macOS, so there is no platform seam here to isolate. The
-<code>/platform</code> directories are for genuinely OS-specific APIs (console I/O,
+<code>/src/platform</code> directories are for genuinely OS-specific APIs (console I/O,
 keyboard input — subsystems 04/05), not for functionality the standard
 library already abstracts.</p>
 

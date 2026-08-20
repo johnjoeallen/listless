@@ -1147,7 +1147,7 @@ implements that:</p>
   reuse the original's <code>case</code> literals directly. <code>alt_key(char)</code> returns
   the <code>Alt+&lt;letter/digit&gt;</code> keycode from the same <code>VKALT_*</code> table.</li>
 <li><strong><code>Keyboard</code></strong> (<code>src/Keyboard.hpp</code>, implemented in
-  <code>platform/linux/Keyboard.cpp</code>) — a Pimpl class, constructed with a
+  <code>src/platform/linux/Keyboard.cpp</code>) — a Pimpl class, constructed with a
   <code>Terminal&amp;</code> purely to enforce (at the type level and in practice) that
   ncurses is already initialized before keyboard input is read. Two
   operations: <code>read_key()</code> (blocking read, translated into the <code>KeyCode</code>
@@ -1191,7 +1191,7 @@ implements that:</p>
   real terminals, which is better done against the concrete keybinding
   that needs it (subsystems 06/07) than guessed at now. <code>Key::Unknown</code>
   is the honest answer for these today; a later subsystem can extend
-  <code>translate_curses_key()</code> (<code>platform/linux/Keyboard.cpp</code>) once a real
+  <code>translate_curses_key()</code> (<code>src/platform/linux/Keyboard.cpp</code>) once a real
   terminal's actual reporting for a specific combination is confirmed.</li>
 <li><strong><code>ungetch()</code>/pushback of a Listless <code>KeyCode</code></strong> — the original's
   <code>ungetch(int c)</code> pushes one raw platform character back for the next
