@@ -143,6 +143,8 @@ class Style {
     Item<std::vector<std::string>> numeric_prefix;
     Item<std::string> before_delimiter;
     Item<std::string> block_text_start;
+    Item<std::string> line_start_prefix;
+    Item<std::string> prefix_token;
     Item<bool> case_sensitive;
     Item<bool> case_convert;
     Item<std::string> open_preprocessor;

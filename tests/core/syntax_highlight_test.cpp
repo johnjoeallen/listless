@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 #include "Style.hpp"
 #include "SyntaxHighlight.hpp"
 
@@ -74,6 +76,24 @@ TEST(HighlightLine, BlockTextSuppressesContextualRulesUntilIndentationReturns) {
     auto key = highlight_line("name: value", s, state);
     ASSERT_GE(key.size(), 1u);
     EXPECT_EQ(key[0].color, Color::Blue);
+}
+
+TEST(HighlightLine, PositionalPrefixRulesHighlightStructuralTokens) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.line_start_prefix.set("-");
+    s.prefix_token.set("&!");
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    auto sequence = highlight_line("  - item", s, state);
+    ASSERT_GE(sequence.size(), 1u);
+    EXPECT_TRUE(std::any_of(sequence.begin(), sequence.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }));
+
+    auto anchor = highlight_line("value: &shared", s, state);
+    ASSERT_GE(anchor.size(), 2u);
+    EXPECT_EQ(anchor.back().color, Color::Blue);
 }
 
 TEST(HighlightLine, ReservedWordRequiresWordBoundary) {

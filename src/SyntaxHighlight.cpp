@@ -114,6 +114,8 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
 
     char escape = get_or(style.escape, '\0');
     const std::string* block_text_start = style.block_text_start.get();
+    const std::string* line_start_prefix = style.line_start_prefix.get();
+    const std::string* prefix_token = style.prefix_token.get();
     std::size_t first_content = text.find_first_not_of(" \t");
     int indent = first_content == std::string_view::npos ? 0 : static_cast<int>(first_content);
     if (state.block_text_base_indent >= 0) {
@@ -200,6 +202,16 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
         if (i == contextual_start) {
             push(i, contextual_end - i, reserved_color);
             i = contextual_end;
+            seen_non_space = true;
+        } else if (i == first_content && line_start_prefix != nullptr &&
+                   line_start_prefix->find(c) != std::string::npos) {
+            push(i, 1, reserved_color);
+            ++i;
+            seen_non_space = true;
+        } else if (prefix_token != nullptr && prefix_token->find(c) != std::string::npos) {
+            std::size_t start = i++;
+            while (i < n && (is_identifier_char(text[i]) || text[i] == '-' || text[i] == ':')) ++i;
+            push(start, i - start, reserved_color);
             seen_non_space = true;
         } else if (match_any(rest, style.eol_comment)) {
             push(i, n - i, comment_color);
@@ -349,9 +361,11 @@ std::vector<ColorSpan> merge_adjacent(std::vector<ColorSpan> spans) {
 
 std::vector<ColorSpan> highlight_line(std::string_view text, const Style& style,
                                       HighlightState& state) {
-    bool syntax_on = get_or(style.syntax_highlight_enabled, false) &&
-                     (!style.reserved.empty() || style.before_delimiter.get() != nullptr ||
-                      style.block_text_start.get() != nullptr);
+    bool syntax_on =
+        get_or(style.syntax_highlight_enabled, false) &&
+        (!style.reserved.empty() || style.before_delimiter.get() != nullptr ||
+         style.block_text_start.get() != nullptr || style.line_start_prefix.get() != nullptr ||
+         style.prefix_token.get() != nullptr);
 
     std::vector<ColorSpan> spans =
         syntax_on ? highlight_syntax(text, style, state) : highlight_layout(text, style, state);
