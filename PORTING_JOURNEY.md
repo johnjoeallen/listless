@@ -1060,3 +1060,11 @@ documentation home page.
 
 **Verification:** `mkdocs build --strict` verifies the external links are
 valid documentation markup.
+
+## 2026-08-20 — Port authorship wording (issue #90)
+
+**Changes:** clarified that Listless is an AI-assisted, from-scratch modern
+port by the original author, using the OnScreen/2 codebase as a reference.
+
+**Verification:** `mkdocs build --strict` verifies the revised Porting Record
+page.

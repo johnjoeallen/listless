@@ -1,13 +1,14 @@
 # The original: OnScreen/2
 
-Listless is a from-scratch modern port of **OnScreen/2**, a directory
-and text-file viewer written by John J. Allen and released for IBM
-OS/2, Microsoft Windows NT/95, and PC-DOS through the 1990s and into
-the 2000s (release 2.50's `readme.txt` covers OS/2 2.x/Warp 3.0/4.0 and
-Win32; DOS support had already been dropped by that release). It was
+Listless is an AI-assisted, from-scratch modern port of **OnScreen/2**,
+created by its original author using the original codebase as a reference.
+OnScreen/2 is a directory and text-file viewer written by John J. Allen and
+released for IBM OS/2, Microsoft Windows NT/95, and PC-DOS through the 1990s
+and into the 2000s (release 2.50's `readme.txt` covers OS/2 2.x/Warp 3.0/4.0
+and Win32; DOS support had already been dropped by that release). It was
 distributed as shareware of its era: zipped per-platform archives,
-registration forms, a BBS description file, and a manual in three
-formats (Word `.doc`, plain-text `.man`, and OS/2 `.inf` help).
+registration forms, a BBS description file, and a manual in three formats
+(Word `.doc`, plain-text `.man`, and OS/2 `.inf` help).
 
 The full original source lives in this repository under `original/`
 (`original/apps/onscreen` for the application, `original/class` and
