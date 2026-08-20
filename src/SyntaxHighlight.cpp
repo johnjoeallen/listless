@@ -49,6 +49,28 @@ std::size_t match_prefix(std::string_view text, const Item<std::string>& item) {
     return text.substr(0, prefix->size()) == *prefix ? prefix->size() : 0;
 }
 
+std::size_t find_outside_strings(std::string_view text, std::string_view needle,
+                                 const Item<std::string>& delimiters, char escape) {
+    const std::string* set = delimiters.get();
+    if (needle.empty()) return std::string_view::npos;
+
+    char quote = '\0';
+    for (std::size_t i = 0; i < text.size(); ++i) {
+        if (quote != '\0') {
+            if (escape != '\0' && text[i] == escape && i + 1 < text.size()) {
+                ++i;
+            } else if (text[i] == quote) {
+                quote = '\0';
+            }
+        } else if (set != nullptr && set->find(text[i]) != std::string::npos) {
+            quote = text[i];
+        } else if (text.substr(i, needle.size()) == needle) {
+            return i;
+        }
+    }
+    return std::string_view::npos;
+}
+
 // Word-boundary-aware reserved-word match at the start of `text`: the
 // candidate must match case-(in)sensitively per `case_sensitive`, and
 // the following character (if any) must not continue an identifier.
@@ -88,6 +110,29 @@ bool is_identifier_char(char c) {
     return std::isalnum(static_cast<unsigned char>(c)) != 0 || c == '_';
 }
 
+std::size_t match_decimal_number(std::string_view text) {
+    std::size_t i = 0;
+    bool has_digits = false;
+    while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) {
+        ++i;
+        has_digits = true;
+    }
+    if (i < text.size() && text[i] == '.') {
+        std::size_t fraction_start = ++i;
+        while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) ++i;
+        has_digits = has_digits || i > fraction_start;
+    }
+    if (!has_digits) return 0;
+    if (i < text.size() && (text[i] == 'e' || text[i] == 'E')) {
+        std::size_t exponent_start = i++;
+        if (i < text.size() && (text[i] == '+' || text[i] == '-')) ++i;
+        std::size_t exponent_digits = i;
+        while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) ++i;
+        if (i == exponent_digits) i = exponent_start;
+    }
+    return i;
+}
+
 // Highlights one line while syntax highlighting is enabled: the
 // per-character precedence chain from `Viewer::displayData`
 // (osview.cpp:836-1021), unified with the cross-line comment/
@@ -105,13 +150,122 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     Color comment_color = get_or(style.comment_color, Color::LightGray);
     Color preprocessor_color = get_or(style.preprocessor_color, Color::LightGray);
     Color string_color = get_or(style.string_color, Color::LightGray);
+    Color block_text_color = get_or(style.block_text_color, string_color);
+    Color line_start_data_color = get_or(style.line_start_data_color, string_color);
     Color symbols_color = get_or(style.symbols_color, Color::LightGray);
     Color number_color = get_or(style.number_color, Color::LightGray);
     Color reserved_color = get_or(style.reserved_color, Color::LightGray);
+    Color before_delimiter_color = get_or(style.before_delimiter_color, reserved_color);
+    Color line_start_prefix_color = get_or(style.line_start_prefix_color, reserved_color);
+    Color prefix_token_color = get_or(style.prefix_token_color, reserved_color);
     Color ident_color = get_or(style.ident_color, Color::LightGray);
     Color default_color = get_or(style.fore_color, Color::LightGray);
 
     char escape = get_or(style.escape, '\0');
+    const std::string* block_text_start = style.block_text_start.get();
+    const std::string* line_start_prefix = style.line_start_prefix.get();
+    bool line_start_prefix_requires_space = get_or(style.line_start_prefix_requires_space, false);
+    const std::string* prefix_token = style.prefix_token.get();
+    const std::string* string_delimiters = style.string_delimiter.get();
+    std::size_t first_content = text.find_first_not_of(" \t");
+    int indent = first_content == std::string_view::npos ? 0 : static_cast<int>(first_content);
+    if (state.block_text_base_indent >= 0) {
+        if (first_content == std::string_view::npos || indent >= state.block_text_base_indent) {
+            state.in_comment = false;
+            state.in_preprocessor = false;
+            return {{0, text.size(), block_text_color}};
+        }
+        state.block_text_base_indent = -1;
+    }
+    const std::string* before_delimiter = style.before_delimiter.get();
+    bool before_delimiter_requires_space = get_or(style.before_delimiter_requires_space, false);
+    std::vector<std::pair<std::size_t, std::size_t>> contextual_ranges;
+    std::size_t line_start_data = n;
+    bool has_line_start_prefix =
+        first_content != std::string_view::npos && line_start_prefix != nullptr &&
+        line_start_prefix->find(text[first_content]) != std::string::npos &&
+        (!line_start_prefix_requires_space || first_content + 1 == n ||
+         std::isspace(static_cast<unsigned char>(text[first_content + 1])));
+    std::size_t payload_start =
+        has_line_start_prefix ? text.find_first_not_of(" \t", first_content + 1) : first_content;
+    if (before_delimiter != nullptr && !before_delimiter->empty()) {
+        std::size_t search_start = 0;
+        while (search_start < n) {
+            std::size_t relative_delimiter = find_outside_strings(
+                text.substr(search_start), *before_delimiter, style.string_delimiter, escape);
+            if (relative_delimiter == std::string_view::npos) break;
+            std::size_t delimiter = search_start + relative_delimiter;
+            bool delimiter_is_mapping =
+                !before_delimiter_requires_space || delimiter + before_delimiter->size() == n ||
+                std::isspace(
+                    static_cast<unsigned char>(text[delimiter + before_delimiter->size()]));
+            std::size_t contextual_start = search_start == 0 ? payload_start : search_start;
+            if (delimiter_is_mapping && contextual_start != std::string_view::npos &&
+                contextual_start < delimiter) {
+                char quote = '\0';
+                for (std::size_t i = contextual_start; i < delimiter; ++i) {
+                    if (quote != '\0') {
+                        if (escape != '\0' && text[i] == escape && i + 1 < delimiter) {
+                            ++i;
+                        } else if (text[i] == quote) {
+                            quote = '\0';
+                        }
+                    } else if (string_delimiters != nullptr &&
+                               string_delimiters->find(text[i]) != std::string::npos) {
+                        quote = text[i];
+                    } else if (text[i] == '{' || text[i] == '[' || text[i] == ',') {
+                        contextual_start = i + 1;
+                    }
+                }
+                while (contextual_start < delimiter &&
+                       std::isspace(static_cast<unsigned char>(text[contextual_start]))) {
+                    ++contextual_start;
+                }
+                std::size_t contextual_end = delimiter;
+                while (contextual_end > contextual_start &&
+                       std::isspace(static_cast<unsigned char>(text[contextual_end - 1]))) {
+                    --contextual_end;
+                }
+                if (contextual_start < contextual_end) {
+                    contextual_ranges.emplace_back(contextual_start, contextual_end);
+                }
+            }
+            search_start = delimiter + before_delimiter->size();
+        }
+        if (contextual_ranges.empty() && has_line_start_prefix &&
+            payload_start != std::string_view::npos) {
+            line_start_data = payload_start;
+        }
+    } else if (has_line_start_prefix && payload_start != std::string_view::npos) {
+        line_start_data = payload_start;
+    }
+
+    bool starts_block_text = false;
+    if (block_text_start != nullptr && !block_text_start->empty()) {
+        std::size_t block_value_start = n;
+        if (!contextual_ranges.empty() && before_delimiter != nullptr) {
+            std::size_t delimiter =
+                find_outside_strings(text, *before_delimiter, style.string_delimiter, escape);
+            block_value_start = text.find_first_not_of(" \t", delimiter + before_delimiter->size());
+        } else if (has_line_start_prefix) {
+            block_value_start = payload_start;
+        }
+        if (block_value_start != std::string_view::npos && block_value_start < n) {
+            starts_block_text =
+                block_text_start->find(text[block_value_start]) != std::string::npos;
+            if (starts_block_text) {
+                int additional_indent = 1;
+                for (std::size_t i = block_value_start + 1; i < n; ++i) {
+                    if (std::isdigit(static_cast<unsigned char>(text[i]))) {
+                        additional_indent = text[i] - '0';
+                        break;
+                    }
+                    if (text[i] != '+' && text[i] != '-') break;
+                }
+                state.block_text_base_indent = indent + additional_indent;
+            }
+        }
+    }
 
     enum class Mode { Text, Comment, Preprocessor };
     Mode mode = state.in_comment ? Mode::Comment
@@ -124,6 +278,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     };
 
     std::size_t i = 0;
+    std::size_t contextual_range = 0;
     while (i < n) {
         std::string_view rest = text.substr(i);
         char c = text[i];
@@ -158,7 +313,39 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
         }
 
         // Mode::Text
-        if (match_any(rest, style.eol_comment)) {
+        if (contextual_range < contextual_ranges.size() &&
+            i == contextual_ranges[contextual_range].first) {
+            std::size_t contextual_end = contextual_ranges[contextual_range].second;
+            push(i, contextual_end - i, before_delimiter_color);
+            i = contextual_end;
+            ++contextual_range;
+            seen_non_space = true;
+        } else if (i == line_start_data) {
+            if (prefix_token != nullptr && prefix_token->find(c) != std::string::npos) {
+                std::size_t start = i++;
+                while (i < n && (is_identifier_char(text[i]) || text[i] == '-' || text[i] == ':')) {
+                    ++i;
+                }
+                push(start, i - start, prefix_token_color);
+                if (i < n) {
+                    push(i, n - i, line_start_data_color);
+                }
+                i = n;
+            } else {
+                push(i, n - i, line_start_data_color);
+                i = n;
+            }
+        } else if (i == first_content && line_start_prefix != nullptr &&
+                   line_start_prefix->find(c) != std::string::npos) {
+            push(i, 1, line_start_prefix_color);
+            ++i;
+            seen_non_space = true;
+        } else if (prefix_token != nullptr && prefix_token->find(c) != std::string::npos) {
+            std::size_t start = i++;
+            while (i < n && (is_identifier_char(text[i]) || text[i] == '-' || text[i] == ':')) ++i;
+            push(start, i - start, prefix_token_color);
+            seen_non_space = true;
+        } else if (match_any(rest, style.eol_comment)) {
             push(i, n - i, comment_color);
             i = n;
         } else if (match_any(rest, style.open_comment)) {
@@ -183,20 +370,19 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
                 ++i;
             }
             seen_non_space = true;
-        } else if (char_in_set(style.symbols, c)) {
-            push(i, 1, symbols_color);
-            ++i;
-            seen_non_space = true;
         } else if (std::size_t len = match_any(rest, style.numeric_prefix)) {
             std::size_t start = i;
             i += len;
             while (i < n && std::isxdigit(static_cast<unsigned char>(text[i]))) ++i;
             push(start, i - start, number_color);
             seen_non_space = true;
-        } else if (std::isdigit(static_cast<unsigned char>(c))) {
-            std::size_t start = i;
-            while (i < n && std::isdigit(static_cast<unsigned char>(text[i]))) ++i;
-            push(start, i - start, number_color);
+        } else if (std::size_t decimal_len = match_decimal_number(rest)) {
+            push(i, decimal_len, number_color);
+            i += decimal_len;
+            seen_non_space = true;
+        } else if (char_in_set(style.symbols, c)) {
+            push(i, 1, symbols_color);
+            ++i;
             seen_non_space = true;
         } else if (const std::string* kw = match_reserved(rest, style)) {
             push(i, kw->size(), reserved_color);
@@ -305,7 +491,11 @@ std::vector<ColorSpan> merge_adjacent(std::vector<ColorSpan> spans) {
 
 std::vector<ColorSpan> highlight_line(std::string_view text, const Style& style,
                                       HighlightState& state) {
-    bool syntax_on = get_or(style.syntax_highlight_enabled, false) && !style.reserved.empty();
+    bool syntax_on =
+        get_or(style.syntax_highlight_enabled, false) &&
+        (!style.reserved.empty() || style.before_delimiter.get() != nullptr ||
+         style.block_text_start.get() != nullptr || style.line_start_prefix.get() != nullptr ||
+         style.prefix_token.get() != nullptr);
 
     std::vector<ColorSpan> spans =
         syntax_on ? highlight_syntax(text, style, state) : highlight_layout(text, style, state);

@@ -110,11 +110,9 @@ style system (subsystem 08).
   unexported (anonymous-namespace) equivalents of `IsEolComment`/
   `IsBeginComment`/`IsEndComment`/`IsNumericPrefix`/`IsReservedWord`/
   `keywordCmp`/`IsSymbol`/`IsString`.
-- **`syntax_highlight_enabled && !reserved.empty()` gate** — ported
-  faithfully as the switch between the syntax-colouring pass and the
-  `BOLD_CODE`/`UNDERLINE_CODE`-toggle pass, matching the original's own
-  `if`/`else if` structure rather than treating the empty-reserved-list
-  case as a bug to fix.
+- **Syntax-rule gate** — the syntax-colouring pass activates when a style
+  has reserved words or any configured contextual rule, so structured
+  formats without a fixed keyword set can still be highlighted.
 - **`BOLD_CODE`/`UNDERLINE_CODE` toggling** — ported as the fallback
   path (`highlight_line` internally: `highlight_layout`), gated on
   `text_with_layout` exactly as `WithLayout(iCurrStyle)` gates it in the

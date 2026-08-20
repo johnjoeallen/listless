@@ -32,6 +32,7 @@ struct HighlightState {
     bool in_preprocessor = false;
     bool bold = false;
     bool underlined = false;
+    int block_text_base_indent = -1;
 
     friend bool operator==(const HighlightState&, const HighlightState&) = default;
 };

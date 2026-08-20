@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 #include "Style.hpp"
 #include "SyntaxHighlight.hpp"
 
@@ -56,6 +58,193 @@ TEST(HighlightLine, PlainIdentifierWhenNoRulesMatch) {
     EXPECT_EQ(spans[0].color, Color::LightGray);
 }
 
+TEST(HighlightLine, BlockTextSuppressesContextualRulesUntilIndentationReturns) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.block_text_start.set("|");
+    s.block_text_color.set(Color::Magenta);
+    s.reserved_color.set(Color::Blue);
+    s.fore_color.set(Color::White);
+    HighlightState state;
+
+    highlight_line("description: |", s, state);
+    auto block = highlight_line("  http://example.test", s, state);
+    ASSERT_EQ(block.size(), 1u);
+    EXPECT_EQ(block[0].color, Color::Magenta);
+
+    auto key = highlight_line("name: value", s, state);
+    ASSERT_GE(key.size(), 1u);
+    EXPECT_EQ(key[0].color, Color::Blue);
+}
+
+TEST(HighlightLine, BlockTextMarkerMustBeAScalarValue) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.block_text_start.set("|");
+    s.fore_color.set(Color::White);
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    highlight_line("name: value | metadata", s, state);
+    auto next = highlight_line("next: value", s, state);
+    EXPECT_NE(next.size(), 1u);
+}
+
+TEST(HighlightLine, BlockTextIndentIndicatorSetsMinimumContentIndentation) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.block_text_start.set("|");
+    s.block_text_color.set(Color::Yellow);
+    s.reserved_color.set(Color::Blue);
+
+    HighlightState shallow_state;
+    highlight_line("text: |2", s, shallow_state);
+    auto shallow = highlight_line(" value: plain", s, shallow_state);
+    EXPECT_NE(shallow[0].color, Color::Yellow);
+
+    HighlightState content_state;
+    highlight_line("text: |2", s, content_state);
+    auto content = highlight_line("  value: plain", s, content_state);
+    ASSERT_EQ(content.size(), 1u);
+    EXPECT_EQ(content[0].color, Color::Yellow);
+}
+
+TEST(HighlightLine, PositionalPrefixRulesHighlightStructuralTokens) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.line_start_prefix.set("-");
+    s.line_start_prefix_requires_space.set(true);
+    s.prefix_token.set("&!");
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    auto sequence = highlight_line("  - item", s, state);
+    ASSERT_GE(sequence.size(), 1u);
+    EXPECT_TRUE(std::any_of(sequence.begin(), sequence.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }));
+
+    auto anchor = highlight_line("value: &shared", s, state);
+    ASSERT_GE(anchor.size(), 2u);
+    EXPECT_EQ(anchor.back().color, Color::Blue);
+}
+
+TEST(HighlightLine, BeforeDelimiterCanRequireWhitespaceAfterTheDelimiter) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    auto scalar = highlight_line("- write:pets", s, state);
+    EXPECT_TRUE(std::none_of(scalar.begin(), scalar.end(),
+                             [](const ColorSpan& span) { return span.color == Color::Blue; }));
+}
+
+TEST(HighlightLine, SequenceDataAndSequenceMappingsUseDifferentRules) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.before_delimiter_color.set(Color::Blue);
+    s.line_start_prefix.set("-");
+    s.line_start_prefix_requires_space.set(true);
+    s.line_start_data_color.set(Color::Green);
+    HighlightState state;
+
+    auto scalar = highlight_line("- write:pets", s, state);
+    ASSERT_GE(scalar.size(), 2u);
+    EXPECT_EQ(scalar.back().color, Color::Green);
+
+    auto mapping = highlight_line("- write: pets", s, state);
+    EXPECT_TRUE(std::any_of(mapping.begin(), mapping.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }));
+}
+
+TEST(HighlightLine, SequenceDataCanStartWithAPrefixToken) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.line_start_prefix.set("-");
+    s.line_start_prefix_requires_space.set(true);
+    s.line_start_data_color.set(Color::Green);
+    s.prefix_token.set("&");
+    s.prefix_token_color.set(Color::Blue);
+    HighlightState state;
+
+    auto spans = highlight_line("- &shared value", s, state);
+    EXPECT_TRUE(std::any_of(spans.begin(), spans.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }));
+    EXPECT_EQ(spans.back().color, Color::Green);
+}
+
+TEST(HighlightLine, PrefixTokensSupportStructuredTextAnnotations) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.prefix_token.set("&*!%");
+    s.prefix_token_color.set(Color::Blue);
+    HighlightState state;
+
+    for (std::string_view text : {"&defaults", "*defaults", "!custom", "%YAML 1.2"}) {
+        auto spans = highlight_line(text, s, state);
+        ASSERT_FALSE(spans.empty());
+        EXPECT_EQ(spans.front().color, Color::Blue) << text;
+    }
+}
+
+TEST(HighlightLine, BeforeDelimiterIgnoresQuotedScalarContent) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.line_start_prefix.set("-");
+    s.string_delimiter.set("\"");
+    s.string_color.set(Color::Green);
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    auto spans = highlight_line("- \"write: pets\"", s, state);
+    EXPECT_TRUE(std::none_of(spans.begin(), spans.end(), [](const ColorSpan& span) {
+        return span.color == Color::Blue && span.length > 1;
+    }));
+}
+
+TEST(HighlightLine, BeforeDelimiterHighlightsQuotedKeys) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.string_delimiter.set("\"");
+    s.before_delimiter_color.set(Color::Blue);
+    s.string_color.set(Color::Green);
+    HighlightState state;
+
+    auto spans = highlight_line("\"name\": \"value\"", s, state);
+    ASSERT_GE(spans.size(), 2u);
+    EXPECT_EQ(spans.front().color, Color::Blue);
+    EXPECT_EQ(spans.back().color, Color::Green);
+}
+
+TEST(HighlightLine, BeforeDelimiterHighlightsNestedFlowCollectionKeys) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_color.set(Color::Blue);
+    s.string_delimiter.set("\"");
+    s.string_color.set(Color::Green);
+    s.symbols.set("{}[],:");
+    HighlightState state;
+
+    auto spans = highlight_line(
+        "{\"first\": {\"nested\": [1, {\"final\": true}]}, \"label, text\": \"value\"}", s, state);
+    EXPECT_EQ(std::count_if(spans.begin(), spans.end(),
+                            [](const ColorSpan& span) { return span.color == Color::Blue; }),
+              4);
+}
+
 TEST(HighlightLine, ReservedWordRequiresWordBoundary) {
     Style s("C");
     init_c_style(s);
@@ -105,6 +294,45 @@ TEST(HighlightLine, DecimalNumber) {
     auto spans = highlight_line("123", s, state);
     ASSERT_EQ(spans.size(), 1u);
     EXPECT_EQ(spans[0].color, Color::Yellow);
+}
+
+TEST(HighlightLine, DecimalNumberSupportsFractionsAndExponents) {
+    Style s("C");
+    init_c_style(s);
+    HighlightState state;
+
+    auto spans = highlight_line("3.14e-2", s, state);
+    ASSERT_EQ(spans.size(), 1u);
+    EXPECT_EQ(spans[0].length, 7u);
+    EXPECT_EQ(spans[0].color, Color::Yellow);
+}
+
+TEST(HighlightLine, StructuredScalarValuesUseExistingGenericRules) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_color.set(Color::Blue);
+    s.string_delimiter.set("\"");
+    s.string_color.set(Color::Green);
+    s.number_color.set(Color::Yellow);
+    s.reserved_color.set(Color::Magenta);
+    s.add_reserved_word("true");
+    s.add_reserved_word("null");
+    HighlightState state;
+
+    auto plain = highlight_line("name: ready", s, state);
+    EXPECT_EQ(plain.front().color, Color::Blue);
+    EXPECT_EQ(plain.back().color, Color::LightGray);
+
+    auto quoted = highlight_line("name: \"ready\"", s, state);
+    EXPECT_EQ(quoted.front().color, Color::Blue);
+    EXPECT_EQ(quoted.back().color, Color::Green);
+
+    auto boolean = highlight_line("enabled: true", s, state);
+    EXPECT_EQ(boolean.back().color, Color::Magenta);
+
+    auto number = highlight_line("threshold: 3.14e-2", s, state);
+    EXPECT_EQ(number.back().color, Color::Yellow);
 }
 
 TEST(HighlightLine, StringWithEscape) {

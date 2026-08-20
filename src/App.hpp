@@ -28,13 +28,16 @@ class App {
     // directly opened viewer exits the program. Throws std::runtime_error
     // if `start_path` names a file that can't be opened (propagated from
     // Viewer's constructor).
-    explicit App(std::filesystem::path start_path);
+    explicit App(std::filesystem::path start_path,
+                 std::optional<std::string> syntax_style = std::nullopt,
+                 std::optional<std::filesystem::path> syntax_dir = std::nullopt);
 
     // Constructs a viewer-only session over already-read stdin content
     // (`display_name` shown on the status line). Closing this directly
     // opened viewer exits the program.
     App(std::string stdin_content, std::string display_name,
-        std::optional<std::string> syntax_style = std::nullopt);
+        std::optional<std::string> syntax_style = std::nullopt,
+        std::optional<std::filesystem::path> syntax_dir = std::nullopt);
 
     // Runs the interactive loop until the user quits. Returns a process
     // exit code (always 0 -- there is no failure path once the session
@@ -84,6 +87,7 @@ class App {
     StyleSet styles_;
     Style* current_style_ = &styles_.default_style();
     std::optional<std::string> requested_style_;
+    std::optional<std::filesystem::path> syntax_dir_;
     HighlightCache highlight_cache_;
 };
 
