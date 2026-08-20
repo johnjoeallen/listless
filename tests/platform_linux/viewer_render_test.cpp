@@ -1,5 +1,3 @@
-#include "ViewerRender.hpp"
-
 #include <gtest/gtest.h>
 #include <ncurses.h>
 
@@ -8,6 +6,7 @@
 #include <string>
 
 #include "Style.hpp"
+#include "ViewerRender.hpp"
 
 using listless::Color;
 using listless::HighlightCache;

@@ -52,7 +52,9 @@ struct Terminal::Impl {
             tty_in = fopen("/dev/tty", "r");
             tty_out = fopen("/dev/tty", "w");
             if (tty_in == nullptr || tty_out == nullptr) {
-                throw std::runtime_error("Terminal: stdin is unavailable for keyboard input and /dev/tty could not be opened");
+                throw std::runtime_error(
+                    "Terminal: stdin is unavailable for keyboard input and /dev/tty could not be "
+                    "opened");
             }
             screen = newterm(nullptr, tty_out, tty_in);
         } else {
