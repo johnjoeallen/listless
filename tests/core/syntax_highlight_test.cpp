@@ -93,6 +93,27 @@ TEST(HighlightLine, BlockTextMarkerMustBeAScalarValue) {
     EXPECT_NE(next.size(), 1u);
 }
 
+TEST(HighlightLine, BlockTextIndentIndicatorSetsMinimumContentIndentation) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.block_text_start.set("|");
+    s.block_text_color.set(Color::Yellow);
+    s.reserved_color.set(Color::Blue);
+
+    HighlightState shallow_state;
+    highlight_line("text: |2", s, shallow_state);
+    auto shallow = highlight_line(" value: plain", s, shallow_state);
+    EXPECT_NE(shallow[0].color, Color::Yellow);
+
+    HighlightState content_state;
+    highlight_line("text: |2", s, content_state);
+    auto content = highlight_line("  value: plain", s, content_state);
+    ASSERT_EQ(content.size(), 1u);
+    EXPECT_EQ(content[0].color, Color::Yellow);
+}
+
 TEST(HighlightLine, PositionalPrefixRulesHighlightStructuralTokens) {
     Style s("Generic");
     s.syntax_highlight_enabled.set(true);
