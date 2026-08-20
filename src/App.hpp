@@ -24,16 +24,15 @@ namespace listless {
 class App {
   public:
     // `start_path` empty -> browse the current directory; a directory
-    // -> browse it; a regular file -> open it in the viewer, with the
-    // file's parent directory as the browsing screen "close viewer"
-    // falls back to. Throws std::runtime_error if `start_path` names a
-    // file that can't be opened (propagated from Viewer's constructor).
+    // -> browse it; a regular file -> open it in the viewer. Closing a
+    // directly opened viewer exits the program. Throws std::runtime_error
+    // if `start_path` names a file that can't be opened (propagated from
+    // Viewer's constructor).
     explicit App(std::filesystem::path start_path);
 
     // Constructs a viewer-only session over already-read stdin content
-    // (`display_name` shown on the status line). Browses the current
-    // directory as the "close viewer" fallback, matching the
-    // empty-`start_path` case above.
+    // (`display_name` shown on the status line). Closing this directly
+    // opened viewer exits the program.
     App(std::string stdin_content, std::string display_name);
 
     // Runs the interactive loop until the user quits. Returns a process
@@ -78,6 +77,7 @@ class App {
     FileManager file_manager_;
     std::optional<Viewer> viewer_;
     Mode mode_ = Mode::Browsing;
+    bool viewer_opened_from_browsing_ = false;
     bool quit_ = false;
 
     StyleSet styles_;
