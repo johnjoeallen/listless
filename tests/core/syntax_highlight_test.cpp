@@ -307,6 +307,34 @@ TEST(HighlightLine, DecimalNumberSupportsFractionsAndExponents) {
     EXPECT_EQ(spans[0].color, Color::Yellow);
 }
 
+TEST(HighlightLine, StructuredScalarValuesUseExistingGenericRules) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_color.set(Color::Blue);
+    s.string_delimiter.set("\"");
+    s.string_color.set(Color::Green);
+    s.number_color.set(Color::Yellow);
+    s.reserved_color.set(Color::Magenta);
+    s.add_reserved_word("true");
+    s.add_reserved_word("null");
+    HighlightState state;
+
+    auto plain = highlight_line("name: ready", s, state);
+    EXPECT_EQ(plain.front().color, Color::Blue);
+    EXPECT_EQ(plain.back().color, Color::LightGray);
+
+    auto quoted = highlight_line("name: \"ready\"", s, state);
+    EXPECT_EQ(quoted.front().color, Color::Blue);
+    EXPECT_EQ(quoted.back().color, Color::Green);
+
+    auto boolean = highlight_line("enabled: true", s, state);
+    EXPECT_EQ(boolean.back().color, Color::Magenta);
+
+    auto number = highlight_line("threshold: 3.14e-2", s, state);
+    EXPECT_EQ(number.back().color, Color::Yellow);
+}
+
 TEST(HighlightLine, StringWithEscape) {
     Style s("C");
     init_c_style(s);
