@@ -7,8 +7,8 @@ searching, and configurable syntax highlighting.
 The current implementation runs on Linux. Windows and macOS are target
 platforms whose backends are still to be completed.
 
-[View on GitHub](https://github.com/johnjoeallen/listless) ·
-[Download latest release](https://github.com/johnjoeallen/listless/releases)
+[View on GitHub](https://github.com/johnjoeallen/listless){ .md-button .md-button--primary }
+[Download latest release](https://github.com/johnjoeallen/listless/releases){ .md-button }
 
 ## Start here
 
