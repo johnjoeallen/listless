@@ -182,6 +182,20 @@ TEST(HighlightLine, SequenceDataCanStartWithAPrefixToken) {
     EXPECT_EQ(spans.back().color, Color::Green);
 }
 
+TEST(HighlightLine, PrefixTokensSupportStructuredTextAnnotations) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.prefix_token.set("&*!%");
+    s.prefix_token_color.set(Color::Blue);
+    HighlightState state;
+
+    for (std::string_view text : {"&defaults", "*defaults", "!custom", "%YAML 1.2"}) {
+        auto spans = highlight_line(text, s, state);
+        ASSERT_FALSE(spans.empty());
+        EXPECT_EQ(spans.front().color, Color::Blue) << text;
+    }
+}
+
 TEST(HighlightLine, BeforeDelimiterIgnoresQuotedScalarContent) {
     Style s("Generic");
     s.syntax_highlight_enabled.set(true);
