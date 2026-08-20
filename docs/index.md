@@ -1,8 +1,8 @@
 # Listless
 
-Listless (`lss`) is a terminal file and directory viewer for Linux. It
-combines directory browsing with a pager-style file viewer, text and hex
-views, searching, and configurable syntax highlighting.
+Listless (`lss`) is a terminal file and directory viewer. It combines
+directory browsing with a pager-style file viewer, text and hex views,
+searching, and configurable syntax highlighting.
 
 ## Start here
 
@@ -13,6 +13,12 @@ views, searching, and configurable syntax highlighting.
 - [Roadmap](roadmap.md)
 
 ## Project history
+
+Listless is a modern port of [OnScreen/2](porting/original.md), targeting:
+
+- :fontawesome-brands-linux: Linux
+- :fontawesome-brands-windows: Windows
+- :fontawesome-brands-apple: macOS
 
 Product documentation is separate from the source research and engineering
 record. See the [Porting record](porting/index.md) for the original-system
