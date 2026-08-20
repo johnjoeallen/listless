@@ -1205,11 +1205,9 @@ style system (subsystem 08).</p>
   unexported (anonymous-namespace) equivalents of <code>IsEolComment</code>/
   <code>IsBeginComment</code>/<code>IsEndComment</code>/<code>IsNumericPrefix</code>/<code>IsReservedWord</code>/
   <code>keywordCmp</code>/<code>IsSymbol</code>/<code>IsString</code>.</li>
-<li><strong><code>syntax_highlight_enabled &amp;&amp; !reserved.empty()</code> gate</strong> — ported
-  faithfully as the switch between the syntax-colouring pass and the
-  <code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code>-toggle pass, matching the original's own
-  <code>if</code>/<code>else if</code> structure rather than treating the empty-reserved-list
-  case as a bug to fix.</li>
+<li><strong>Syntax-rule gate</strong> — the syntax-colouring pass activates when a style
+  has reserved words or any configured contextual rule, so structured
+  formats without a fixed keyword set can still be highlighted.</li>
 <li><strong><code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code> toggling</strong> — ported as the fallback
   path (<code>highlight_line</code> internally: <code>highlight_layout</code>), gated on
   <code>text_with_layout</code> exactly as <code>WithLayout(iCurrStyle)</code> gates it in the

@@ -909,6 +909,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Directory-based styles (issue #32)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contextual-syntax-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contextual syntax rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1078,6 +1095,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Directory-based styles (issue #32)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contextual-syntax-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contextual syntax rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1284,6 +1318,24 @@ one by reusing a style's name):</p>
    user's own <code>*.conf</code> files. Highest precedence, since it's the newest
    and most specific source.</li>
 </ol>
+<h3 id="contextual-syntax-rules">Contextual syntax rules<a class="headerlink" href="#contextual-syntax-rules" title="Permanent link">&para;</a></h3>
+<p>Styles can add structural highlighting without a language-specific lexer:</p>
+<ul>
+<li><code>BeforeDelimiter</code> highlights text before a delimiter; use
+  <code>BeforeDelimiterRequiresSpace =&gt; On</code> when the delimiter must be followed
+  by whitespace or end-of-line to qualify.</li>
+<li><code>LineStartPrefix</code> highlights a marker after indentation; use
+  <code>LineStartPrefixRequiresSpace =&gt; On</code> for markers such as YAML's <code>-</code>.
+  <code>LineStartDataColor</code> colours scalar data that follows a qualifying marker.</li>
+<li><code>PrefixToken</code> highlights a token beginning with one of its configured
+  characters, such as YAML anchors, aliases, tags, and directives.</li>
+<li><code>BlockTextStart</code> starts an indented plain-text block when one of its
+  markers is used as a mapping or sequence value. Optional numeric markers
+  such as <code>|2</code> establish the minimum content indentation.</li>
+</ul>
+<p><code>BeforeDelimiterColor</code>, <code>LineStartPrefixColor</code>, and <code>PrefixTokenColor</code>
+default to <code>ReservedColor</code>; <code>BlockTextColor</code> and <code>LineStartDataColor</code>
+default to <code>StringColor</code>.</p>
 <p><code>load_config_dir(StyleSet&amp;, dir)</code> loads every <code>*.conf</code> file directly
 inside <code>dir</code> (not recursive) in filename order, but <strong>not</strong> via a naive
 single pass per file -- it pre-registers every style name defined
