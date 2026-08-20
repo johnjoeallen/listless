@@ -44,7 +44,8 @@ class TempDir {
   public:
     TempDir()
         : path_(std::filesystem::temp_directory_path() /
-                ("listless_style_test_dir_" + std::to_string(reinterpret_cast<std::uintptr_t>(this)))) {
+                ("listless_style_test_dir_" +
+                 std::to_string(reinterpret_cast<std::uintptr_t>(this)))) {
         std::filesystem::create_directories(path_);
     }
     ~TempDir() {
@@ -245,7 +246,8 @@ TEST(DefaultStylesDir, RespectsXdgConfigHome) {
     GTEST_SKIP();
 #else
     setenv("XDG_CONFIG_HOME", "/tmp/listless-xdg-test", 1);
-    EXPECT_EQ(default_styles_dir(), std::filesystem::path("/tmp/listless-xdg-test/listless/styles"));
+    EXPECT_EQ(default_styles_dir(),
+              std::filesystem::path("/tmp/listless-xdg-test/listless/styles"));
     unsetenv("XDG_CONFIG_HOME");
 #endif
 }
