@@ -265,6 +265,38 @@ TEST(LoadConfig, MissingFileReturnsFalseWithoutModifyingStyles) {
     EXPECT_EQ(styles.styles().size(), 1u);
 }
 
+TEST(LoadConfig, CaseSensitiveAcceptsOnOffNotTrueFalse) {
+    // Regression test: parse_bool() (src/Style.cpp) only recognizes
+    // On/Yes/Off/No, matching every other Item<bool> field -- "TRUE" was
+    // mistakenly used in this repo's shipped style/syntax/*.conf files
+    // and silently ignored (malformed values are skipped, not fatal),
+    // leaving CaseSensitive permanently unset there.
+    TempFile file;
+    {
+        std::ofstream out(file.path());
+        out << "Style Cpp (.cpp)\n"
+               "{\n"
+               "\tCaseSensitive => TRUE\n"
+               "}\n"
+               "Style Shell (.sh)\n"
+               "{\n"
+               "\tCaseSensitive => On\n"
+               "}\n";
+    }
+
+    StyleSet styles;
+    ASSERT_TRUE(load_config(styles, file.path()));
+
+    Style* cpp = styles.find("Cpp");
+    ASSERT_NE(cpp, nullptr);
+    EXPECT_EQ(cpp->case_sensitive.get(), nullptr);  // "TRUE" is not a recognized value
+
+    Style* shell = styles.find("Shell");
+    ASSERT_NE(shell, nullptr);
+    ASSERT_NE(shell->case_sensitive.get(), nullptr);
+    EXPECT_TRUE(*shell->case_sensitive.get());
+}
+
 TEST(LoadConfig, ParsesScalarFieldsAndExtensions) {
     TempFile file;
     {
