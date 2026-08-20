@@ -169,6 +169,26 @@ one by reusing a style's name):
    user's own `*.conf` files. Highest precedence, since it's the newest
    and most specific source.
 
+### Contextual syntax rules
+
+Styles can add structural highlighting without a language-specific lexer:
+
+- `BeforeDelimiter` highlights text before a delimiter; use
+  `BeforeDelimiterRequiresSpace => On` when the delimiter must be followed
+  by whitespace or end-of-line to qualify.
+- `LineStartPrefix` highlights a marker after indentation; use
+  `LineStartPrefixRequiresSpace => On` for markers such as YAML's `-`.
+  `LineStartDataColor` colours scalar data that follows a qualifying marker.
+- `PrefixToken` highlights a token beginning with one of its configured
+  characters, such as YAML anchors, aliases, tags, and directives.
+- `BlockTextStart` starts an indented plain-text block when one of its
+  markers is used as a mapping or sequence value. Optional numeric markers
+  such as `|2` establish the minimum content indentation.
+
+`BeforeDelimiterColor`, `LineStartPrefixColor`, and `PrefixTokenColor`
+default to `ReservedColor`; `BlockTextColor` and `LineStartDataColor`
+default to `StringColor`.
+
 `load_config_dir(StyleSet&, dir)` loads every `*.conf` file directly
 inside `dir` (not recursive) in filename order, but **not** via a naive
 single pass per file -- it pre-registers every style name defined
