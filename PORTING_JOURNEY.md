@@ -1001,3 +1001,25 @@ runtime behaviour changes.
 
 **Tests:** reconfigured CMake from the moved source path, then built and
 ran the full suite successfully (279 tests).
+
+## 2026-08-20 — Product documentation and porting record (issue #84)
+
+**Objective:** make GitHub Pages useful as Listless product documentation
+while preserving the source-derived OnScreen/2 research separately.
+
+**Changes:** product pages now cover getting started, usage, syntax
+highlighting, configuration, and roadmap information. Existing original
+architecture, subsystem, target, and status material moved under
+`docs/porting/`; MkDocs presents it as a distinct Porting Record section.
+The roadmap uses red **not implemented** and **upcoming feature** tags,
+including a plain-language explanation of the unimplemented F2–F7 live
+colour cycling feature and why the original fixed-key model cannot be
+reused unchanged with Listless's extended style palette.
+
+**Decisions:** planned features may appear in product documentation only
+when visibly marked as unavailable. The Porting Journey remains the
+append-only engineering record rather than becoming end-user reference
+documentation.
+
+**Verification:** `mkdocs build --strict` passed with the new navigation
+and relocated links.

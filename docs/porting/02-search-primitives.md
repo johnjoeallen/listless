@@ -6,7 +6,7 @@ Source: `original/func/strsrch.cpp`, `original/include/jac.h`
 wildcard syntax, section 2.1.1). Depends on
 [01-string-container-primitives.md](01-string-container-primitives.md);
 resolves the non-functional `RegExp` blocker noted in
-[architecture.md](architecture.md#known-broken--dead-code-in-original)
+[architecture.md](architecture.md#known-broken-dead-code-in-original)
 for filename glob matching.
 
 ## Literal search: `strsrch`/`SearchExpression`

@@ -55,7 +55,11 @@ Each successful iteration should compile cleanly, pass tests and quality gates, 
 
 ## Documentation
 
-`/docs` documents original OnScreen/2 behaviour, derived from `/original`, written before porting each subsystem. Start at [docs/README.md](docs/README.md), or browse the published site at <https://johnjoeallen.github.io/listless/>, which also covers the project's target and current porting status.
+`/docs` contains product-first Listless documentation. Start at
+[docs/documentation.md](docs/documentation.md), or browse the published site at
+<https://johnjoeallen.github.io/listless/>. Original-source research and
+subsystem derivations live separately under [docs/porting](docs/porting/index.md),
+alongside the append-only [`PORTING_JOURNEY.md`](PORTING_JOURNEY.md).
 
 ## Porting Journal
 

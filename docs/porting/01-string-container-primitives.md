@@ -101,7 +101,7 @@ Hand-rolled Julian-day date and integer-seconds-of-day time, each with
 regex-based string parsing (e.g. a `ddmmyyFormat`-style pattern) and
 `CString` conversion operators. Parsing currently depends on `RegExp`,
 which is non-functional in the shipped source (see
-[architecture.md](architecture.md#known-broken--dead-code-in-original)).
+[architecture.md](architecture.md#known-broken-dead-code-in-original)).
 
 **Target:** `std::chrono::year_month_day` / `std::chrono::sys_seconds`,
 formatted and parsed via `std::format`/`std::chrono` I/O or
