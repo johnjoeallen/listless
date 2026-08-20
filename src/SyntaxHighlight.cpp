@@ -106,6 +106,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     Color preprocessor_color = get_or(style.preprocessor_color, Color::LightGray);
     Color string_color = get_or(style.string_color, Color::LightGray);
     Color block_text_color = get_or(style.block_text_color, string_color);
+    Color line_start_data_color = get_or(style.line_start_data_color, string_color);
     Color symbols_color = get_or(style.symbols_color, Color::LightGray);
     Color number_color = get_or(style.number_color, Color::LightGray);
     Color reserved_color = get_or(style.reserved_color, Color::LightGray);
@@ -130,9 +131,15 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     bool before_delimiter_requires_space = get_or(style.before_delimiter_requires_space, false);
     std::size_t contextual_start = n;
     std::size_t contextual_end = n;
+    std::size_t line_start_data = n;
+    bool has_line_start_prefix = first_content != std::string_view::npos &&
+                                 line_start_prefix != nullptr &&
+                                 line_start_prefix->find(text[first_content]) != std::string::npos;
+    std::size_t payload_start =
+        has_line_start_prefix ? text.find_first_not_of(" \t", first_content + 1) : first_content;
     if (before_delimiter != nullptr && !before_delimiter->empty()) {
         std::size_t delimiter = text.find(*before_delimiter);
-        contextual_start = text.find_first_not_of(" \t");
+        contextual_start = payload_start;
         bool delimiter_is_mapping =
             delimiter == std::string_view::npos || !before_delimiter_requires_space ||
             delimiter + before_delimiter->size() == n ||
@@ -146,6 +153,9 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
             }
         } else {
             contextual_start = n;
+            if (has_line_start_prefix && payload_start != std::string_view::npos) {
+                line_start_data = payload_start;
+            }
         }
     }
 
@@ -208,6 +218,9 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
             push(i, contextual_end - i, reserved_color);
             i = contextual_end;
             seen_non_space = true;
+        } else if (i == line_start_data) {
+            push(i, n - i, line_start_data_color);
+            i = n;
         } else if (i == first_content && line_start_prefix != nullptr &&
                    line_start_prefix->find(c) != std::string::npos) {
             push(i, 1, reserved_color);
