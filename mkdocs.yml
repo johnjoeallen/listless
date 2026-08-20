@@ -45,20 +45,28 @@ extra:
 
 nav:
   - Home: index.md
-  - About:
-      - "The original: OnScreen/2": original.md
-      - "The target: Listless": target.md
-  - Porting status: status.md
-  - Original architecture: architecture.md
-  - Subsystems:
-      - "01. String/container primitives": 01-string-container-primitives.md
-      - "02. Search primitives": 02-search-primitives.md
-      - "03. Directory enumeration": 03-directory-enumeration.md
-      - "04. Console/terminal I/O": 04-console-terminal-io.md
-      - "05. Keyboard input": 05-keyboard-input.md
-      - "06. File-list UI": 06-file-list-ui.md
-      - "07. File viewer core": 07-file-viewer-core.md
-      - "08. Style/config system": 08-style-config.md
-      - "09. Syntax highlighting": 09-syntax-highlighting.md
-      - "10. Hex-mode viewer": 10-hex-mode-viewer.md
-      - "App entry point / main loop": app-main-loop.md
+  - Listless guide:
+      - Getting started: getting-started.md
+      - Usage: usage.md
+      - Syntax highlighting: syntax-highlighting.md
+      - Configuration: configuration.md
+      - Roadmap: roadmap.md
+  - Porting record:
+      - Overview: porting/index.md
+      - Status: porting/status.md
+      - Original architecture: porting/architecture.md
+      - About:
+          - "The original: OnScreen/2": porting/original.md
+          - "The target: Listless": porting/target.md
+      - Subsystems:
+          - "01. String/container primitives": porting/01-string-container-primitives.md
+          - "02. Search primitives": porting/02-search-primitives.md
+          - "03. Directory enumeration": porting/03-directory-enumeration.md
+          - "04. Console/terminal I/O": porting/04-console-terminal-io.md
+          - "05. Keyboard input": porting/05-keyboard-input.md
+          - "06. File-list UI": porting/06-file-list-ui.md
+          - "07. File viewer core": porting/07-file-viewer-core.md
+          - "08. Style/config system": porting/08-style-config.md
+          - "09. Syntax highlighting": porting/09-syntax-highlighting.md
+          - "10. Hex-mode viewer": porting/10-hex-mode-viewer.md
+          - "App entry point / main loop": porting/app-main-loop.md

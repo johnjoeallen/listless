@@ -936,3 +936,24 @@ full original CLI flag surface and config-file loading, `FileManager`'s
 command submenu, and syntax-highlighted rendering are all real
 follow-up work now that there's a runnable binary to hang them off of;
 subsystem 11 (file operations) remains next in the numbered breakdown.
+
+## 2026-08-20 — Product documentation and porting record (issue #84)
+
+**Objective:** make GitHub Pages useful as Listless product documentation
+while preserving the source-derived OnScreen/2 research separately.
+
+**Changes:** product pages now cover getting started, usage, syntax
+highlighting, configuration, and roadmap information. Existing original
+architecture, subsystem, target, and status material moved under
+`docs/porting/`; MkDocs presents it as a distinct Porting Record section.
+The roadmap uses red **not implemented** and **upcoming feature** tags,
+including a plain-language explanation of the unimplemented F2–F7 live
+colour cycling feature.
+
+**Decisions:** planned features may appear in product documentation only
+when visibly marked as unavailable. The Porting Journey remains the
+append-only engineering record rather than becoming end-user reference
+documentation.
+
+**Verification:** `mkdocs build --strict` passed with the new navigation
+and relocated links.
