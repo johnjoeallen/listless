@@ -1163,6 +1163,12 @@ doesn't replace it.</p>
 <td><a href="https://github.com/johnjoeallen/listless/pull/26">#26</a></td>
 </tr>
 <tr>
+<td>—</td>
+<td>Syntax highlighting integration</td>
+<td><a href="../09-syntax-highlighting/">09</a></td>
+<td><a href="https://github.com/johnjoeallen/listless/pull/35">#35</a></td>
+</tr>
+<tr>
 <td>10</td>
 <td>Hex-mode viewer</td>
 <td><a href="../10-hex-mode-viewer/">10</a></td>
@@ -1185,11 +1191,6 @@ App/main-loop layer every subsystem above deferred to, wiring
 <code>FileManager</code> and <code>Viewer</code> into the first runnable <code>lss</code> binary.</p>
 <h2 id="not-started">Not started<a class="headerlink" href="#not-started" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Syntax highlighting wiring</strong> (<a href="https://github.com/johnjoeallen/listless/issues/29">issue #29</a>)
-  — subsystem 9 produces colour spans (<code>highlight_line</code>); nothing calls
-  it from the renderer yet, so no file gets syntax colouring in the
-  running app regardless of type. Filed as a follow-up once the
-  App/main-loop layer existed to own <em>which</em> style is active per file.</li>
 <li><strong>Subsystem 11: file operations</strong> (copy/move/rename/delete/mkdir) —
   deferred until everything above is stable, given the higher
   regression-test scrutiny destructive operations warrant.</li>
