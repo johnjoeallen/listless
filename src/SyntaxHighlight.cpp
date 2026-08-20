@@ -184,11 +184,17 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
 
     bool starts_block_text = false;
     if (block_text_start != nullptr && !block_text_start->empty()) {
-        for (char marker : *block_text_start) {
-            if (text.find(marker) != std::string_view::npos) {
-                starts_block_text = true;
-                break;
-            }
+        std::size_t block_value_start = n;
+        if (contextual_end != n && before_delimiter != nullptr) {
+            std::size_t delimiter =
+                find_outside_strings(text, *before_delimiter, style.string_delimiter, escape);
+            block_value_start = text.find_first_not_of(" \t", delimiter + before_delimiter->size());
+        } else if (has_line_start_prefix) {
+            block_value_start = payload_start;
+        }
+        if (block_value_start != std::string_view::npos && block_value_start < n) {
+            starts_block_text =
+                block_text_start->find(text[block_value_start]) != std::string::npos;
         }
     }
 

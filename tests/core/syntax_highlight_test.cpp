@@ -78,6 +78,21 @@ TEST(HighlightLine, BlockTextSuppressesContextualRulesUntilIndentationReturns) {
     EXPECT_EQ(key[0].color, Color::Blue);
 }
 
+TEST(HighlightLine, BlockTextMarkerMustBeAScalarValue) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.block_text_start.set("|");
+    s.fore_color.set(Color::White);
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    highlight_line("name: value | metadata", s, state);
+    auto next = highlight_line("next: value", s, state);
+    EXPECT_NE(next.size(), 1u);
+}
+
 TEST(HighlightLine, PositionalPrefixRulesHighlightStructuralTokens) {
     Style s("Generic");
     s.syntax_highlight_enabled.set(true);
