@@ -901,6 +901,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#directory-based-styles-issue-32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory-based styles (issue #32)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-deliberately-narrowed-or-deferred" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1053,6 +1064,17 @@
     <span class="md-ellipsis">
       
         What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-based-styles-issue-32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory-based styles (issue #32)
       
     </span>
   </a>
@@ -1231,8 +1253,47 @@ Style Name (.ext1 .ext2)  BaseStyle1 BaseStyle2
   reinterpretation, not a literal port: the original's <code>os.set</code> lived in
   a fixed location next to the DOS/OS2/Win32 executable, which has no
   meaningful Linux equivalent (no "next to the binary" convention, and
-  <code>/usr/bin</code> isn't writable by a normal user besides).</li>
+  <code>/usr/bin</code> isn't writable by a normal user besides). Superseded by the
+  directory-based model below as the preferred way to configure styles,
+  but still loaded (at lower precedence) for backward compatibility.</li>
 </ul>
+<h2 id="directory-based-styles-issue-32">Directory-based styles (issue #32)<a class="headerlink" href="#directory-based-styles-issue-32" title="Permanent link">&para;</a></h2>
+<p>Rather than one config file, <code>App</code> assembles its <code>StyleSet</code> from up to
+three sources, each loaded via <code>load_config_dir()</code>/<code>load_config()</code> in
+increasing precedence (a later source overrides or extends an earlier
+one by reusing a style's name):</p>
+<ol>
+<li><strong><code>system_styles_dir()</code></strong> — the package-installed, read-only styles
+   directory. Baked in at build time from <code>CMAKE_INSTALL_PREFIX</code> via the
+   <code>LISTLESS_SYSTEM_STYLES_DIR</code> compile definition (<code>src/CMakeLists.txt</code>);
+   defaults to <code>/usr/local/share/listless/styles</code> if that definition is
+   absent. Populated from this repo's <code>style/syntax/*.conf</code> by the root
+   <code>CMakeLists.txt</code>'s <code>install(DIRECTORY style/syntax/ ...)</code> rule --
+   <code>cmake --install</code> (and eventually a <code>.deb</code>) drops each file there
+   individually, rather than one shared file competing with a user's own
+   edits.</li>
+<li><strong><code>default_config_path()</code></strong> — the legacy single <code>style.conf</code>, kept
+   for backward compatibility.</li>
+<li><strong><code>default_styles_dir()</code></strong> — <code>$XDG_CONFIG_HOME/listless/styles/</code>
+   (falling back to <code>~/.config/listless/styles/</code>), a directory of the
+   user's own <code>*.conf</code> files. Highest precedence, since it's the newest
+   and most specific source.</li>
+</ol>
+<p><code>load_config_dir(StyleSet&amp;, dir)</code> loads every <code>*.conf</code> file directly
+inside <code>dir</code> (not recursive) in filename order, but <strong>not</strong> via a naive
+single pass per file -- it pre-registers every style name defined
+anywhere in <code>dir</code> first (mirroring <code>load_config()</code>'s own token
+traversal, so a field value that happens to contain the word "Style"
+can't be misread as a new style header), <em>then</em> parses each file's
+fields and <code>BaseStyle</code> links. That means a style in one file can serve
+as a <code>BaseStyle</code> for a style in another file regardless of which file
+happens to load first -- see this repo's <code>style/syntax/common.conf</code>
+(a shared base with no extensions of its own) and <code>cpp.conf</code>/
+<code>python.conf</code>/<code>shell.conf</code> (each declaring <code>Common</code> as a <code>BaseStyle</code>,
+despite <code>common.conf</code> sorting after all three alphabetically), and
+<code>LoadConfigDir.BaseStyleInAnotherFileResolvesRegardlessOfLoadOrder</code> in
+<code>tests/core/style_test.cpp</code>, which pins this down by disabling the
+pre-registration pass and confirming the test then fails.</p>
 <h2 id="whats-deliberately-narrowed-or-deferred">What's deliberately narrowed or deferred<a class="headerlink" href="#whats-deliberately-narrowed-or-deferred" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>The <code>Settings</code> block</strong> (FileManager UI colours, sound, search-mode
