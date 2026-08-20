@@ -15,6 +15,6 @@ curl -s https://example.test/data.json | ./build/lss --syntax json
 YAML, JSON, and XML use generic structural rules rather than full language
 parsers. See [configuration](configuration.md) for local style files.
 
-!!! danger "**Not implemented**"
+!!! info "Limitation"
     Highlighting intentionally is not a full language parser; uncommon,
     grammar-dependent constructs use fallback colours.

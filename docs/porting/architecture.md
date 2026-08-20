@@ -32,11 +32,13 @@ session/app object instead of globals.
 
 ## FileManager — the directory viewer ("ls" half)
 
-`apps/onscreen/fileman.cpp` (2484 lines). Multi-column sorted file list
-(`iColumns`/`iColumnWidth`/`iLinesPerColumn`), a DOS/OS2/Win32
+`apps/onscreen/fileman.cpp` (2484 lines). One directory is displayed as a
+multi-column sorted file list (`iColumns`/`iColumnWidth`/`iLinesPerColumn`);
+this is not a two-directory-pane design. It includes a DOS/OS2/Win32
 drive-letter bar (`DisplayDisks` — meaningless on Linux, should collapse
 to cwd/mount points), sortable by name/ext/date/size (`ChooseSortBy`),
-glob-pattern multi-select (`MatchSelect`), and direct file operations
+glob-pattern file filtering plus incremental type-ahead selection
+(`ChangeFileSpec`/`MatchSelect`), and direct file operations
 (Copy/Delete/Rename/Move/Edit/View/MakeDirectory, `fileman.cpp:894-1321`).
 `Activate()` (`fileman.cpp:1597` onward, ~850 lines) is its own keyboard
 loop, with a `:`/`/`-triggered command submenu

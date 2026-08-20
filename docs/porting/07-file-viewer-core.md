@@ -137,14 +137,9 @@ over the whole file, not repeated here)
   re-dump sibling viewers sharing the same style, which is entirely
   App/multi-buffer territory (subsystem 06) layered on top of `Style`
   besides.
-- **No stdin/external-filter loading path** — the original's stdin
-  handling involves `_popen`, growth-buffer `fread` loops, and
-  Windows-specific console-handle reopening after consuming stdin, none
-  of which apply to a Linux port. `Viewer` supports being constructed
-  directly from an in-memory buffer plus a display name (so a caller
-  that already read stdin elsewhere can hand it a `Viewer` without a
-  real file path) — the actual "read stdin into a buffer" plumbing is
-  an `App`-level concern (subsystem 06+), not this subsystem's.
+- **No external-filter reload path** — `App` now captures redirected stdin
+  and constructs a viewer over it. The original's external-filter reload
+  behaviour remains unimplemented.
 - **`Ctrl+F`, `Alt+Z`, `Alt+E`, `h`/`H`, `d`/`D`, `w`/`W`'s storage
   location** (all `Style`-dependent one way or another per the survey)
   and hex mode entirely are not ported here — see the survey notes
