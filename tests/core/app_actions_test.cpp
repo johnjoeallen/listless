@@ -12,6 +12,7 @@ using listless::FileManager;
 using listless::Grid;
 using listless::handle_browsing_key;
 using listless::handle_viewing_key;
+using listless::KeyCode;
 using listless::Viewer;
 using listless::ViewingAction;
 namespace Key = listless::Key;
@@ -107,6 +108,62 @@ TEST(ViewingActionsTest, DownArrowScrollsTextMode) {
     EXPECT_EQ(v.top_line(), 1);
 }
 
+TEST(ViewingActionsTest, StandardPagerNavigationKeysScrollTextMode) {
+    for (KeyCode key : {KeyCode{' '}, KeyCode{6}, KeyCode{'d'}, KeyCode{4}}) {
+        Viewer v = make_viewer("1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n");
+        handle_viewing_key(v, /*visible_lines=*/4, /*visible_width=*/80, key);
+        EXPECT_EQ(v.top_line(), key == 'd' || key == 4 ? 2 : 4) << key;
+    }
+
+    for (KeyCode key : {KeyCode{'b'}, KeyCode{'B'}, KeyCode{2}, KeyCode{'u'}, KeyCode{21}}) {
+        Viewer v = make_viewer("1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n");
+        v.scroll_page_down(4);
+        handle_viewing_key(v, /*visible_lines=*/4, /*visible_width=*/80, key);
+        EXPECT_EQ(v.top_line(), key == 'u' || key == 21 ? 2 : 0) << key;
+    }
+
+    for (KeyCode key : {'j', '\r', '\n'}) {
+        Viewer v = make_viewer("1\n2\n3\n4\n5\n");
+        handle_viewing_key(v, /*visible_lines=*/2, /*visible_width=*/80, key);
+        EXPECT_EQ(v.top_line(), 1) << key;
+    }
+
+    Viewer up = make_viewer("1\n2\n3\n4\n5\n");
+    up.scroll_line_down(2);
+    handle_viewing_key(up, 2, 80, 'k');
+    EXPECT_EQ(up.top_line(), 0);
+}
+
+TEST(ViewingActionsTest, StandardPagerNavigationKeysScrollHexMode) {
+    for (KeyCode key : {KeyCode{' '}, KeyCode{6}, KeyCode{'d'}, KeyCode{4}}) {
+        Viewer v = make_viewer(std::string(320, 'x'));
+        v.switch_to_hex_mode();
+        handle_viewing_key(v, /*visible_lines=*/4, /*visible_width=*/80, key);
+        EXPECT_EQ(v.hex_top_line(), key == 'd' || key == 4 ? 2 : 4) << key;
+    }
+
+    for (KeyCode key : {KeyCode{'b'}, KeyCode{'B'}, KeyCode{2}, KeyCode{'u'}, KeyCode{21}}) {
+        Viewer v = make_viewer(std::string(320, 'x'));
+        v.switch_to_hex_mode();
+        v.hex_scroll_page_down(4);
+        handle_viewing_key(v, /*visible_lines=*/4, /*visible_width=*/80, key);
+        EXPECT_EQ(v.hex_top_line(), key == 'u' || key == 21 ? 2 : 0) << key;
+    }
+
+    for (KeyCode key : {'j', '\r', '\n'}) {
+        Viewer v = make_viewer(std::string(96, 'x'));
+        v.switch_to_hex_mode();
+        handle_viewing_key(v, /*visible_lines=*/2, /*visible_width=*/80, key);
+        EXPECT_EQ(v.hex_top_line(), 1) << key;
+    }
+
+    Viewer up = make_viewer(std::string(96, 'x'));
+    up.switch_to_hex_mode();
+    up.hex_scroll_line_down(2);
+    handle_viewing_key(up, 2, 80, 'k');
+    EXPECT_EQ(up.hex_top_line(), 0);
+}
+
 TEST(ViewingActionsTest, HTogglesHexMode) {
     Viewer v = make_viewer("abcdefgh");
     handle_viewing_key(v, 10, 80, 'h');
@@ -136,15 +193,29 @@ TEST(ViewingActionsTest, ARepeatsPreviousSearchForward) {
     EXPECT_EQ(v.selection().line, 3);
 }
 
+TEST(ViewingActionsTest, NRepeatsPreviousSearchInBothDirections) {
+    Viewer v = make_viewer("needle\nx\nneedle\n");
+    ASSERT_TRUE(v.search_forward("needle", /*case_sensitive=*/true));
+
+    handle_viewing_key(v, 10, 80, 'n');
+    EXPECT_EQ(v.selection().line, 2);
+    handle_viewing_key(v, 10, 80, 'N');
+    EXPECT_EQ(v.selection().line, 0);
+}
+
 TEST(ViewingActionsTest, GInHexModePromptsGotoOffset) {
     Viewer v = make_viewer(std::string(32, 'x'));
     v.switch_to_hex_mode();
     EXPECT_EQ(handle_viewing_key(v, 10, 80, 'g'), ViewingAction::PromptGotoOffset);
 }
 
-TEST(ViewingActionsTest, GInTextModeIsUnhandled) {
-    Viewer v = make_viewer("abc\n");
+TEST(ViewingActionsTest, GInTextModeMovesToTopAndBottom) {
+    Viewer v = make_viewer("1\n2\n3\n4\n5\n");
+    v.scroll_to_bottom(2);
     EXPECT_EQ(handle_viewing_key(v, 10, 80, 'g'), ViewingAction::None);
+    EXPECT_EQ(v.top_line(), 0);
+    EXPECT_EQ(handle_viewing_key(v, 2, 80, 'G'), ViewingAction::None);
+    EXPECT_EQ(v.top_line(), 3);
 }
 
 TEST(ViewingActionsTest, ColonInTextModePromptsGotoLine) {
