@@ -164,8 +164,8 @@ one by reusing a style's name):
    `common.conf` base they all inherit from.
 2. **`default_config_path()`** — the legacy single `style.conf`, kept
    for backward compatibility.
-3. **`default_styles_dir()`** — `$XDG_CONFIG_HOME/listless/styles/`
-   (falling back to `~/.config/listless/styles/`), a directory of the
+3. **`default_styles_dir()`** — `$XDG_CONFIG_HOME/listless/styles/syntax/`
+   (falling back to `~/.config/listless/styles/syntax/`), a directory of the
    user's own `*.conf` files. Highest precedence, since it's the newest
    and most specific source.
 

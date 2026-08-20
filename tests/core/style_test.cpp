@@ -247,7 +247,7 @@ TEST(DefaultStylesDir, RespectsXdgConfigHome) {
 #else
     setenv("XDG_CONFIG_HOME", "/tmp/listless-xdg-test", 1);
     EXPECT_EQ(default_styles_dir(),
-              std::filesystem::path("/tmp/listless-xdg-test/listless/styles"));
+              std::filesystem::path("/tmp/listless-xdg-test/listless/styles/syntax"));
     unsetenv("XDG_CONFIG_HOME");
 #endif
 }
