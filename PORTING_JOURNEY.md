@@ -1051,3 +1051,12 @@ previous and next links.
 
 **Verification:** `mkdocs build --strict` verifies the README links and the
 navigation configuration.
+
+## 2026-08-20 — OnScreen/2 reference links (issue #86)
+
+**Changes:** added annotated links to the preserved OS2World source
+repository, Lost Archives distribution, and OS2World wiki article on the
+documentation home page.
+
+**Verification:** `mkdocs build --strict` verifies the external links are
+valid documentation markup.

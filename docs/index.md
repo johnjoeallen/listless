@@ -24,3 +24,12 @@ Listless is a modern port of [OnScreen/2](porting/original.md), targeting:
 Product documentation is separate from the source research and engineering
 record. See the [Porting record](porting/index.md) for the original-system
 analysis, subsystem derivations, and append-only Porting Journey.
+
+### OnScreen/2 references
+
+- [OS2World OnScreen/2 source repository](https://github.com/OS2World/UTIL-FILEMANAGER-OnScreen2)
+  — the preserved source code for the original OS/2 application.
+- [Lost Archives OnScreen/2 file](https://www.lostarchives.org/category/30/file/6285)
+  — an archived historical distribution of OnScreen/2.
+- [OS2World OnScreen/2 wiki article](https://wiki.os2world.com/index.php?title=OnScreen/2)
+  — background, usage, and historical information about the original tool.
