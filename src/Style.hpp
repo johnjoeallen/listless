@@ -142,6 +142,7 @@ class Style {
     Item<char> escape;
     Item<std::vector<std::string>> numeric_prefix;
     Item<std::string> before_delimiter;
+    Item<bool> before_delimiter_requires_space;
     Item<std::string> block_text_start;
     Item<std::string> line_start_prefix;
     Item<std::string> prefix_token;

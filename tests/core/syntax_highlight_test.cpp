@@ -96,6 +96,19 @@ TEST(HighlightLine, PositionalPrefixRulesHighlightStructuralTokens) {
     EXPECT_EQ(anchor.back().color, Color::Blue);
 }
 
+TEST(HighlightLine, BeforeDelimiterCanRequireWhitespaceAfterTheDelimiter) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    auto scalar = highlight_line("- write:pets", s, state);
+    EXPECT_TRUE(std::none_of(scalar.begin(), scalar.end(),
+                             [](const ColorSpan& span) { return span.color == Color::Blue; }));
+}
+
 TEST(HighlightLine, ReservedWordRequiresWordBoundary) {
     Style s("C");
     init_c_style(s);

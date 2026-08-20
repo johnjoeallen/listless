@@ -127,13 +127,18 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
         state.block_text_base_indent = -1;
     }
     const std::string* before_delimiter = style.before_delimiter.get();
+    bool before_delimiter_requires_space = get_or(style.before_delimiter_requires_space, false);
     std::size_t contextual_start = n;
     std::size_t contextual_end = n;
     if (before_delimiter != nullptr && !before_delimiter->empty()) {
         std::size_t delimiter = text.find(*before_delimiter);
         contextual_start = text.find_first_not_of(" \t");
-        if (delimiter != std::string_view::npos && contextual_start != std::string_view::npos &&
-            contextual_start < delimiter) {
+        bool delimiter_is_mapping =
+            delimiter == std::string_view::npos || !before_delimiter_requires_space ||
+            delimiter + before_delimiter->size() == n ||
+            std::isspace(static_cast<unsigned char>(text[delimiter + before_delimiter->size()]));
+        if (delimiter_is_mapping && delimiter != std::string_view::npos &&
+            contextual_start != std::string_view::npos && contextual_start < delimiter) {
             contextual_end = delimiter;
             while (contextual_end > contextual_start &&
                    std::isspace(static_cast<unsigned char>(text[contextual_end - 1]))) {

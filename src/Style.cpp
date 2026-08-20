@@ -181,6 +181,10 @@ const std::vector<FieldSpec>& field_table() {
          }},
         {"BeforeDelimiter",
          [](Style& s, std::string_view v) { return apply_string(s.before_delimiter, v); }},
+        {"BeforeDelimiterRequiresSpace",
+         [](Style& s, std::string_view v) {
+             return apply_bool(s.before_delimiter_requires_space, v);
+         }},
         {"BlockTextStart",
          [](Style& s, std::string_view v) { return apply_string(s.block_text_start, v); }},
         {"LineStartPrefix",
@@ -401,6 +405,7 @@ void Style::add_base_style(Style& base) {
     escape.add_base_item(&base.escape);
     numeric_prefix.add_base_item(&base.numeric_prefix);
     before_delimiter.add_base_item(&base.before_delimiter);
+    before_delimiter_requires_space.add_base_item(&base.before_delimiter_requires_space);
     block_text_start.add_base_item(&base.block_text_start);
     line_start_prefix.add_base_item(&base.line_start_prefix);
     prefix_token.add_base_item(&base.prefix_token);
@@ -660,6 +665,7 @@ void save_config(const StyleSet& styles, const std::filesystem::path& path) {
         write_char("Escape", style->escape);
         write_list("NumberPrefix", style->numeric_prefix);
         write_string("BeforeDelimiter", style->before_delimiter);
+        write_bool("BeforeDelimiterRequiresSpace", style->before_delimiter_requires_space);
         write_string("BlockTextStart", style->block_text_start);
         write_string("LineStartPrefix", style->line_start_prefix);
         write_string("PrefixToken", style->prefix_token);
