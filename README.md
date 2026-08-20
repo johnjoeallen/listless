@@ -28,6 +28,20 @@ The command name is:
 lss
 ```
 
+## Screenshots
+
+### Directory browser
+
+![Listless showing the src directory in its column-major browser](docs/assets/screenshots/directory-browser.png)
+
+### Syntax-highlighted viewer
+
+![Listless rendering App.cpp with C++ syntax highlighting](docs/assets/screenshots/syntax-highlighted-viewer.png)
+
+### Hex viewer
+
+![Listless rendering App.cpp in hexadecimal view](docs/assets/screenshots/hex-viewer.png)
+
 ## Goals
 
 The aim is to preserve the behaviour and feel of OnScreen/2 while building a cleaner, safer, portable implementation.

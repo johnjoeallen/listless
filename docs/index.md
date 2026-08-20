@@ -14,9 +14,21 @@ platforms whose backends are still to be completed.
 - [Syntax highlighting](syntax-highlighting.md)
 - [Configuration](configuration.md)
 - [Roadmap](roadmap.md)
-
-See [screenshots of the browser and viewer](usage.md#screenshots).
 - [Repository README](https://github.com/johnjoeallen/listless/blob/main/README.md)
+
+## Screenshots
+
+### Directory browser
+
+![Listless showing the src directory in its column-major browser](assets/screenshots/directory-browser.png)
+
+### Syntax-highlighted viewer
+
+![Listless rendering App.cpp with C++ syntax highlighting](assets/screenshots/syntax-highlighted-viewer.png)
+
+### Hex viewer
+
+![Listless rendering App.cpp in hexadecimal view](assets/screenshots/hex-viewer.png)
 
 ## Project history
 

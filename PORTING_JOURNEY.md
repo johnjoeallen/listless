@@ -1103,3 +1103,13 @@ mockups.
 
 **Verification:** `mkdocs build --strict` verifies the documentation assets
 and links.
+
+## 2026-08-20 — Home-page screenshot gallery (issue #99)
+
+**Changes:** embedded the real browser, syntax-highlighted viewer, and hex
+viewer captures directly on the GitHub Pages home page and mirrored them in
+the README. Repository guidance now requires the README and home-page summary,
+platform status, and screenshot gallery to remain synchronized.
+
+**Verification:** `mkdocs build --strict` verifies the gallery assets and
+home-page links.
