@@ -1277,9 +1277,12 @@
 
 
 <h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
-<p>Styles load in order: packaged system styles, a legacy single config file,
-then <code>~/.config/listless/styles/syntax/</code>. Later sources override earlier
-ones. The repository's <code>style/syntax/</code> directory contains examples.</p>
+<p>Styles load in order: packaged system styles, then
+<code>~/.config/listless/styles/syntax/</code>. Later sources override earlier ones. The
+repository's <code>style/syntax/</code> directory contains examples.</p>
+<p>The legacy <code>~/.config/listless/style.conf</code> file is no longer read. To migrate
+an existing configuration, move its <code>Style</code> blocks into one or more <code>.conf</code>
+files in <code>~/.config/listless/styles/syntax/</code>.</p>
 <p>Use <code>--syntax-dir</code> to replace the personal style directory for one launch:</p>
 <div class="highlight"><pre><span></span><code>./build/lss<span class="w"> </span>--syntax-dir<span class="w"> </span>/path/to/styles<span class="w"> </span>--syntax<span class="w"> </span>yaml<span class="w"> </span>document.yaml
 </code></pre></div>

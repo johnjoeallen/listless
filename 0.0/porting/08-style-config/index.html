@@ -1576,18 +1576,10 @@ Style Name (.ext1 .ext2)  BaseStyle1 BaseStyle2
   as a free function rather than a <code>Style</code> method since it operates on
   whichever single <code>Item&lt;Color&gt;</code> field the keyboard loop is currently
   pointed at; the loop calls <code>field.set(cycle_color(*field.get()))</code>.</li>
-<li><strong><code>default_config_path()</code></strong> — <code>$XDG_CONFIG_HOME/listless/style.conf</code>,
-  falling back to <code>~/.config/listless/style.conf</code>. A deliberate
-  reinterpretation, not a literal port: the original's <code>os.set</code> lived in
-  a fixed location next to the DOS/OS2/Win32 executable, which has no
-  meaningful Linux equivalent (no "next to the binary" convention, and
-  <code>/usr/bin</code> isn't writable by a normal user besides). Superseded by the
-  directory-based model below as the preferred way to configure styles,
-  but still loaded (at lower precedence) for backward compatibility.</li>
 </ul>
 <h2 id="directory-based-styles-issue-32">Directory-based styles (issue #32)<a class="headerlink" href="#directory-based-styles-issue-32" title="Permanent link">&para;</a></h2>
-<p>Rather than one config file, <code>App</code> assembles its <code>StyleSet</code> from up to
-three sources, each loaded via <code>load_config_dir()</code>/<code>load_config()</code> in
+<p>Rather than one config file, <code>App</code> assembles its <code>StyleSet</code> from two
+directories, each loaded via <code>load_config_dir()</code> in
 increasing precedence (a later source overrides or extends an earlier
 one by reusing a style's name):</p>
 <ol>
@@ -1605,13 +1597,14 @@ one by reusing a style's name):</p>
    and BASCAL (<code>bcl.conf</code> -- see
    <a href="https://johnjoeallen.github.io/bascal/manual.html">https://johnjoeallen.github.io/bascal/manual.html</a>), plus the shared
    <code>common.conf</code> base they all inherit from.</li>
-<li><strong><code>default_config_path()</code></strong> — the legacy single <code>style.conf</code>, kept
-   for backward compatibility.</li>
 <li><strong><code>default_styles_dir()</code></strong> — <code>$XDG_CONFIG_HOME/listless/styles/syntax/</code>
    (falling back to <code>~/.config/listless/styles/syntax/</code>), a directory of the
    user's own <code>*.conf</code> files. Highest precedence, since it's the newest
    and most specific source.</li>
 </ol>
+<p>The former <code>$XDG_CONFIG_HOME/listless/style.conf</code> path is no longer loaded.
+Move its <code>Style</code> blocks into one or more files in <code>default_styles_dir()</code> to
+migrate an existing configuration.</p>
 <h3 id="contextual-syntax-rules">Contextual syntax rules<a class="headerlink" href="#contextual-syntax-rules" title="Permanent link">&para;</a></h3>
 <p>Styles can add structural highlighting without a language-specific lexer:</p>
 <ul>
