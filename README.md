@@ -14,6 +14,8 @@ Listless has a working Linux ncurses implementation. Windows and macOS
 backends, along with advanced file-management workflows, remain porting work;
 there is not yet a finished Listless release.
 
+[Read the Listless guide on GitHub Pages](https://johnjoeallen.github.io/listless/)
+
 ## Why Listless?
 
 The name is a small Unix-style joke:
@@ -78,8 +80,7 @@ Each successful iteration should compile cleanly, pass tests and quality gates, 
 ## Documentation
 
 `/docs` contains product-first Listless documentation. Start at
-[docs/documentation.md](docs/documentation.md), or browse the published site at
-<https://johnjoeallen.github.io/listless/>. Original-source research and
+[docs/documentation.md](docs/documentation.md). Original-source research and
 subsystem derivations live separately under [docs/porting](docs/porting/index.md),
 alongside the append-only [`PORTING_JOURNEY.md`](PORTING_JOURNEY.md).
 
