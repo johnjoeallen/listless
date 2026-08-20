@@ -1271,7 +1271,12 @@ one by reusing a style's name):</p>
    <code>CMakeLists.txt</code>'s <code>install(DIRECTORY style/syntax/ ...)</code> rule --
    <code>cmake --install</code> (and eventually a <code>.deb</code>) drops each file there
    individually, rather than one shared file competing with a user's own
-   edits.</li>
+   edits. Ships styles for C/C++ (<code>cpp.conf</code>), Python (<code>python.conf</code>),
+   Shell (<code>shell.conf</code>), Java (<code>java.conf</code>), Pascal (<code>pascal.conf</code>),
+   Perl (<code>perl.conf</code>), PHP (<code>php.conf</code>), classic BASIC (<code>basic.conf</code>),
+   and BASCAL (<code>bcl.conf</code> -- see
+   <a href="https://johnjoeallen.github.io/bascal/manual.html">https://johnjoeallen.github.io/bascal/manual.html</a>), plus the shared
+   <code>common.conf</code> base they all inherit from.</li>
 <li><strong><code>default_config_path()</code></strong> — the legacy single <code>style.conf</code>, kept
    for backward compatibility.</li>
 <li><strong><code>default_styles_dir()</code></strong> — <code>$XDG_CONFIG_HOME/listless/styles/</code>
