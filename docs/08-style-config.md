@@ -156,7 +156,12 @@ one by reusing a style's name):
    `CMakeLists.txt`'s `install(DIRECTORY style/syntax/ ...)` rule --
    `cmake --install` (and eventually a `.deb`) drops each file there
    individually, rather than one shared file competing with a user's own
-   edits.
+   edits. Ships styles for C/C++ (`cpp.conf`), Python (`python.conf`),
+   Shell (`shell.conf`), Java (`java.conf`), Pascal (`pascal.conf`),
+   Perl (`perl.conf`), PHP (`php.conf`), classic BASIC (`basic.conf`),
+   and BASCAL (`bcl.conf` -- see
+   <https://johnjoeallen.github.io/bascal/manual.html>), plus the shared
+   `common.conf` base they all inherit from.
 2. **`default_config_path()`** — the legacy single `style.conf`, kept
    for backward compatibility.
 3. **`default_styles_dir()`** — `$XDG_CONFIG_HOME/listless/styles/`
