@@ -129,6 +129,7 @@ class Style {
     Item<Color> symbols_color;
     Item<Color> comment_color;
     Item<Color> string_color;
+    Item<Color> block_text_color;
     Item<Color> reserved_color;
     Item<Color> preprocessor_color;
     Item<Color> number_color;
@@ -141,6 +142,7 @@ class Style {
     Item<char> escape;
     Item<std::vector<std::string>> numeric_prefix;
     Item<std::string> before_delimiter;
+    Item<std::string> block_text_start;
     Item<bool> case_sensitive;
     Item<bool> case_convert;
     Item<std::string> open_preprocessor;

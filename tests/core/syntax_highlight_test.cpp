@@ -56,6 +56,26 @@ TEST(HighlightLine, PlainIdentifierWhenNoRulesMatch) {
     EXPECT_EQ(spans[0].color, Color::LightGray);
 }
 
+TEST(HighlightLine, BlockTextSuppressesContextualRulesUntilIndentationReturns) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.block_text_start.set("|");
+    s.block_text_color.set(Color::Magenta);
+    s.reserved_color.set(Color::Blue);
+    s.fore_color.set(Color::White);
+    HighlightState state;
+
+    highlight_line("description: |", s, state);
+    auto block = highlight_line("  http://example.test", s, state);
+    ASSERT_EQ(block.size(), 1u);
+    EXPECT_EQ(block[0].color, Color::Magenta);
+
+    auto key = highlight_line("name: value", s, state);
+    ASSERT_GE(key.size(), 1u);
+    EXPECT_EQ(key[0].color, Color::Blue);
+}
+
 TEST(HighlightLine, ReservedWordRequiresWordBoundary) {
     Style s("C");
     init_c_style(s);

@@ -105,6 +105,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     Color comment_color = get_or(style.comment_color, Color::LightGray);
     Color preprocessor_color = get_or(style.preprocessor_color, Color::LightGray);
     Color string_color = get_or(style.string_color, Color::LightGray);
+    Color block_text_color = get_or(style.block_text_color, string_color);
     Color symbols_color = get_or(style.symbols_color, Color::LightGray);
     Color number_color = get_or(style.number_color, Color::LightGray);
     Color reserved_color = get_or(style.reserved_color, Color::LightGray);
@@ -112,6 +113,17 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     Color default_color = get_or(style.fore_color, Color::LightGray);
 
     char escape = get_or(style.escape, '\0');
+    const std::string* block_text_start = style.block_text_start.get();
+    std::size_t first_content = text.find_first_not_of(" \t");
+    int indent = first_content == std::string_view::npos ? 0 : static_cast<int>(first_content);
+    if (state.block_text_base_indent >= 0) {
+        if (first_content == std::string_view::npos || indent > state.block_text_base_indent) {
+            state.in_comment = false;
+            state.in_preprocessor = false;
+            return {{0, text.size(), block_text_color}};
+        }
+        state.block_text_base_indent = -1;
+    }
     const std::string* before_delimiter = style.before_delimiter.get();
     std::size_t contextual_start = n;
     std::size_t contextual_end = n;
@@ -127,6 +139,16 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
             }
         } else {
             contextual_start = n;
+        }
+    }
+
+    bool starts_block_text = false;
+    if (block_text_start != nullptr && !block_text_start->empty()) {
+        for (char marker : *block_text_start) {
+            if (text.find(marker) != std::string_view::npos) {
+                starts_block_text = true;
+                break;
+            }
         }
     }
 
@@ -248,6 +270,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     }
     state.bold = false;
     state.underlined = false;
+    if (starts_block_text) state.block_text_base_indent = indent;
 
     return spans;
 }
@@ -327,7 +350,8 @@ std::vector<ColorSpan> merge_adjacent(std::vector<ColorSpan> spans) {
 std::vector<ColorSpan> highlight_line(std::string_view text, const Style& style,
                                       HighlightState& state) {
     bool syntax_on = get_or(style.syntax_highlight_enabled, false) &&
-                     (!style.reserved.empty() || style.before_delimiter.get() != nullptr);
+                     (!style.reserved.empty() || style.before_delimiter.get() != nullptr ||
+                      style.block_text_start.get() != nullptr);
 
     std::vector<ColorSpan> spans =
         syntax_on ? highlight_syntax(text, style, state) : highlight_layout(text, style, state);

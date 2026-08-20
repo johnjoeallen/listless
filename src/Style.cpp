@@ -114,6 +114,8 @@ const std::vector<FieldSpec>& field_table() {
          [](Style& s, std::string_view v) { return apply_color(s.symbols_color, v); }},
         {"StringColor",
          [](Style& s, std::string_view v) { return apply_color(s.string_color, v); }},
+        {"BlockTextColor",
+         [](Style& s, std::string_view v) { return apply_color(s.block_text_color, v); }},
         {"ReservedColor",
          [](Style& s, std::string_view v) { return apply_color(s.reserved_color, v); }},
         {"PreProcessorColor",
@@ -179,6 +181,8 @@ const std::vector<FieldSpec>& field_table() {
          }},
         {"BeforeDelimiter",
          [](Style& s, std::string_view v) { return apply_string(s.before_delimiter, v); }},
+        {"BlockTextStart",
+         [](Style& s, std::string_view v) { return apply_string(s.block_text_start, v); }},
         {"OpenPreProcessor",
          [](Style& s, std::string_view v) { return apply_string(s.open_preprocessor, v); }},
         {"ClosePreProcessor",
@@ -383,6 +387,7 @@ void Style::add_base_style(Style& base) {
     symbols_color.add_base_item(&base.symbols_color);
     comment_color.add_base_item(&base.comment_color);
     string_color.add_base_item(&base.string_color);
+    block_text_color.add_base_item(&base.block_text_color);
     reserved_color.add_base_item(&base.reserved_color);
     preprocessor_color.add_base_item(&base.preprocessor_color);
     number_color.add_base_item(&base.number_color);
@@ -392,6 +397,7 @@ void Style::add_base_style(Style& base) {
     escape.add_base_item(&base.escape);
     numeric_prefix.add_base_item(&base.numeric_prefix);
     before_delimiter.add_base_item(&base.before_delimiter);
+    block_text_start.add_base_item(&base.block_text_start);
     case_sensitive.add_base_item(&base.case_sensitive);
     case_convert.add_base_item(&base.case_convert);
     open_preprocessor.add_base_item(&base.open_preprocessor);
@@ -635,6 +641,7 @@ void save_config(const StyleSet& styles, const std::filesystem::path& path) {
         write_color("SymbolsColor", style->symbols_color);
         write_color("CommentColor", style->comment_color);
         write_color("StringColor", style->string_color);
+        write_color("BlockTextColor", style->block_text_color);
         write_color("ReservedColor", style->reserved_color);
         write_color("PreProcessorColor", style->preprocessor_color);
         write_color("NumberColor", style->number_color);
@@ -647,6 +654,7 @@ void save_config(const StyleSet& styles, const std::filesystem::path& path) {
         write_char("Escape", style->escape);
         write_list("NumberPrefix", style->numeric_prefix);
         write_string("BeforeDelimiter", style->before_delimiter);
+        write_string("BlockTextStart", style->block_text_start);
         write_bool("CaseSensitive", style->case_sensitive);
         write_bool("CaseConvert", style->case_convert);
         write_string("OpenPreProcessor", style->open_preprocessor);
