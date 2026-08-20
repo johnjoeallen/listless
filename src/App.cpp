@@ -51,7 +51,6 @@ App::App(std::string stdin_content, std::string display_name,
 
 void App::load_styles() {
     load_config_dir(styles_, system_styles_dir());
-    load_config(styles_, default_config_path());
     load_config_dir(styles_, syntax_dir_.value_or(default_styles_dir()));
 }
 

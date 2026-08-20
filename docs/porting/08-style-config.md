@@ -132,19 +132,10 @@ and reuses subsystem 04's `Color` enum (`src/Color.hpp`) for the palette.
   as a free function rather than a `Style` method since it operates on
   whichever single `Item<Color>` field the keyboard loop is currently
   pointed at; the loop calls `field.set(cycle_color(*field.get()))`.
-- **`default_config_path()`** — `$XDG_CONFIG_HOME/listless/style.conf`,
-  falling back to `~/.config/listless/style.conf`. A deliberate
-  reinterpretation, not a literal port: the original's `os.set` lived in
-  a fixed location next to the DOS/OS2/Win32 executable, which has no
-  meaningful Linux equivalent (no "next to the binary" convention, and
-  `/usr/bin` isn't writable by a normal user besides). Superseded by the
-  directory-based model below as the preferred way to configure styles,
-  but still loaded (at lower precedence) for backward compatibility.
-
 ## Directory-based styles (issue #32)
 
-Rather than one config file, `App` assembles its `StyleSet` from up to
-three sources, each loaded via `load_config_dir()`/`load_config()` in
+Rather than one config file, `App` assembles its `StyleSet` from two
+directories, each loaded via `load_config_dir()` in
 increasing precedence (a later source overrides or extends an earlier
 one by reusing a style's name):
 
@@ -162,12 +153,14 @@ one by reusing a style's name):
    and BASCAL (`bcl.conf` -- see
    <https://johnjoeallen.github.io/bascal/manual.html>), plus the shared
    `common.conf` base they all inherit from.
-2. **`default_config_path()`** — the legacy single `style.conf`, kept
-   for backward compatibility.
-3. **`default_styles_dir()`** — `$XDG_CONFIG_HOME/listless/styles/syntax/`
+2. **`default_styles_dir()`** — `$XDG_CONFIG_HOME/listless/styles/syntax/`
    (falling back to `~/.config/listless/styles/syntax/`), a directory of the
    user's own `*.conf` files. Highest precedence, since it's the newest
    and most specific source.
+
+The former `$XDG_CONFIG_HOME/listless/style.conf` path is no longer loaded.
+Move its `Style` blocks into one or more files in `default_styles_dir()` to
+migrate an existing configuration.
 
 ### Contextual syntax rules
 

@@ -199,15 +199,6 @@ class StyleSet {
     std::vector<std::unique_ptr<Style>> styles_;
 };
 
-// $XDG_CONFIG_HOME/listless/style.conf, or ~/.config/listless/style.conf
-// if XDG_CONFIG_HOME is unset -- a deliberate reinterpretation of the
-// original's `os.set` (a fixed path next to the DOS/OS2 executable),
-// which has no Linux equivalent. Superseded by default_styles_dir()
-// (a directory of *.conf files) as the preferred personal config
-// location, but still loaded for backward compatibility -- see
-// docs/08-style-config.md.
-std::filesystem::path default_config_path();
-
 // $XDG_CONFIG_HOME/listless/styles/syntax/, or
 // ~/.config/listless/styles/syntax/ if
 // XDG_CONFIG_HOME is unset -- the personal counterpart to
@@ -220,8 +211,8 @@ std::filesystem::path default_styles_dir();
 // LISTLESS_SYSTEM_STYLES_DIR compile definition), defaulting to
 // /usr/local/share/listless/styles if the definition is absent (e.g.
 // a build system that doesn't set it). Loaded first, so personal
-// styles (default_styles_dir(), default_config_path()) can override or
-// extend anything shipped here by reusing a style's name.
+// styles in default_styles_dir() can override or extend anything shipped
+// here by reusing a style's name.
 std::filesystem::path system_styles_dir();
 
 // Parses `path` into `styles`, adding/updating styles by name (matching

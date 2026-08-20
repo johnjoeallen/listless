@@ -101,10 +101,10 @@ the first runnable `lss` binary.
   src/App.cpp)` in the root `CMakeLists.txt`, the first binary target in
   the project besides the two test runners.
 - **Style selection and highlighted rendering** -- `App::load_styles()`
-  loads system, legacy single-file, and personal style sources; it then
-  selects a style by file extension or the case-insensitive `--syntax`
-  override. `render_viewer()` receives that style and a `HighlightCache`,
-  so text-mode rendering paints syntax spans in the interactive program.
+  loads system and personal style directories; it then selects a style by
+  file extension or the case-insensitive `--syntax` override.
+  `render_viewer()` receives that style and a `HighlightCache`, so text-mode
+  rendering paints syntax spans in the interactive program.
 
 ## What's deliberately narrowed or deferred
 
