@@ -113,10 +113,10 @@ the first runnable `lss` binary.
   adding to a switchable list. Digit-key/Alt+N/Alt+P buffer switching
   and the buffer picker are not implemented. A real multi-buffer design
   is enough work (and enough new test surface) to be its own follow-up.
-- **No F2-F7 live colour cycling** -- depends on per-instance style
-  state (`setupInfo`) the same way subsystems 06/07 already deferred it;
-  `Style::cycle_color()` (subsystem 08) exists but nothing here calls
-  it yet.
+- **F2-F7 live colour cycling is no longer planned** -- the original's
+  per-instance `setupInfo` model does not map cleanly to Listless's broader
+  style palette. `cycle_color()` remains an internal primitive, but no
+  keybinding or persistence workflow will be added for live style editing.
 - **No `FileManager` `:`/`/` command submenu** -- `Activate()`'s command
   menu (sort-key changes, explicit `cd`, file-spec filter entry) isn't
   wired to any key; `FileManager::set_sort()`/`change_directory()`/

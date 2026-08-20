@@ -1132,3 +1132,16 @@ moving old `Style` blocks into `.conf` files in that directory.
 
 **Verification:** the full test suite and `mkdocs build --strict` verify the
 directory-only configuration model.
+
+## 2026-08-20 — Live style editing decision (issue #89)
+
+**Decision:** Listless will not implement live style editing, F2–F7 colour
+cycling, or Ctrl+S style persistence. The original fixed-field model does not
+map cleanly to Listless's extended contextual style palette.
+
+**Changes:** removed live style editing from forward-looking roadmap and
+subsystem scope. Historical descriptions of OnScreen/2's F2–F7 behaviour are
+retained and clearly marked as no longer planned for Listless.
+
+**Verification:** `mkdocs build --strict` verifies the updated status,
+roadmap, and Porting Record.

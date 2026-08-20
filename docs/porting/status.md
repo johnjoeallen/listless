@@ -37,8 +37,9 @@ App/main-loop layer every subsystem above deferred to, wiring
 - **Subsystem 11: file operations** (copy/move/rename/delete/mkdir) —
   deferred until everything above is stable, given the higher
   regression-test scrutiny destructive operations warrant.
-- **Subsystem 12: editor integration, shell escape, live style editing**
-  — polish features, lowest risk if deferred; not started.
+- **Subsystem 12: editor integration and shell escape** — polish features,
+  lowest risk if deferred; not started. Live style editing is no longer
+  planned.
 
 ## What "done" means here
 
