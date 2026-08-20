@@ -1085,3 +1085,11 @@ command-menu, external-editor, drive-bar, and filesystem-operation behaviours
 remain deferred.
 
 **Verification:** `mkdocs build --strict` verifies the revised site.
+
+## 2026-08-20 — Original-source location correction (issue #92)
+
+**Changes:** corrected the Porting Record to state that Listless does not
+bundle the full OnScreen/2 source tree and linked the preserved OS2World
+repository as the source of record.
+
+**Verification:** `mkdocs build --strict` verifies the revised links.

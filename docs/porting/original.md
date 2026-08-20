@@ -10,14 +10,14 @@ distributed as shareware of its era: zipped per-platform archives,
 registration forms, a BBS description file, and a manual in three formats
 (Word `.doc`, plain-text `.man`, and OS/2 `.inf` help).
 
-The full original source lives in this repository under `original/`
-(`original/apps/onscreen` for the application, `original/class` and
-`original/func` for its supporting utility library, `original/include`
-for headers) — copyright 1993-2006 John J. Allen, licensed GPLv2 or
-later. Nothing here is a clean-room reimplementation guessing at
-behaviour from the outside: every subsystem doc in this site is
-written by reading that source directly, with `file:line` citations
-into it.
+The full original source is preserved in the
+[OS2World OnScreen/2 repository](https://github.com/OS2World/UTIL-FILEMANAGER-OnScreen2),
+not bundled with Listless. Its `apps/onscreen` directory contains the
+application; `class` and `func` provide the supporting utility library;
+and `include` holds the headers. It is copyright 1993-2006 John J. Allen
+and licensed GPLv2 or later. Nothing here is a clean-room reimplementation
+guessing at behaviour from the outside: every subsystem doc in this site is
+written by reading that source directly, with `file:line` citations into it.
 
 ## What it did
 
