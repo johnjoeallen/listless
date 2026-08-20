@@ -109,6 +109,23 @@ TEST(HighlightLine, BeforeDelimiterCanRequireWhitespaceAfterTheDelimiter) {
                              [](const ColorSpan& span) { return span.color == Color::Blue; }));
 }
 
+TEST(HighlightLine, BeforeDelimiterIgnoresQuotedScalarContent) {
+    Style s("Generic");
+    s.syntax_highlight_enabled.set(true);
+    s.before_delimiter.set(":");
+    s.before_delimiter_requires_space.set(true);
+    s.line_start_prefix.set("-");
+    s.string_delimiter.set("\"");
+    s.string_color.set(Color::Green);
+    s.reserved_color.set(Color::Blue);
+    HighlightState state;
+
+    auto spans = highlight_line("- \"write: pets\"", s, state);
+    EXPECT_TRUE(std::none_of(spans.begin(), spans.end(), [](const ColorSpan& span) {
+        return span.color == Color::Blue && span.length > 1;
+    }));
+}
+
 TEST(HighlightLine, ReservedWordRequiresWordBoundary) {
     Style s("C");
     init_c_style(s);

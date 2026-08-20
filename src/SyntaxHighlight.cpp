@@ -49,6 +49,28 @@ std::size_t match_prefix(std::string_view text, const Item<std::string>& item) {
     return text.substr(0, prefix->size()) == *prefix ? prefix->size() : 0;
 }
 
+std::size_t find_outside_strings(std::string_view text, std::string_view needle,
+                                 const Item<std::string>& delimiters, char escape) {
+    const std::string* set = delimiters.get();
+    if (needle.empty()) return std::string_view::npos;
+
+    char quote = '\0';
+    for (std::size_t i = 0; i < text.size(); ++i) {
+        if (quote != '\0') {
+            if (escape != '\0' && text[i] == escape && i + 1 < text.size()) {
+                ++i;
+            } else if (text[i] == quote) {
+                quote = '\0';
+            }
+        } else if (set != nullptr && set->find(text[i]) != std::string::npos) {
+            quote = text[i];
+        } else if (text.substr(i, needle.size()) == needle) {
+            return i;
+        }
+    }
+    return std::string_view::npos;
+}
+
 // Word-boundary-aware reserved-word match at the start of `text`: the
 // candidate must match case-(in)sensitively per `case_sensitive`, and
 // the following character (if any) must not continue an identifier.
@@ -138,7 +160,8 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     std::size_t payload_start =
         has_line_start_prefix ? text.find_first_not_of(" \t", first_content + 1) : first_content;
     if (before_delimiter != nullptr && !before_delimiter->empty()) {
-        std::size_t delimiter = text.find(*before_delimiter);
+        std::size_t delimiter =
+            find_outside_strings(text, *before_delimiter, style.string_delimiter, escape);
         contextual_start = payload_start;
         bool delimiter_is_mapping =
             delimiter == std::string_view::npos || !before_delimiter_requires_space ||
