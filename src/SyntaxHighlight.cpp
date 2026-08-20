@@ -132,6 +132,9 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     Color symbols_color = get_or(style.symbols_color, Color::LightGray);
     Color number_color = get_or(style.number_color, Color::LightGray);
     Color reserved_color = get_or(style.reserved_color, Color::LightGray);
+    Color before_delimiter_color = get_or(style.before_delimiter_color, reserved_color);
+    Color line_start_prefix_color = get_or(style.line_start_prefix_color, reserved_color);
+    Color prefix_token_color = get_or(style.prefix_token_color, reserved_color);
     Color ident_color = get_or(style.ident_color, Color::LightGray);
     Color default_color = get_or(style.fore_color, Color::LightGray);
 
@@ -255,7 +258,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
 
         // Mode::Text
         if (i == contextual_start) {
-            push(i, contextual_end - i, reserved_color);
+            push(i, contextual_end - i, before_delimiter_color);
             i = contextual_end;
             seen_non_space = true;
         } else if (i == line_start_data) {
@@ -263,13 +266,13 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
             i = n;
         } else if (i == first_content && line_start_prefix != nullptr &&
                    line_start_prefix->find(c) != std::string::npos) {
-            push(i, 1, reserved_color);
+            push(i, 1, line_start_prefix_color);
             ++i;
             seen_non_space = true;
         } else if (prefix_token != nullptr && prefix_token->find(c) != std::string::npos) {
             std::size_t start = i++;
             while (i < n && (is_identifier_char(text[i]) || text[i] == '-' || text[i] == ':')) ++i;
-            push(start, i - start, reserved_color);
+            push(start, i - start, prefix_token_color);
             seen_non_space = true;
         } else if (match_any(rest, style.eol_comment)) {
             push(i, n - i, comment_color);

@@ -118,6 +118,12 @@ const std::vector<FieldSpec>& field_table() {
          [](Style& s, std::string_view v) { return apply_color(s.block_text_color, v); }},
         {"LineStartDataColor",
          [](Style& s, std::string_view v) { return apply_color(s.line_start_data_color, v); }},
+        {"BeforeDelimiterColor",
+         [](Style& s, std::string_view v) { return apply_color(s.before_delimiter_color, v); }},
+        {"LineStartPrefixColor",
+         [](Style& s, std::string_view v) { return apply_color(s.line_start_prefix_color, v); }},
+        {"PrefixTokenColor",
+         [](Style& s, std::string_view v) { return apply_color(s.prefix_token_color, v); }},
         {"ReservedColor",
          [](Style& s, std::string_view v) { return apply_color(s.reserved_color, v); }},
         {"PreProcessorColor",
@@ -399,6 +405,9 @@ void Style::add_base_style(Style& base) {
     string_color.add_base_item(&base.string_color);
     block_text_color.add_base_item(&base.block_text_color);
     line_start_data_color.add_base_item(&base.line_start_data_color);
+    before_delimiter_color.add_base_item(&base.before_delimiter_color);
+    line_start_prefix_color.add_base_item(&base.line_start_prefix_color);
+    prefix_token_color.add_base_item(&base.prefix_token_color);
     reserved_color.add_base_item(&base.reserved_color);
     preprocessor_color.add_base_item(&base.preprocessor_color);
     number_color.add_base_item(&base.number_color);
@@ -657,6 +666,9 @@ void save_config(const StyleSet& styles, const std::filesystem::path& path) {
         write_color("StringColor", style->string_color);
         write_color("BlockTextColor", style->block_text_color);
         write_color("LineStartDataColor", style->line_start_data_color);
+        write_color("BeforeDelimiterColor", style->before_delimiter_color);
+        write_color("LineStartPrefixColor", style->line_start_prefix_color);
+        write_color("PrefixTokenColor", style->prefix_token_color);
         write_color("ReservedColor", style->reserved_color);
         write_color("PreProcessorColor", style->preprocessor_color);
         write_color("NumberColor", style->number_color);

@@ -131,6 +131,9 @@ class Style {
     Item<Color> string_color;
     Item<Color> block_text_color;
     Item<Color> line_start_data_color;
+    Item<Color> before_delimiter_color;
+    Item<Color> line_start_prefix_color;
+    Item<Color> prefix_token_color;
     Item<Color> reserved_color;
     Item<Color> preprocessor_color;
     Item<Color> number_color;
