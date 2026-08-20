@@ -1155,14 +1155,14 @@ This is Listless's core "ls" behaviour.</p>
 </ul>
 <h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>DirEntry</code></strong> (<code>src/directory.hpp</code>) — name, full <code>std::filesystem::path</code>,
+<li><strong><code>DirEntry</code></strong> (<code>src/Directory.hpp</code>) — name, full <code>std::filesystem::path</code>,
   size, <code>std::filesystem::file_time_type</code> (last write time — <code>std::chrono</code>
   directly, no separate <code>Date</code>/<code>Time</code> wrapper needed, per the subsystem 01
   decision to defer <code>Date</code>/<code>Time</code> until a concrete need appears), and
   <code>is_directory</code>/<code>is_read_only</code> booleans computed directly from
   <code>std::filesystem::directory_entry</code>'s status rather than reconstructed
   from a DOS-style attribute bitmask.</li>
-<li><strong><code>Directory</code></strong> (<code>src/directory.hpp</code>/<code>.cpp</code>) — <code>fill(pattern = "*")</code>
+<li><strong><code>Directory</code></strong> (<code>src/Directory.hpp</code>/<code>.cpp</code>) — <code>fill(pattern = "*")</code>
   lists one directory level via <code>std::filesystem::directory_iterator</code>,
   filtered through subsystem 02's <code>glob_match()</code>; <code>size()</code>/<code>operator[]</code>;
   <code>sort()</code> with a default comparator (case-sensitive name order, matching
@@ -1199,7 +1199,7 @@ This is Listless's core "ls" behaviour.</p>
 </ul>
 <h2 id="platform-note">Platform note<a class="headerlink" href="#platform-note" title="Permanent link">&para;</a></h2>
 <p><code>Directory::fill()</code>'s <code>std::filesystem::directory_iterator</code>-based
-implementation lives directly in <code>src/directory.cpp</code>, not under
+implementation lives directly in <code>src/Directory.cpp</code>, not under
 <code>/platform/linux</code> — <code>std::filesystem</code> is already portable across Linux,
 Windows, and macOS, so there is no platform seam here to isolate. The
 <code>/platform</code> directories are for genuinely OS-specific APIs (console I/O,

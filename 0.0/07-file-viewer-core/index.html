@@ -1152,7 +1152,7 @@ Listless. Depends on subsystems 01, 02 (search), 04/05 (I/O). Explicitly
 </ul>
 <h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>Viewer</code></strong> (<code>src/viewer.hpp</code>/<code>.cpp</code>) — pure logic and state, no
+<li><strong><code>Viewer</code></strong> (<code>src/Viewer.hpp</code>/<code>.cpp</code>) — pure logic and state, no
   ncurses dependency, fully unit-tested in <code>tests/core</code>:</li>
 <li>Line model as <code>offset+length</code> spans into a loaded <code>std::string</code>
     buffer (<code>LineSpan</code>), <strong>not</strong> the original's in-place-NUL-termination
@@ -1191,7 +1191,7 @@ Listless. Depends on subsystems 01, 02 (search), 04/05 (I/O). Explicitly
     small loop finding successive matches up to that limit.</li>
 <li>Goto-line, bookmarks: direct, self-contained ports — no <code>Style</code>
     dependency.</li>
-<li><strong>A minimal renderer</strong> (<code>src/viewer_render.hpp</code>/<code>.cpp</code>, tested against
+<li><strong>A minimal renderer</strong> (<code>src/ViewerRender.hpp</code>/<code>.cpp</code>, tested against
   the real <code>Terminal</code> in <code>tests/platform_linux</code>) doing exactly the four
   style-independent things identified above: iterate visible lines, a
   fixed-width (8-column, see below) tab expansion, the selection-range

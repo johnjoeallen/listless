@@ -1112,7 +1112,7 @@ case-insensitive), then <code>strsrch()</code> scans the haystack right-to-left
 within each candidate window, shifting by the bad-character table on a
 mismatch. This is a correct, standard algorithm and is ported directly in
 behaviour (not line-by-line) as <code>listless::HorspoolSearcher</code>
-(<code>src/search.hpp</code>/<code>.cpp</code>): construct once per pattern, <code>find()</code> repeatedly
+(<code>src/Search.hpp</code>/<code>.cpp</code>): construct once per pattern, <code>find()</code> repeatedly
 for "find next" style usage, with an explicit <code>start</code> offset rather than
 the original's implicit whole-string-only scan.</p>
 <p>Not ported: <code>strnrcmp</code>/<code>strnrcmpi</code> (small helpers internal to the
@@ -1122,7 +1122,7 @@ compare inline.</p>
 <h2 id="glob-matching-fileexp2regexp">Glob matching: <code>FileExp2RegExp</code><a class="headerlink" href="#glob-matching-fileexp2regexp" title="Permanent link">&para;</a></h2>
 <p>The original translates a DOS/OS2/Win32-style wildcard into an ERE string
 and hands it to <code>RegExp</code> — which is a non-functional stub in the shipped
-source (see architecture.md). <code>docs/../src/glob.{hpp,cpp}</code> implements
+source (see architecture.md). <code>docs/../src/Glob.{hpp,cpp}</code> implements
 direct wildcard matching instead, with no regex engine involved at all.</p>
 <p>The <strong>documented</strong> wildcard syntax (<code>os.man</code> section 2.1.1) is fully
 supported:</p>

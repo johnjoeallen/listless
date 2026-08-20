@@ -1166,22 +1166,22 @@ per test, reading back cell contents via ncurses' own <code>mvinch()</code>), no
 just manually verifiable.</p>
 <h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>Color</code></strong> (<code>src/color.hpp</code>/<code>.cpp</code>) — the original's 16-value DOS
+<li><strong><code>Color</code></strong> (<code>src/Color.hpp</code>/<code>.cpp</code>) — the original's 16-value DOS
   palette, preserved with the same numeric values for future <code>Style</code>
   compatibility. <code>to_ansi(Color)</code> is a pure function (no ncurses
   dependency, fully unit-tested) mapping a <code>Color</code> to <code>{ansi_base 0-7,
   bright}</code> — the DOS palette's colour <em>order</em> differs from ANSI/xterm's
   (e.g. DOS puts Blue at 1 and Red at 4; ANSI has Red at 1 and Blue at 4),
   so this is a real lookup table, not an identity mapping.</li>
-<li><strong><code>ColorPairTable</code></strong> (<code>src/color_pair_table.hpp</code>/<code>.cpp</code>) — lazily
+<li><strong><code>ColorPairTable</code></strong> (<code>src/ColorPairTable.hpp</code>/<code>.cpp</code>) — lazily
   allocates small integer "pair" ids for <code>(fg, bg)</code> combinations, the
   model ncurses (and similar cell-attribute terminal APIs) use instead of
   arbitrary independent fg/bg attributes. Pure logic, no ncurses
   dependency — capacity-bounded with a documented fallback (returns the
   default pair once exhausted, rather than failing), fully unit-tested
   with an injected allocation callback standing in for <code>init_pair()</code>.</li>
-<li><strong><code>Terminal</code></strong> (<code>src/terminal.hpp</code>, implemented in
-  <code>platform/linux/terminal.cpp</code>) — a Pimpl-style class (declared once in
+<li><strong><code>Terminal</code></strong> (<code>src/Terminal.hpp</code>, implemented in
+  <code>platform/linux/Terminal.cpp</code>) — a Pimpl-style class (declared once in
   <code>/src</code>, one implementation file per platform selected by CMake, no
   <code>#ifdef</code> in the shared header): <code>width()</code>/<code>height()</code>, <code>move_cursor(x, y)</code>
   (0-indexed — new code, no reason to keep the DOS 1-indexing

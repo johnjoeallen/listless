@@ -1101,7 +1101,7 @@
 config file parsing/writing, <code>Style</code> methods). Needed before syntax
 highlighting (subsystem 09); otherwise decoupled from the viewer core
 (subsystem 07). Depends on subsystem 01 (string/container primitives)
-and reuses subsystem 04's <code>Color</code> enum (<code>src/color.hpp</code>) for the palette.</p>
+and reuses subsystem 04's <code>Color</code> enum (<code>src/Color.hpp</code>) for the palette.</p>
 <h2 id="what-the-original-does">What the original does<a class="headerlink" href="#what-the-original-does" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>Item&lt;T&gt;</code></strong> (<code>os.hpp:80-244</code>) — a template wrapping a lazily-allocated
@@ -1184,7 +1184,7 @@ Style Name (.ext1 .ext2)  BaseStyle1 BaseStyle2
 </ul>
 <h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>Item&lt;T&gt;</code></strong> (<code>src/style.hpp</code>) — a direct port of the lazy-fallback
+<li><strong><code>Item&lt;T&gt;</code></strong> (<code>src/Style.hpp</code>) — a direct port of the lazy-fallback
   mechanism using <code>std::optional&lt;T&gt;</code> instead of a manually
   <code>new</code>/<code>delete</code>d <code>T*</code>, and <code>std::vector&lt;Item&lt;T&gt;*&gt;</code> instead of
   <code>Set&lt;Item&lt;T&gt;&gt;</code> (a style is only ever linked as a base once in practice;
@@ -1192,7 +1192,7 @@ Style Name (.ext1 .ext2)  BaseStyle1 BaseStyle2
   prepends, exactly matching the original's "most recently added base
   wins ties" resolution order (<code>Item.MostRecentlyAddedBaseWinsTies</code> in
   <code>tests/core/style_test.cpp</code> pins this down).</li>
-<li><strong><code>Style</code></strong> (<code>src/style.hpp</code>/<code>.cpp</code>) — the same ~34 fields, typed with
+<li><strong><code>Style</code></strong> (<code>src/Style.hpp</code>/<code>.cpp</code>) — the same ~34 fields, typed with
   <code>Color</code> (subsystem 04's enum, not a raw <code>BYTE</code>), <code>bool</code>, <code>int</code>,
   <code>std::string</code>, <code>char</code>, and <code>std::vector&lt;std::string&gt;</code> (in place of
   <code>Set&lt;CString&gt;</code> for extension/comment/numeric-prefix lists — order-
@@ -1200,7 +1200,7 @@ Style Name (.ext1 .ext2)  BaseStyle1 BaseStyle2
   weren't load-bearing). <code>add_base_style()</code> is a direct port of
   <code>AddBaseStyle</code>: links every field except <code>extensions</code>, copies the
   base's <code>reserved</code> words in as <code>inherited = true</code>.</li>
-<li><strong>Config load/save</strong> (<code>src/style.cpp</code>'s <code>load_config()</code>/<code>save_config()</code>)
+<li><strong>Config load/save</strong> (<code>src/Style.cpp</code>'s <code>load_config()</code>/<code>save_config()</code>)
   — a from-scratch recursive-descent-ish parser/writer producing the
   <em>same brace-delimited shape</em> the original used (same section-key
   spellings, <code>=&gt;</code>, multi-line continuation, <code>Style Name (ext...)

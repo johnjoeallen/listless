@@ -1183,7 +1183,7 @@ style system (subsystem 08).</p>
 </ul>
 <h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>highlight_line(text, style, state)</code></strong> (<code>src/syntax_highlight.hpp</code>/
+<li><strong><code>highlight_line(text, style, state)</code></strong> (<code>src/SyntaxHighlight.hpp</code>/
   <code>.cpp</code>) — one function combining <code>scanData</code>'s state-machine (which
   <code>LineStatus</code>-equivalent state carries into the next line) and
   <code>displayData</code>'s per-character colouring chain into a single pass,
@@ -1259,7 +1259,7 @@ style system (subsystem 08).</p>
   independent of <code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code>, not implemented; no test
   or call site in this port exercises it.</li>
 <li><strong>No rendering</strong> — <code>highlight_line</code> produces colour/attribute spans
-  only; painting them to a terminal is <code>viewer_render.cpp</code>'s job
+  only; painting them to a terminal is <code>ViewerRender.cpp</code>'s job
   (subsystem 07), not wired up here since that would need the
   <code>App</code>/main-loop layer (issue #24) to own <em>which</em> <code>Style</code> is active for
   the file being viewed and feed <code>highlight_line</code>'s output into the
