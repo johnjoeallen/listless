@@ -1145,3 +1145,12 @@ retained and clearly marked as no longer planned for Listless.
 
 **Verification:** `mkdocs build --strict` verifies the updated status,
 roadmap, and Porting Record.
+
+## 2026-08-20 — Project links (issue #105)
+
+**Changes:** moved the GitHub Pages guide link near the README introduction.
+Added direct GitHub repository and release-download links to the documentation
+home page, following the prominent project-link pattern used by Speculate.
+
+**Verification:** `mkdocs build --strict` verifies the external links and
+home-page markup.
