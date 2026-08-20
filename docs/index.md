@@ -38,6 +38,10 @@ Listless is a modern port of [OnScreen/2](porting/original.md), targeting:
 - :fontawesome-brands-windows: Windows
 - :fontawesome-brands-apple: macOS
 
+The Listless name is a nod to Vern Buerg's DOS `LIST` program. According to
+the original author, OnScreen/2 was created because OS/2 lacked a comparable
+LIST-style file viewer.
+
 Product documentation is separate from the source research and engineering
 record. See the [Porting record](porting/index.md) for the original-system
 analysis, subsystem derivations, and append-only Porting Journey.

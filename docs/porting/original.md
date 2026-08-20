@@ -10,6 +10,14 @@ distributed as shareware of its era: zipped per-platform archives,
 registration forms, a BBS description file, and a manual in three formats
 (Word `.doc`, plain-text `.man`, and OS/2 `.inf` help).
 
+## Inspiration
+
+OnScreen/2 was created by John J. Allen because OS/2 lacked a comparable
+LIST-style file viewer. It was inspired by Vern Buerg's classic DOS `LIST`
+program; the original distribution describes OnScreen/2 as roughly similar to
+it. The Listless name is a direct nod to that lineage: `ls` lists files,
+`less` views files, and Listless does both.
+
 The full original source is preserved in the
 [OS2World OnScreen/2 repository](https://github.com/OS2World/UTIL-FILEMANAGER-OnScreen2),
 not bundled with Listless. Its `apps/onscreen` directory contains the
