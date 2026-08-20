@@ -219,14 +219,14 @@ otherwise.
   lettered drives. A Linux-relevant reinterpretation (a bar of mounted
   filesystems, or of frequently-used directories) is real UI design work
   — deferred rather than guessed at now.
-- **Per-instance `F2`-`F6` color cycling** — depends on `setupInfo`
-  (subsystem 08, not yet ported), exactly as subsystem 07 deferred its
-  three `Style`-selected status-line formats for the same reason.
+- **Per-instance `F2`-`F6` color cycling** — an original-only `setupInfo`
+  feature. It is no longer planned for Listless because the original's fixed
+  colour fields do not map cleanly to the broader style palette.
 - **File-manager prompts and command submenu** — `LineEdit` now exists for
   viewer prompts, but the browser does not yet bind it to typed directory,
   file-spec, or file-operation commands.
 - **Most of `Activate()`'s keyboard dispatch** — `AppActions` ports the
   read-only navigation and open-selected subset. The original command
-  submenu, drive controls, colour cycling, and file-operation bindings remain
-  deferred.
+  submenu, drive controls, and file-operation bindings remain deferred;
+  colour cycling is no longer planned.
 </content>

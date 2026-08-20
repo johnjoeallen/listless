@@ -199,5 +199,5 @@ types from day one rather than ported-then-refactored:
 11. **File operations** (copy/move/rename/delete/mkdir) — destructive,
     sequence after everything above is stable and tested; highest
     regression-test scrutiny.
-12. **Editor integration / shell escape / live style editing** — polish
-    features, lowest risk if deferred.
+12. **Editor integration / shell escape** — polish features, lowest risk if
+    deferred. Live style editing is no longer planned.
