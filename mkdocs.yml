@@ -25,6 +25,7 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - navigation.footer
     - navigation.tabs
     - navigation.top
     - navigation.instant
@@ -50,6 +51,7 @@ extra:
 
 nav:
   - Home: index.md
+  - Repository README: https://github.com/johnjoeallen/listless/blob/main/README.md
   - Listless guide:
       - Getting started: getting-started.md
       - Usage: usage.md
