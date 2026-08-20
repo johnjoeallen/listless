@@ -1023,3 +1023,21 @@ documentation.
 
 **Verification:** `mkdocs build --strict` passed with the new navigation
 and relocated links.
+
+## 2026-08-20 — Branding and platform targets (issue #86)
+
+**Objective:** establish a recognisable Listless visual identity and make
+the project's cross-platform target clear from the documentation home page.
+
+**Changes:** added a transparent Listless document-and-terminal icon for
+the GitHub Pages site logo and favicon. The Project history section now
+describes Listless as a modern port of OnScreen/2 and displays icon-labelled
+Linux, Windows, and macOS targets.
+
+**Decisions:** use Material's brand icons for target platforms so they render
+consistently in the documentation theme. Use the platform's official `macOS`
+capitalisation and describe all three as targets rather than claiming that
+each implementation is complete.
+
+**Verification:** `mkdocs build --strict` verifies the theme assets,
+platform icon rendering, and documentation links.
