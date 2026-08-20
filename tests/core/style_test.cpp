@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <cstdint>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -10,11 +11,14 @@
 using listless::Color;
 using listless::cycle_color;
 using listless::default_config_path;
+using listless::default_styles_dir;
 using listless::load_config;
+using listless::load_config_dir;
 using listless::save_config;
 using listless::Style;
 using listless::StyleDisplayMode;
 using listless::StyleSet;
+using listless::system_styles_dir;
 
 namespace {
 
@@ -26,6 +30,32 @@ class TempFile {
     ~TempFile() {
         std::error_code ec;
         std::filesystem::remove(path_, ec);
+    }
+
+    const std::filesystem::path& path() const { return path_; }
+
+  private:
+    std::filesystem::path path_;
+};
+
+// A scratch directory under the test binary's temp directory (for
+// load_config_dir()), recursively removed on destruction.
+class TempDir {
+  public:
+    TempDir()
+        : path_(std::filesystem::temp_directory_path() /
+                ("listless_style_test_dir_" +
+                 std::to_string(reinterpret_cast<std::uintptr_t>(this)))) {
+        std::filesystem::create_directories(path_);
+    }
+    ~TempDir() {
+        std::error_code ec;
+        std::filesystem::remove_all(path_, ec);
+    }
+
+    void write(std::string_view filename, std::string_view content) const {
+        std::ofstream out(path_ / filename);
+        out << content;
     }
 
     const std::filesystem::path& path() const { return path_; }
@@ -211,6 +241,24 @@ TEST(DefaultConfigPath, RespectsXdgConfigHome) {
 #endif
 }
 
+TEST(DefaultStylesDir, RespectsXdgConfigHome) {
+#ifdef _WIN32
+    GTEST_SKIP();
+#else
+    setenv("XDG_CONFIG_HOME", "/tmp/listless-xdg-test", 1);
+    EXPECT_EQ(default_styles_dir(),
+              std::filesystem::path("/tmp/listless-xdg-test/listless/styles"));
+    unsetenv("XDG_CONFIG_HOME");
+#endif
+}
+
+TEST(SystemStylesDir, ReturnsANonEmptyAbsolutePath) {
+    // The exact value is a build-time compile definition (see
+    // CMakeLists.txt); just check it resolves to something sane rather
+    // than pinning the path, which would break across install prefixes.
+    EXPECT_TRUE(system_styles_dir().is_absolute());
+}
+
 TEST(LoadConfig, MissingFileReturnsFalseWithoutModifyingStyles) {
     StyleSet styles;
     EXPECT_FALSE(load_config(styles, "/nonexistent/path/style.conf"));
@@ -389,6 +437,61 @@ TEST(LoadConfig, InvalidValueIsSkippedNotFatal) {
     EXPECT_EQ(cpp->fore_color.get(), nullptr);
     ASSERT_NE(cpp->tab_width.get(), nullptr);
     EXPECT_EQ(*cpp->tab_width.get(), 4);
+}
+
+TEST(LoadConfigDir, MissingDirectoryReturnsFalseWithoutModifyingStyles) {
+    StyleSet styles;
+    EXPECT_FALSE(load_config_dir(styles, "/nonexistent/listless/styles"));
+    EXPECT_EQ(styles.styles().size(), 1u);
+}
+
+TEST(LoadConfigDir, LoadsEveryConfFileAndIgnoresOthers) {
+    TempDir dir;
+    dir.write("cpp.conf", "Style Cpp (.cpp)\n{\n\tReserved => if\n}\n");
+    dir.write("python.conf", "Style Python (.py)\n{\n\tReserved => def\n}\n");
+    dir.write("notes.txt", "Style Ignored (.ignored)\n{\n}\n");
+
+    StyleSet styles;
+    ASSERT_TRUE(load_config_dir(styles, dir.path()));
+
+    EXPECT_NE(styles.find("Cpp"), nullptr);
+    EXPECT_NE(styles.find("Python"), nullptr);
+    EXPECT_EQ(styles.find("Ignored"), nullptr);
+}
+
+TEST(LoadConfigDir, BaseStyleInAnotherFileResolvesRegardlessOfLoadOrder) {
+    // "zcommon.conf" sorts *after* "cpp.conf" -- if load_config_dir()
+    // only did a single pass in filename order, Cpp's "Common" BaseStyle
+    // token wouldn't exist yet when cpp.conf is parsed, and the link
+    // would silently fail to resolve.
+    TempDir dir;
+    dir.write("cpp.conf", "Style Cpp (.cpp) Common\n{\n\tReserved => if\n}\n");
+    dir.write("zcommon.conf", "Style Common ()\n{\n\tForeGndColor => White\n}\n");
+
+    StyleSet styles;
+    ASSERT_TRUE(load_config_dir(styles, dir.path()));
+
+    Style* cpp = styles.find("Cpp");
+    ASSERT_NE(cpp, nullptr);
+    ASSERT_EQ(cpp->base_style_names().size(), 1u);
+    EXPECT_EQ(cpp->base_style_names()[0], "Common");
+    ASSERT_NE(cpp->fore_color.get(), nullptr);
+    EXPECT_EQ(*cpp->fore_color.get(), Color::White);
+}
+
+TEST(LoadConfigDir, AWordThatLooksLikeAStyleHeaderInsideAValueIsNotMisread) {
+    // Pass 1's pre-registration scan must consume field values via
+    // rest_of_line() exactly like the real parser, or a value containing
+    // the literal word "Style" would be misread as a new style header.
+    TempDir dir;
+    dir.write("cpp.conf", "Style Cpp (.cpp)\n{\n\tEditor => vim -c Style now\n}\n");
+
+    StyleSet styles;
+    ASSERT_TRUE(load_config_dir(styles, dir.path()));
+
+    EXPECT_NE(styles.find("Cpp"), nullptr);
+    EXPECT_EQ(styles.find("now"), nullptr);
+    EXPECT_EQ(styles.styles().size(), 2u);  // Default + Cpp, nothing spurious
 }
 
 TEST(SaveConfig, RoundTripsScalarFieldsAndExtensions) {

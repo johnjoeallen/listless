@@ -12,7 +12,7 @@ namespace listless {
 
 App::App(std::filesystem::path start_path)
     : keyboard_(terminal_), file_manager_(std::filesystem::current_path()) {
-    load_config(styles_, default_config_path());
+    load_styles();
 
     if (start_path.empty()) {
         return;
@@ -35,11 +35,17 @@ App::App(std::string stdin_content, std::string display_name)
     : terminal_(/*read_from_tty=*/true),
       keyboard_(terminal_),
       file_manager_(std::filesystem::current_path()) {
-    load_config(styles_, default_config_path());
+    load_styles();
 
     viewer_.emplace(std::move(stdin_content), std::move(display_name));
     mode_ = Mode::Viewing;
     restyle_for_viewer();
+}
+
+void App::load_styles() {
+    load_config_dir(styles_, system_styles_dir());
+    load_config(styles_, default_config_path());
+    load_config_dir(styles_, default_styles_dir());
 }
 
 int App::run() {

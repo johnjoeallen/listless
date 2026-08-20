@@ -20,6 +20,7 @@ option(LISTLESS_BUILD_TESTS "Build the test suite" ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(CompilerWarnings)
+include(GNUInstallDirs)
 
 add_library(listless_warnings INTERFACE)
 listless_set_warnings(listless_warnings)
@@ -43,6 +44,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         listless_platform_linux
         listless_warnings
         listless_sanitizers
+    )
+
+    install(TARGETS lss RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(DIRECTORY style/syntax/ DESTINATION ${CMAKE_INSTALL_DATADIR}/listless/styles
+        FILES_MATCHING PATTERN "*.conf"
     )
 else()
     message(FATAL_ERROR "Listless has no platform backend for ${CMAKE_SYSTEM_NAME} yet")
