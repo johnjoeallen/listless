@@ -1628,16 +1628,16 @@ otherwise.</p>
   lettered drives. A Linux-relevant reinterpretation (a bar of mounted
   filesystems, or of frequently-used directories) is real UI design work
   — deferred rather than guessed at now.</li>
-<li><strong>Per-instance <code>F2</code>-<code>F6</code> color cycling</strong> — depends on <code>setupInfo</code>
-  (subsystem 08, not yet ported), exactly as subsystem 07 deferred its
-  three <code>Style</code>-selected status-line formats for the same reason.</li>
+<li><strong>Per-instance <code>F2</code>-<code>F6</code> color cycling</strong> — an original-only <code>setupInfo</code>
+  feature. It is no longer planned for Listless because the original's fixed
+  colour fields do not map cleanly to the broader style palette.</li>
 <li><strong>File-manager prompts and command submenu</strong> — <code>LineEdit</code> now exists for
   viewer prompts, but the browser does not yet bind it to typed directory,
   file-spec, or file-operation commands.</li>
 <li><strong>Most of <code>Activate()</code>'s keyboard dispatch</strong> — <code>AppActions</code> ports the
   read-only navigation and open-selected subset. The original command
-  submenu, drive controls, colour cycling, and file-operation bindings remain
-  deferred.
+  submenu, drive controls, and file-operation bindings remain deferred;
+  colour cycling is no longer planned.
 </content></li>
 </ul>
 
