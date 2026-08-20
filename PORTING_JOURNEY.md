@@ -982,3 +982,22 @@ needs a reverse-search prompt, not merely a key-dispatch alias.
 **Tests:** action-level coverage exercises every new page, half-page,
 and line navigation alias in both text and hex modes, text-mode `g`/`G`,
 and `n`/`N` search repetition. The full suite passed with 282 tests.
+
+## 2026-08-20 — Source-tree platform layout (issue #81)
+
+**Objective:** consolidate all implementation code beneath `/src` while
+preserving the platform-specific build boundary.
+
+**Changes:** moved the former top-level `/platform` tree to
+`/src/platform`. Linux CMake wiring now selects `src/platform/linux`;
+the Terminal and Keyboard interface comments and the subsystem docs use
+the new paths. The Linux, Windows, and macOS platform subdirectories and
+their ownership model are otherwise unchanged.
+
+**Decisions:** this is a source-layout-only refactor. Platform-specific
+implementations remain separate from portable `/src` code, and CMake
+continues to select one backend per target platform; no interface or
+runtime behaviour changes.
+
+**Tests:** reconfigured CMake from the moved source path, then built and
+ran the full suite successfully (279 tests).

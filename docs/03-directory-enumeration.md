@@ -84,8 +84,8 @@ This is Listless's core "ls" behaviour.
 
 `Directory::fill()`'s `std::filesystem::directory_iterator`-based
 implementation lives directly in `src/Directory.cpp`, not under
-`/platform/linux` — `std::filesystem` is already portable across Linux,
+`/src/platform/linux` — `std::filesystem` is already portable across Linux,
 Windows, and macOS, so there is no platform seam here to isolate. The
-`/platform` directories are for genuinely OS-specific APIs (console I/O,
+`/src/platform` directories are for genuinely OS-specific APIs (console I/O,
 keyboard input — subsystems 04/05), not for functionality the standard
 library already abstracts.

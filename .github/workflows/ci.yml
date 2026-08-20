@@ -68,7 +68,7 @@ jobs:
 
       - name: Check formatting
         run: |
-          files=$(find src tests platform -name '*.cpp' -o -name '*.hpp' 2>/dev/null)
+          files=$(find src tests -name '*.cpp' -o -name '*.hpp')
           if [ -n "$files" ]; then
             clang-format --dry-run --Werror $files
           fi
