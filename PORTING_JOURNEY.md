@@ -1041,3 +1041,13 @@ each implementation is complete.
 
 **Verification:** `mkdocs build --strict` verifies the theme assets,
 platform icon rendering, and documentation links.
+
+## 2026-08-20 — Branding documentation follow-up (issue #86)
+
+**Changes:** added the Listless logo to the repository README and linked the
+README from both the documentation home page and site navigation. Enabled
+Material's navigation footer so published documentation pages expose visible
+previous and next links.
+
+**Verification:** `mkdocs build --strict` verifies the README links and the
+navigation configuration.

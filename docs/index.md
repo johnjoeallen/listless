@@ -11,6 +11,7 @@ searching, and configurable syntax highlighting.
 - [Syntax highlighting](syntax-highlighting.md)
 - [Configuration](configuration.md)
 - [Roadmap](roadmap.md)
+- [Repository README](https://github.com/johnjoeallen/listless/blob/main/README.md)
 
 ## Project history
 
