@@ -6,7 +6,7 @@
 #include <string_view>
 #include <vector>
 
-#include "directory.hpp"
+#include "Directory.hpp"
 
 namespace listless {
 

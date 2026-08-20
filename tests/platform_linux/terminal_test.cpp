@@ -1,4 +1,4 @@
-#include "terminal.hpp"
+#include "Terminal.hpp"
 
 #include <gtest/gtest.h>
 #include <ncurses.h>

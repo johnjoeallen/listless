@@ -88,7 +88,7 @@ style system (subsystem 08).
 
 ## What's ported here
 
-- **`highlight_line(text, style, state)`** (`src/syntax_highlight.hpp`/
+- **`highlight_line(text, style, state)`** (`src/SyntaxHighlight.hpp`/
   `.cpp`) — one function combining `scanData`'s state-machine (which
   `LineStatus`-equivalent state carries into the next line) and
   `displayData`'s per-character colouring chain into a single pass,
@@ -164,7 +164,7 @@ style system (subsystem 08).
   independent of `BOLD_CODE`/`UNDERLINE_CODE`, not implemented; no test
   or call site in this port exercises it.
 - **No rendering** — `highlight_line` produces colour/attribute spans
-  only; painting them to a terminal is `viewer_render.cpp`'s job
+  only; painting them to a terminal is `ViewerRender.cpp`'s job
   (subsystem 07), not wired up here since that would need the
   `App`/main-loop layer (issue #24) to own *which* `Style` is active for
   the file being viewed and feed `highlight_line`'s output into the

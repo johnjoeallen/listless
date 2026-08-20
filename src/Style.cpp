@@ -1,4 +1,4 @@
-#include "style.hpp"
+#include "Style.hpp"
 
 #include <algorithm>
 #include <array>
@@ -9,7 +9,7 @@
 #include <functional>
 #include <sstream>
 
-#include "text.hpp"
+#include "Text.hpp"
 
 namespace listless {
 
@@ -446,6 +446,14 @@ bool load_config(StyleSet& styles, const std::filesystem::path& path) {
             } else {
                 current_key = token;
             }
+        }
+
+        // Matches the original's loadConfig (osstyle.cpp:1309-1313):
+        // there's no explicit config key for iSyntaxHighlightEnabled (see
+        // docs/08-style-config.md), it's switched on implicitly for any
+        // style that ends up with reserved words.
+        if (!style.reserved.empty()) {
+            style.syntax_highlight_enabled.set(true);
         }
     }
 

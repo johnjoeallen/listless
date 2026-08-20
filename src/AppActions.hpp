@@ -1,8 +1,8 @@
 #pragma once
 
-#include "file_manager.hpp"
-#include "key.hpp"
-#include "viewer.hpp"
+#include "FileManager.hpp"
+#include "Key.hpp"
+#include "Viewer.hpp"
 
 namespace listless {
 

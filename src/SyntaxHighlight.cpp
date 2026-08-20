@@ -1,4 +1,4 @@
-#include "syntax_highlight.hpp"
+#include "SyntaxHighlight.hpp"
 
 #include <cctype>
 #include <cstddef>

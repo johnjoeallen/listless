@@ -5,7 +5,7 @@ Source: `original/apps/onscreen/os.hpp` (337 lines — `Item<T>`, `Style`,
 config file parsing/writing, `Style` methods). Needed before syntax
 highlighting (subsystem 09); otherwise decoupled from the viewer core
 (subsystem 07). Depends on subsystem 01 (string/container primitives)
-and reuses subsystem 04's `Color` enum (`src/color.hpp`) for the palette.
+and reuses subsystem 04's `Color` enum (`src/Color.hpp`) for the palette.
 
 ## What the original does
 
@@ -90,7 +90,7 @@ and reuses subsystem 04's `Color` enum (`src/color.hpp`) for the palette.
 
 ## What's ported here
 
-- **`Item<T>`** (`src/style.hpp`) — a direct port of the lazy-fallback
+- **`Item<T>`** (`src/Style.hpp`) — a direct port of the lazy-fallback
   mechanism using `std::optional<T>` instead of a manually
   `new`/`delete`d `T*`, and `std::vector<Item<T>*>` instead of
   `Set<Item<T>>` (a style is only ever linked as a base once in practice;
@@ -98,7 +98,7 @@ and reuses subsystem 04's `Color` enum (`src/color.hpp`) for the palette.
   prepends, exactly matching the original's "most recently added base
   wins ties" resolution order (`Item.MostRecentlyAddedBaseWinsTies` in
   `tests/core/style_test.cpp` pins this down).
-- **`Style`** (`src/style.hpp`/`.cpp`) — the same ~34 fields, typed with
+- **`Style`** (`src/Style.hpp`/`.cpp`) — the same ~34 fields, typed with
   `Color` (subsystem 04's enum, not a raw `BYTE`), `bool`, `int`,
   `std::string`, `char`, and `std::vector<std::string>` (in place of
   `Set<CString>` for extension/comment/numeric-prefix lists — order-
@@ -106,7 +106,7 @@ and reuses subsystem 04's `Color` enum (`src/color.hpp`) for the palette.
   weren't load-bearing). `add_base_style()` is a direct port of
   `AddBaseStyle`: links every field except `extensions`, copies the
   base's `reserved` words in as `inherited = true`.
-- **Config load/save** (`src/style.cpp`'s `load_config()`/`save_config()`)
+- **Config load/save** (`src/Style.cpp`'s `load_config()`/`save_config()`)
   — a from-scratch recursive-descent-ish parser/writer producing the
   *same brace-delimited shape* the original used (same section-key
   spellings, `=>`, multi-line continuation, `Style Name (ext...)

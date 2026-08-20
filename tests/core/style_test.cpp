@@ -1,4 +1,4 @@
-#include "style.hpp"
+#include "Style.hpp"
 
 #include <gtest/gtest.h>
 
@@ -274,6 +274,35 @@ TEST(LoadConfig, ParsesListFieldsAcrossContinuationLines) {
     EXPECT_EQ(cpp->reserved[0].keyword, "if");
     EXPECT_EQ(cpp->reserved[1].keyword, "else");
     EXPECT_EQ(cpp->reserved[2].keyword, "while");
+}
+
+TEST(LoadConfig, EnablesSyntaxHighlightingImplicitlyWhenReservedWordsExist) {
+    // Matches the original's loadConfig (osstyle.cpp:1309-1313): there's
+    // no explicit config key for this field, it's switched on as a side
+    // effect of the style ending up with reserved words.
+    TempFile file;
+    {
+        std::ofstream out(file.path());
+        out << "Style Cpp (.cpp)\n"
+               "{\n"
+               "\tReserved => if\n"
+               "}\n"
+               "Style Plain (.txt)\n"
+               "{\n"
+               "}\n";
+    }
+
+    StyleSet styles;
+    ASSERT_TRUE(load_config(styles, file.path()));
+
+    Style* cpp = styles.find("Cpp");
+    ASSERT_NE(cpp, nullptr);
+    ASSERT_NE(cpp->syntax_highlight_enabled.get(), nullptr);
+    EXPECT_TRUE(*cpp->syntax_highlight_enabled.get());
+
+    Style* plain = styles.find("Plain");
+    ASSERT_NE(plain, nullptr);
+    EXPECT_EQ(plain->syntax_highlight_enabled.get(), nullptr);
 }
 
 TEST(LoadConfig, ResolvesBaseStylesByName) {

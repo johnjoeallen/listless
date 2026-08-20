@@ -4,7 +4,7 @@
 #include <map>
 #include <utility>
 
-#include "color.hpp"
+#include "Color.hpp"
 
 namespace listless {
 

@@ -1,20 +1,20 @@
 add_library(listless_core
-    app_actions.cpp
-    color.cpp
-    color_pair_table.cpp
-    directory.cpp
-    file_manager.cpp
-    file_manager_render.cpp
-    glob.cpp
-    key.cpp
-    line_edit.cpp
-    search.cpp
-    style.cpp
-    syntax_highlight.cpp
-    text.cpp
-    version.cpp
-    viewer.cpp
-    viewer_render.cpp
+    AppActions.cpp
+    Color.cpp
+    ColorPairTable.cpp
+    Directory.cpp
+    FileManager.cpp
+    FileManagerRender.cpp
+    Glob.cpp
+    Key.cpp
+    LineEdit.cpp
+    Search.cpp
+    Style.cpp
+    SyntaxHighlight.cpp
+    Text.cpp
+    Version.cpp
+    Viewer.cpp
+    ViewerRender.cpp
 )
 
 target_include_directories(listless_core PUBLIC

@@ -1,10 +1,10 @@
-#include "file_manager.hpp"
-
 #include <gtest/gtest.h>
 
 #include <chrono>
 #include <fstream>
 #include <thread>
+
+#include "FileManager.hpp"
 
 namespace fs = std::filesystem;
 using listless::compute_grid;

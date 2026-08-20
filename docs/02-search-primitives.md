@@ -18,7 +18,7 @@ case-insensitive), then `strsrch()` scans the haystack right-to-left
 within each candidate window, shifting by the bad-character table on a
 mismatch. This is a correct, standard algorithm and is ported directly in
 behaviour (not line-by-line) as `listless::HorspoolSearcher`
-(`src/search.hpp`/`.cpp`): construct once per pattern, `find()` repeatedly
+(`src/Search.hpp`/`.cpp`): construct once per pattern, `find()` repeatedly
 for "find next" style usage, with an explicit `start` offset rather than
 the original's implicit whole-string-only scan.
 
@@ -31,7 +31,7 @@ compare inline.
 
 The original translates a DOS/OS2/Win32-style wildcard into an ERE string
 and hands it to `RegExp` — which is a non-functional stub in the shipped
-source (see architecture.md). `docs/../src/glob.{hpp,cpp}` implements
+source (see architecture.md). `docs/../src/Glob.{hpp,cpp}` implements
 direct wildcard matching instead, with no regex engine involved at all.
 
 The **documented** wildcard syntax (`os.man` section 2.1.1) is fully

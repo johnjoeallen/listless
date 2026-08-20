@@ -1,5 +1,3 @@
-#include "file_manager_render.hpp"
-
 #include <gtest/gtest.h>
 #include <ncurses.h>
 
@@ -7,6 +5,8 @@
 #include <fstream>
 #include <memory>
 #include <string>
+
+#include "FileManagerRender.hpp"
 
 namespace fs = std::filesystem;
 using listless::compute_grid;

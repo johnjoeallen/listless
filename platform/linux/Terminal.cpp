@@ -1,13 +1,14 @@
-#include "terminal.hpp"
+#include "Terminal.hpp"
 
 #include <ncurses.h>
 
 #include <array>
 #include <cstddef>
+#include <cstdio>
 #include <optional>
 #include <stdexcept>
 
-#include "color_pair_table.hpp"
+#include "ColorPairTable.hpp"
 
 namespace listless {
 
@@ -34,10 +35,34 @@ short curses_color_number(Color c) {
 struct Terminal::Impl {
     bool colors_enabled = false;
     std::optional<ColorPairTable> pairs;
+    // Set only when `read_from_tty` is requested (the caller has consumed
+    // stdin for piped content and it's no longer usable as a keyboard
+    // source).
+    FILE* tty_in = nullptr;
+    FILE* tty_out = nullptr;
 
-    Impl() {
-        if (initscr() == nullptr) {
-            throw std::runtime_error("Terminal: initscr() failed (is $TERM set?)");
+    explicit Impl(bool read_from_tty) {
+        SCREEN* screen = nullptr;
+
+        if (read_from_tty) {
+            // ncurses reads keyboard input from whatever FILE* is passed
+            // as input here; the caller has told us stdin holds piped
+            // content rather than a keyboard, so read/write the
+            // controlling terminal directly instead.
+            tty_in = fopen("/dev/tty", "r");
+            tty_out = fopen("/dev/tty", "w");
+            if (tty_in == nullptr || tty_out == nullptr) {
+                throw std::runtime_error(
+                    "Terminal: stdin is unavailable for keyboard input and /dev/tty could not be "
+                    "opened");
+            }
+            screen = newterm(nullptr, tty_out, tty_in);
+        } else {
+            screen = newterm(nullptr, stdout, stdin);
+        }
+
+        if (screen == nullptr) {
+            throw std::runtime_error("Terminal: failed to initialize (is $TERM set?)");
         }
 
         cbreak();
@@ -53,7 +78,15 @@ struct Terminal::Impl {
         }
     }
 
-    ~Impl() { endwin(); }
+    ~Impl() {
+        endwin();
+        if (tty_in != nullptr) {
+            fclose(tty_in);
+        }
+        if (tty_out != nullptr) {
+            fclose(tty_out);
+        }
+    }
 
     int attr_for(Color fg, Color bg) {
         if (!colors_enabled || !pairs) {
@@ -64,7 +97,7 @@ struct Terminal::Impl {
     }
 };
 
-Terminal::Terminal() : impl_(std::make_unique<Impl>()) {}
+Terminal::Terminal(bool read_from_tty) : impl_(std::make_unique<Impl>(read_from_tty)) {}
 
 Terminal::~Terminal() = default;
 
@@ -74,8 +107,11 @@ int Terminal::height() const { return getmaxy(stdscr); }
 
 void Terminal::move_cursor(int x, int y) { wmove(stdscr, y, x); }
 
-void Terminal::put_text(int x, int y, std::string_view text, Color fg, Color bg) {
+void Terminal::put_text(int x, int y, std::string_view text, Color fg, Color bg, bool bold,
+                        bool underlined) {
     int attr = impl_->attr_for(fg, bg);
+    if (bold) attr |= static_cast<int>(A_BOLD);
+    if (underlined) attr |= static_cast<int>(A_UNDERLINE);
 
     wattron(stdscr, attr);
     mvwaddnstr(stdscr, y, x, text.data(), static_cast<int>(text.size()));

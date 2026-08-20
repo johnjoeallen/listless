@@ -1,8 +1,8 @@
-#include "directory.hpp"
+#include "Directory.hpp"
 
 #include <algorithm>
 
-#include "glob.hpp"
+#include "Glob.hpp"
 
 namespace listless {
 

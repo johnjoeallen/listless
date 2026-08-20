@@ -1,4 +1,4 @@
-#include "color_pair_table.hpp"
+#include "ColorPairTable.hpp"
 
 namespace listless {
 

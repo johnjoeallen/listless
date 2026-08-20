@@ -1,5 +1,3 @@
-#include "viewer_render.hpp"
-
 #include <gtest/gtest.h>
 #include <ncurses.h>
 
@@ -7,7 +5,13 @@
 #include <memory>
 #include <string>
 
+#include "Style.hpp"
+#include "ViewerRender.hpp"
+
+using listless::Color;
+using listless::HighlightCache;
 using listless::render_viewer;
+using listless::Style;
 using listless::Terminal;
 using listless::Viewer;
 
@@ -32,6 +36,18 @@ class ViewerRenderTest : public ::testing::Test {
 
     std::unique_ptr<Terminal> terminal_;
 };
+
+// A minimal style: reserved word "return" in Blue, everything else the
+// default LightGray -- enough to check that render_viewer actually paints
+// distinct colours per span without pulling in a whole language grammar.
+// Style is move/copy-disabled (see style.hpp), so callers construct their
+// own Style and pass it in rather than getting one back by value.
+void init_reserved_word_style(Style& s) {
+    s.syntax_highlight_enabled.set(true);
+    s.add_reserved_word("return");
+    s.reserved_color.set(Color::Blue);
+    s.ident_color.set(Color::LightGray);
+}
 
 }  // namespace
 
@@ -144,4 +160,76 @@ TEST_F(ViewerRenderTest, TextModeUnaffectedByHexModeExistence) {
     render_viewer(v, *terminal_);
 
     EXPECT_EQ(row_text(1, 10), "plain text");
+}
+
+TEST_F(ViewerRenderTest, SyntaxHighlightingPaintsDistinctSpansInDifferentColours) {
+    Style style("Test");
+    init_reserved_word_style(style);
+    HighlightCache cache;
+
+    Viewer v("return x\n", "t.test");
+    render_viewer(v, *terminal_, style, cache);
+
+    EXPECT_EQ(row_text(1, 8), "return x");
+    chtype reserved = mvinch(1, 0);  // 'r' of "return", reserved_color (Blue)
+    chtype ident = mvinch(1, 7);     // 'x', ident_color (LightGray)
+    EXPECT_NE((reserved & A_ATTRIBUTES), (ident & A_ATTRIBUTES));
+}
+
+TEST_F(ViewerRenderTest, HighlightStateCarriesAcrossLinesViaCache) {
+    // Neither line closes the comment it's in -- HighlightCache must
+    // carry "in_comment" from line 0 into line 1 so its text is coloured
+    // as a comment too, matching what a from-scratch scan would produce.
+    Style style("Test");
+    style.syntax_highlight_enabled.set(true);
+    style.add_open_comment("/*");
+    style.add_close_comment("*/");
+    style.comment_color.set(Color::Green);
+    style.ident_color.set(Color::LightGray);
+    // highlight_line() only turns on syntax mode (vs. the plain layout
+    // fallback) once at least one reserved word exists -- irrelevant to
+    // this test's content, just needed to flip that switch.
+    style.add_reserved_word("unrelated_keyword");
+
+    HighlightCache cache_via_scroll;
+    Viewer scrolled("/* start\nstill comment\n", "t.test");
+    scrolled.scroll_line_down(1);
+    render_viewer(scrolled, *terminal_, style, cache_via_scroll);
+    chtype in_comment = mvinch(1, 0);  // 's' of "still", carried-over state
+
+    HighlightCache cache_no_comment;
+    Viewer no_comment("xx start\nstill comment\n", "t.test");
+    no_comment.scroll_line_down(1);
+    render_viewer(no_comment, *terminal_, style, cache_no_comment);
+    chtype not_in_comment = mvinch(1, 0);  // same text, but never entered a comment
+
+    EXPECT_NE((in_comment & A_ATTRIBUTES), (not_in_comment & A_ATTRIBUTES));
+}
+
+TEST_F(ViewerRenderTest, SelectionOverridesSyntaxColourOnlyWithinTheMatch) {
+    Style style("Test");
+    init_reserved_word_style(style);
+
+    HighlightCache unselected_cache;
+    Viewer unselected("return x\n", "t.test");
+    render_viewer(unselected, *terminal_, style, unselected_cache);
+    chtype reserved_unselected = mvinch(1, 0);  // 'r' of "return", syntax-coloured only
+
+    HighlightCache cache;
+    Viewer v("return x\n", "t.test");
+    v.search_forward("x", true);
+    render_viewer(v, *terminal_, style, cache);
+
+    chtype reserved = mvinch(1, 0);  // 'r' of "return", still syntax-coloured
+    chtype selected = mvinch(1, 7);  // 'x', now selection-highlighted
+
+    EXPECT_NE((reserved & A_ATTRIBUTES), (selected & A_ATTRIBUTES));
+    EXPECT_EQ((reserved & A_ATTRIBUTES), (reserved_unselected & A_ATTRIBUTES));
+}
+
+TEST_F(ViewerRenderTest, UnstyledOverloadStillDrawsLinesUncoloured) {
+    Viewer v("plain\n", "t");
+    render_viewer(v, *terminal_);  // 2-arg overload: no Style available
+
+    EXPECT_EQ(row_text(1, 5), "plain");
 }

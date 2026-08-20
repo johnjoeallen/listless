@@ -1,8 +1,8 @@
-#include "app_actions.hpp"
-
 #include <gtest/gtest.h>
 
 #include <fstream>
+
+#include "AppActions.hpp"
 
 namespace fs = std::filesystem;
 using listless::alt_key;

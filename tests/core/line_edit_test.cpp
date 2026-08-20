@@ -1,6 +1,6 @@
-#include "line_edit.hpp"
-
 #include <gtest/gtest.h>
+
+#include "LineEdit.hpp"
 
 using listless::line_edit_key;
 using listless::LineEditStatus;

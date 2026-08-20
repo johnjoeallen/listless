@@ -2,8 +2,8 @@ set(CURSES_NEED_NCURSES TRUE)
 find_package(Curses REQUIRED)
 
 add_library(listless_platform_linux
-    keyboard.cpp
-    terminal.cpp
+    Keyboard.cpp
+    Terminal.cpp
 )
 
 target_link_libraries(listless_platform_linux

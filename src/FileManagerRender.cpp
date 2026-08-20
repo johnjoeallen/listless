@@ -1,4 +1,4 @@
-#include "file_manager_render.hpp"
+#include "FileManagerRender.hpp"
 
 #include <algorithm>
 #include <string>

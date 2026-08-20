@@ -1,4 +1,4 @@
-#include "viewer.hpp"
+#include "Viewer.hpp"
 
 #include <gtest/gtest.h>
 

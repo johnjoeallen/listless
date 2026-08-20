@@ -53,22 +53,22 @@ just manually verifiable.
 
 ## What's ported here
 
-- **`Color`** (`src/color.hpp`/`.cpp`) — the original's 16-value DOS
+- **`Color`** (`src/Color.hpp`/`.cpp`) — the original's 16-value DOS
   palette, preserved with the same numeric values for future `Style`
   compatibility. `to_ansi(Color)` is a pure function (no ncurses
   dependency, fully unit-tested) mapping a `Color` to `{ansi_base 0-7,
   bright}` — the DOS palette's colour *order* differs from ANSI/xterm's
   (e.g. DOS puts Blue at 1 and Red at 4; ANSI has Red at 1 and Blue at 4),
   so this is a real lookup table, not an identity mapping.
-- **`ColorPairTable`** (`src/color_pair_table.hpp`/`.cpp`) — lazily
+- **`ColorPairTable`** (`src/ColorPairTable.hpp`/`.cpp`) — lazily
   allocates small integer "pair" ids for `(fg, bg)` combinations, the
   model ncurses (and similar cell-attribute terminal APIs) use instead of
   arbitrary independent fg/bg attributes. Pure logic, no ncurses
   dependency — capacity-bounded with a documented fallback (returns the
   default pair once exhausted, rather than failing), fully unit-tested
   with an injected allocation callback standing in for `init_pair()`.
-- **`Terminal`** (`src/terminal.hpp`, implemented in
-  `platform/linux/terminal.cpp`) — a Pimpl-style class (declared once in
+- **`Terminal`** (`src/Terminal.hpp`, implemented in
+  `platform/linux/Terminal.cpp`) — a Pimpl-style class (declared once in
   `/src`, one implementation file per platform selected by CMake, no
   `#ifdef` in the shared header): `width()`/`height()`, `move_cursor(x, y)`
   (0-indexed — new code, no reason to keep the DOS 1-indexing
