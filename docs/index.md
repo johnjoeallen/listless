@@ -14,6 +14,8 @@ platforms whose backends are still to be completed.
 - [Syntax highlighting](syntax-highlighting.md)
 - [Configuration](configuration.md)
 - [Roadmap](roadmap.md)
+
+See [screenshots of the browser and viewer](usage.md#screenshots).
 - [Repository README](https://github.com/johnjoeallen/listless/blob/main/README.md)
 
 ## Project history
