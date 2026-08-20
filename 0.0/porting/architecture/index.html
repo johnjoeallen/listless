@@ -1526,11 +1526,13 @@ sound, regexp-search-mode, case-sensitivity, keep-files-loaded, status
 colours). A Listless port should own this state in an explicit
 session/app object instead of globals.</p>
 <h2 id="filemanager-the-directory-viewer-ls-half">FileManager — the directory viewer ("ls" half)<a class="headerlink" href="#filemanager-the-directory-viewer-ls-half" title="Permanent link">&para;</a></h2>
-<p><code>apps/onscreen/fileman.cpp</code> (2484 lines). Multi-column sorted file list
-(<code>iColumns</code>/<code>iColumnWidth</code>/<code>iLinesPerColumn</code>), a DOS/OS2/Win32
+<p><code>apps/onscreen/fileman.cpp</code> (2484 lines). One directory is displayed as a
+multi-column sorted file list (<code>iColumns</code>/<code>iColumnWidth</code>/<code>iLinesPerColumn</code>);
+this is not a two-directory-pane design. It includes a DOS/OS2/Win32
 drive-letter bar (<code>DisplayDisks</code> — meaningless on Linux, should collapse
 to cwd/mount points), sortable by name/ext/date/size (<code>ChooseSortBy</code>),
-glob-pattern multi-select (<code>MatchSelect</code>), and direct file operations
+glob-pattern file filtering plus incremental type-ahead selection
+(<code>ChangeFileSpec</code>/<code>MatchSelect</code>), and direct file operations
 (Copy/Delete/Rename/Move/Edit/View/MakeDirectory, <code>fileman.cpp:894-1321</code>).
 <code>Activate()</code> (<code>fileman.cpp:1597</code> onward, ~850 lines) is its own keyboard
 loop, with a <code>:</code>/<code>/</code>-triggered command submenu

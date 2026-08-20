@@ -1526,14 +1526,9 @@ Listless. Depends on subsystems 01, 02 (search), 04/05 (I/O). Explicitly
   re-dump sibling viewers sharing the same style, which is entirely
   App/multi-buffer territory (subsystem 06) layered on top of <code>Style</code>
   besides.</li>
-<li><strong>No stdin/external-filter loading path</strong> — the original's stdin
-  handling involves <code>_popen</code>, growth-buffer <code>fread</code> loops, and
-  Windows-specific console-handle reopening after consuming stdin, none
-  of which apply to a Linux port. <code>Viewer</code> supports being constructed
-  directly from an in-memory buffer plus a display name (so a caller
-  that already read stdin elsewhere can hand it a <code>Viewer</code> without a
-  real file path) — the actual "read stdin into a buffer" plumbing is
-  an <code>App</code>-level concern (subsystem 06+), not this subsystem's.</li>
+<li><strong>No external-filter reload path</strong> — <code>App</code> now captures redirected stdin
+  and constructs a viewer over it. The original's external-filter reload
+  behaviour remains unimplemented.</li>
 <li><strong><code>Ctrl+F</code>, <code>Alt+Z</code>, <code>Alt+E</code>, <code>h</code>/<code>H</code>, <code>d</code>/<code>D</code>, <code>w</code>/<code>W</code>'s storage
   location</strong> (all <code>Style</code>-dependent one way or another per the survey)
   and hex mode entirely are not ported here — see the survey notes

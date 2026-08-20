@@ -1550,12 +1550,10 @@ style system (subsystem 08).</p>
   character without a control byte) — a <code>WithLayout</code>-gated feature
   independent of <code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code>, not implemented; no test
   or call site in this port exercises it.</li>
-<li><strong>No rendering</strong> — <code>highlight_line</code> produces colour/attribute spans
-  only; painting them to a terminal is <code>ViewerRender.cpp</code>'s job
-  (subsystem 07), not wired up here since that would need the
-  <code>App</code>/main-loop layer (issue #24) to own <em>which</em> <code>Style</code> is active for
-  the file being viewed and feed <code>highlight_line</code>'s output into the
-  renderer per visible line.</li>
+<li><strong>Rendering integration is complete</strong> — <code>App</code> now resolves the active
+  style and passes it with a <code>HighlightCache</code> to <code>render_viewer()</code>, which
+  calls <code>highlight_line</code> for every visible text line and paints the spans.
+  Hex mode remains deliberately uncoloured.</li>
 </ul>
 
 

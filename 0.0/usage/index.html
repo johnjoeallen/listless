@@ -1369,6 +1369,9 @@
 <h2 id="browser">Browser<a class="headerlink" href="#browser" title="Permanent link">&para;</a></h2>
 <p>Arrow keys, Home, End, Page Up, and Page Down move the directory selection.
 Enter opens a file or enters a directory. <code>q</code> or Escape quits.</p>
+<p>The browser shows one directory at a time in a column-major grid. It is not a
+dual-pane file manager; copy, move, rename, delete, and create-directory
+actions are not available yet.</p>
 <h2 id="viewer">Viewer<a class="headerlink" href="#viewer" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1399,12 +1402,24 @@ Enter opens a file or enters a directory. <code>q</code> or Escape quits.</p>
 <td><code>h</code> / <code>H</code></td>
 </tr>
 <tr>
+<td>Go to line (text)</td>
+<td><code>:</code></td>
+</tr>
+<tr>
+<td>Go to offset (hex)</td>
+<td><code>g</code> / <code>G</code></td>
+</tr>
+<tr>
 <td>Search forward</td>
 <td><code>/</code>, <code>s</code>, <code>S</code></td>
 </tr>
 <tr>
 <td>Repeat search</td>
 <td><code>a</code> / <code>A</code>, <code>n</code> / <code>N</code></td>
+</tr>
+<tr>
+<td>Set/jump bookmark</td>
+<td>Alt+<code>0</code>–<code>9</code> / <code>0</code>–<code>9</code></td>
 </tr>
 <tr>
 <td>Close</td>
