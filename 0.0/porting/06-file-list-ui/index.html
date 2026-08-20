@@ -1,0 +1,1668 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A portable file and directory viewer for Linux, Windows, and macOS — the modern continuation of OnScreen/2.">
+      
+      
+      
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/porting/06-file-list-ui/">
+      
+      
+        <link rel="prev" href="../05-keyboard-input/">
+      
+      
+        <link rel="next" href="../07-file-viewer-core/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>06. File-list UI - Listless</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#subsystem-06-file-list-ui" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Listless
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              06. File-list UI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/johnjoeallen/listless" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    johnjoeallen/listless
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/" class="md-tabs__link">
+          
+  
+  
+  Listless guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Porting record
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Listless
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/johnjoeallen/listless" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    johnjoeallen/listless
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Listless guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Listless guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax-highlighting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Syntax highlighting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Porting record
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Porting record
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Original architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    About
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../original/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The original: OnScreen/2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../target/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The target: Listless
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subsystems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Subsystems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-string-container-primitives/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01. String/container primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-search-primitives/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02. Search primitives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-directory-enumeration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03. Directory enumeration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-console-terminal-io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04. Console/terminal I/O
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-keyboard-input/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05. Keyboard input
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06. File-list UI
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06. File-list UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-note-on-this-files-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A note on this file's encoding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original provides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-not-ported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately not ported
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-file-viewer-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07. File viewer core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-style-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08. Style/config system
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-syntax-highlighting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09. Syntax highlighting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-hex-mode-viewer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10. Hex-mode viewer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../app-main-loop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App entry point / main loop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-note-on-this-files-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A note on this file's encoding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original provides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-not-ported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately not ported
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/porting/06-file-list-ui.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="subsystem-06-file-list-ui">Subsystem 06: file-list UI<a class="headerlink" href="#subsystem-06-file-list-ui" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/apps/onscreen/fileman.cpp</code> (2484 lines), with the
+<code>FileManager</code>/<code>FileManDir</code> class declarations in
+<code>original/apps/onscreen/ostxt.hpp:427-491</code>. Depends on
+<a href="../01-string-container-primitives/">01-string-container-primitives.md</a>,
+<a href="../02-search-primitives/">02-search-primitives.md</a> (glob matching for the
+file spec), and <a href="../03-directory-enumeration/">03-directory-enumeration.md</a>
+(<code>Directory</code>/<code>Dirent</code>). This is <code>FileManager</code>, the "ls" half of Listless's
+primary deliverable per the README; the file-viewing half is subsystem 07
+(<code>docs/07-file-viewer-core.md</code>), ported first — see <code>PORTING_JOURNEY.md</code>
+for the ordering rationale.</p>
+<h2 id="a-note-on-this-files-encoding">A note on this file's encoding<a class="headerlink" href="#a-note-on-this-files-encoding" title="Permanent link">&para;</a></h2>
+<p>The checked-in copy of <code>fileman.cpp</code> has lost a number of non-ASCII bytes
+in transit (e.g. <code>d.name()[1] != '' &amp;&amp; d.name()[1] != ''</code> at
+<code>fileman.cpp:899</code>, and box-drawing characters in <code>DisplayDirent</code>'s output
+format at <code>fileman.cpp:640-642</code>). Reading these call sites together (every
+"is this a directory?" check tests <code>d.name()[1]</code>, i.e. the <em>second</em> byte
+of the name, against two sentinel values; <code>MatchSelect</code> skips the first
+byte of a directory's name before substring-matching; <code>DeleteFile</code>/
+<code>RenameFile</code>/<code>MoveFile</code> strip the first byte with <code>+1</code> before using the
+name as a real path) indicates <code>Dirent::name()</code> prefixed directory names
+with a non-printable marker byte — apparently used to flag "this is a
+directory" inline in the name string itself, rather than only through
+<code>isDirectory()</code>. The marker byte's actual value is unrecoverable from this
+checkout. This convention is not reproduced in the port: <code>DirEntry</code> (see
+<code>docs/03-directory-enumeration.md</code>) already carries <code>is_directory</code> as an
+explicit <code>bool</code>, so there is no need for an in-band marker, corrupted or
+otherwise.</p>
+<h2 id="what-the-original-provides">What the original provides<a class="headerlink" href="#what-the-original-provides" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>FileManDir::fill()</code></strong> (<code>fileman.cpp:439-512</code>) — a two-pass listing of
+  one directory: pass one lists <strong>every</strong> subdirectory (queried with the
+  unfiltered pattern <code>"*"</code>, skipping <code>.</code> but keeping <code>..</code>); pass two lists
+  files matching the caller's file spec. <strong>The file spec filter never
+  applies to directories</strong> — <code>cd</code>-ing into a filtered view still shows
+  every subdirectory.</li>
+<li><strong>Sorting</strong> (<code>sortByName</code>/<code>sortByExt</code>/<code>sortByDate</code>/<code>sortBySize</code>,
+  <code>fileman.cpp:20-193</code>) — a <code>direntCompareFunc*</code> selected by
+  <code>ChooseSortBy()</code> (<code>fileman.cpp:821-889</code>, bound to <code>Alt+S</code> and the <code>:</code>/<code>/</code>
+  command submenu's <code>S</code>). All four comparators special-case directories
+  identically: two directories always compare by name, ascending,
+  regardless of the current sort direction; a directory always sorts
+  before a non-directory. Only the non-directory/non-directory comparison
+  respects <code>sortAscending</code> (toggled by pressing <code>-</code> before the sort-key
+  letter). <code>sortByExt</code> special-cases <code>".."</code>, treating it as having no
+  extension (<code>strrchr</code> on <code>".."</code> would otherwise find a spurious <code>.</code>).</li>
+<li><strong>Multi-column grid layout and navigation</strong> — <code>iColumns</code>/<code>iColumnWidth</code>:
+  the constructor sets <code>iColumns = 3</code>, then a <code>do { iColumnWidth =
+  di.screenwidth / --iColumns; } while (iColumnWidth &lt; 40)</code> loop searches
+  <em>downward</em> for the widest column count that keeps each column at least
+  40 characters wide. Because the decrement happens inside the same
+  expression as the first division, the loop's first candidate is
+  <code>iColumns - 1</code>, not <code>iColumns</code> — so the default (<code>iColumns = 3</code>)
+  actually searches from 2 columns downward, never trying 3. <code>Alt+1</code>/
+  <code>Alt+2</code>/<code>Alt+3</code> (<code>fileman.cpp:2402-2418</code>, <code>VKALT_1..3</code>) set
+  <code>iColumns = (key-VKALT_1)+2</code> (2/3/4) before the same search — so <code>Alt+1</code>
+  searches from 1 down (effectively forcing 1 column), <code>Alt+2</code> searches
+  from 2 down (identical to the unmodified default), and <code>Alt+3</code> searches
+  from 3 down (the only way to actually reach a 3-column layout). This
+  off-by-one is mechanical and deterministic, not data-losing, so it's
+  preserved as-is rather than "fixed" — see <code>compute_grid()</code> below, which
+  takes the requested count (3/2/3/4) and reproduces the same
+  search-from-<code>requested-1</code> behaviour. <code>iLinesPerColumn</code> is
+  <code>di.screenheight-3</code>, reserving 3 status rows. The list is one flat,
+  sorted, 0-indexed sequence (<code>iCurFile</code>) laid out column-major: index <code>i</code>
+  sits at row <code>i % iLinesPerColumn</code>, column <code>i / iLinesPerColumn</code>.
+  <code>iCurColumn</code> is the left-most <em>visible</em> column (there can be more
+  logical columns than fit on screen). Up/Down/Left/Right/Home/End/
+  PageUp/PageDown (<code>fileman.cpp:1755-1936</code>) move <code>iCurFile</code> and scroll
+  <code>iCurColumn</code> to keep it in view; <code>Home</code>/<code>End</code> have asymmetric special
+  cases (jump to the top/bottom of the <em>current</em> visible column-window
+  first, and only recompute <code>iCurColumn</code> if that lands outside the data or
+  the cursor was already there) rather than always recomputing from
+  scratch.</li>
+<li><strong><code>MatchSelect()</code></strong> (<code>fileman.cpp:1468-1592</code>) — incremental type-ahead
+  select: every plain keypress (not a command/nav key) appends to a
+  per-kind accumulated string (<code>iCurTextFile</code> normally, <code>iCurTextDir</code> if
+  Shift is held) and searches for an entry of that kind (file or
+  directory) whose name <em>starts with</em> the accumulated text
+  (case-insensitive <code>strstri</code>, matched only at offset 0), moving the
+  cursor there. If appending a character finds no match, that character is
+  dropped from the accumulated string (so typing continues to filter the
+  previous match rather than resetting). Backspace (<code>0x0008</code>) removes the
+  last accumulated character and re-searches; <code>Tab</code>/<code>Shift+Tab</code> repeat the
+  search forward (find the <em>next</em> entry starting with the same text).
+  Forward search (<code>Tab</code>, typing) scans from <code>iCurFile+1</code> to the end, and
+  if nothing is found there, wraps by scanning from <code>iCurFile</code> back down
+  to <code>0</code>. Backward search (used by Backspace's re-search) scans from
+  <code>iCurFile-1</code> down to <code>0</code> only — <strong>no wraparound</strong>. This asymmetry reads
+  as intentional (typing forward wants to find <em>something</em>; narrowing a
+  search by deleting a character shouldn't jump somewhere unrelated), and
+  is preserved in the port. One further asymmetry is <em>not</em> preserved: the
+  backward branch is guarded <code>#if defined(__UNIX__)</code> to use case-sensitive
+  <code>strstr</code> instead of <code>strstri</code> — but per <code>docs/03-directory-enumeration.md</code>,
+  <strong>no <code>__UNIX__</code> backend exists anywhere in <code>/original</code></strong>, so this branch
+  never actually built or ran. The port uses case-insensitive matching in
+  both directions.</li>
+<li><strong>Navigation commands</strong> — <code>ChangeDirectory()</code> (<code>fileman.cpp:1321-1403</code>,
+  bound to <code>Alt+H</code>/submenu <code>H</code>) and <code>ChangeFileSpec()</code>
+  (<code>fileman.cpp:1443-1463</code>, <code>Alt+F</code>/submenu <code>F</code>) each prompt via
+  <code>LineEdit</code> (a modal single-line editor with history — not ported; see
+  below) and, on success, reset <code>iCurFile</code>/the type-ahead accumulators and
+  call <code>Refresh()</code> (<code>fileman.cpp:795-816</code>, which re-lists, re-sorts, and
+  clamps <code>iCurFile</code> to the new size). <code>ChangeDirectory</code> additionally
+  pushes the <em>previous</em> directory onto <code>directoryHistory</code> and contains
+  DOS/OS2/Win32 drive-letter parsing (<code>s[1] == ':'</code>) with <code>IsValidDisk()</code>/
+  <code>setdisk()</code>/<code>chdir()</code> disk-switching — meaningless on Linux (see below).
+  Pressing Enter on a directory entry (<code>fileman.cpp:1938-1990</code>) does the
+  same <code>chdir</code> + <code>Refresh()</code> inline, plus (only when the entry was <code>..</code>)
+  re-selects, in the freshly-listed parent, the child directory just left
+  — a "remember where I came from" touch preserved in the port.</li>
+<li><strong>The <code>:</code>/<code>/</code> command submenu</strong> (<code>fileman.cpp:2109-2246</code>) — a prompt
+  (<code>"~View ~Edit ~Copy ~Del ~Ren ~Move ~Sort C~hdir M~kdir ~FileSpec"</code>)
+  reading one more key to dispatch to <code>ViewFile</code>/<code>EditFile</code>/<code>CopyFile</code>/
+  <code>DeleteFile</code>/<code>RenameFile</code>/<code>MoveFile</code>/<code>ChooseSortBy</code>/<code>ChangeDirectory</code>/
+  <code>MakeDirectory</code>/<code>ChangeFileSpec</code>. Every one of these actions also has its
+  own direct <code>Alt+&lt;letter&gt;</code> shortcut in the main <code>Activate()</code> switch
+  (<code>fileman.cpp:2248-2347</code>, e.g. <code>Alt+C</code> copy, <code>Alt+D</code>/<code>Del</code> delete,
+  <code>Alt+M</code> move, <code>Alt+R</code> rename, <code>Alt+S</code> sort, <code>Ins</code>/<code>Alt+K</code> make
+  directory) — the submenu is a discoverable menu over the same
+  operations, not a separate feature surface.</li>
+<li><strong>File operations</strong> — <code>EditFile</code>/<code>ViewFile</code>/<code>CopyFile</code>/<code>DeleteFile</code>/
+  <code>RenameFile</code>/<code>MoveFile</code>/<code>MakeDirectory</code> (<code>fileman.cpp:894-1463</code>). <code>View</code>
+  and <code>Edit</code> hand off to a <code>Viewer</code>/external editor (<code>ViewFile</code> also
+  de-dupes against already-open buffers via <code>isDupe</code>/<code>findDirent</code>, which
+  belong to <code>viewedFiles</code> bookkeeping that doesn't exist yet in
+  Listless — no <code>App</code>/main-loop subsystem has landed). <code>Copy</code>/<code>Delete</code>/
+  <code>Rename</code>/<code>Move</code>/<code>MakeDirectory</code> mutate the filesystem directly (<code>unlink</code>,
+  <code>rmdir</code>, <code>rename</code>, a hand-rolled buffered <code>CopyFile</code>, <code>mkdir</code>), each with
+  a confirmation prompt (Delete) or a <code>LineEdit</code> prompt for the
+  destination (Copy/Rename/Move/MakeDir), and each reconciles
+  <code>viewedFiles</code> afterward (dumping/removing the buffer for a file that was
+  just deleted/renamed/moved out from under it).</li>
+<li><strong><code>DisplayDisks()</code></strong> (<code>fileman.cpp:562-613</code>) — a status-bar row of every
+  valid DOS/OS2/Win32 drive letter (from <code>iDriveMap</code>, a per-platform
+  bitmask queried in <code>Activate()</code>, <code>fileman.cpp:1601-1627</code>), with the
+  current drive parenthesized. <code>Ctrl+A</code>-<code>Ctrl+Z</code> (<code>fileman.cpp:1653-1684</code>)
+  jump directly to the corresponding drive letter.</li>
+<li><strong>Per-instance color cycling</strong> (<code>fileman.cpp:1995-2105</code>, <code>F2</code>-<code>F6</code> and
+  their Shift-variants) — cycles <code>setupInfo</code>'s file/current-file/status/
+  disk/current-disk fore/back colors. <code>setupInfo</code> is the not-yet-ported
+  <code>Style</code>/config system (subsystem 08).</li>
+<li><strong><code>LineEdit</code></strong> (<code>ostxt.hpp:404-424</code>) — a modal single-line text editor
+  with an optional history list (<code>SList&lt;CString&gt;*</code>), used by every prompt
+  above (<code>Directory</code>, <code>MakeDir</code>, <code>FileSpec</code>, <code>Copy To</code>, <code>Rename</code>,
+  <code>Move To</code>). Not part of <code>FileManager</code> itself; a general input-prompt
+  widget shared with other parts of the original app.</li>
+</ul>
+<h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>FileManager</code></strong> (<code>src/FileManager.hpp</code>/<code>.cpp</code>) — pure logic and
+  state: listing (directories unfiltered, files filtered by the current
+  glob file spec, exactly matching the original's two-pass <code>fill()</code>),
+  sorting (<code>SortKey::Name</code>/<code>Extension</code>/<code>Date</code>/<code>Size</code>, ascending/descending,
+  directories-first-then-name-ascending in every mode, matching all four
+  original comparators), the column-major grid navigation model
+  (<code>move_up</code>/<code>move_down</code>/<code>move_left</code>/<code>move_right</code>/<code>move_home</code>/<code>move_end</code>/
+  <code>move_page_up</code>/<code>move_page_down</code>, each taking a <code>Grid{columns,
+  lines_per_column}</code> the same way subsystem 07's <code>Viewer::scroll_*()</code>
+  takes <code>visible_lines</code>/<code>visible_width</code> per call rather than storing
+  screen geometry), <code>compute_grid()</code> (the 40-column-minimum,
+  search-from-<code>requested-1</code> layout math described above, as a free
+  function taking the requested column count so a caller can implement
+  the <code>Alt+1</code>/<code>2</code>/<code>3</code> override by passing 2/3/4, matching the original's
+  <code>VKALT_1..3</code> mapping), type-ahead multi-select
+  (<code>match_select_file</code>/<code>match_select_directory</code>, both directions, with the
+  forward-wraps/backward-doesn't asymmetry preserved), <code>change_directory()</code>
+  and <code>set_file_spec()</code> (re-list + reset selection + reset type-ahead,
+  matching <code>ChangeDirectory</code>/<code>ChangeFileSpec</code>'s post-success behaviour),
+  and directory history (<code>directory_history()</code>, appended to on every
+  successful <code>change_directory()</code>, mirroring <code>directoryHistory</code>). No
+  terminal/rendering dependency, matching the <code>Viewer</code>/<code>viewer_render</code>
+  split from subsystem 07 — a <code>file_manager_render</code> layer is left for
+  whichever subsystem first wires a real screen loop.</li>
+<li><strong><code>enter_selected()</code></strong> — separate from <code>change_directory()</code> (a typed
+  path), matching the original keeping the Enter-key handler
+  (<code>fileman.cpp:1938-1990</code>) and the typed-path <code>ChangeDirectory()</code>
+  command as two different code paths with different behaviour: entering
+  <code>..</code> this way re-selects, in the freshly-listed parent, the directory
+  just left, porting <code>fileman.cpp:1958-1983</code>'s "remember which
+  subdirectory I came from" touch. <code>change_directory()</code> has no such
+  re-selection (matching the original -- <code>ChangeDirectory()</code> never had
+  it either).</li>
+<li><strong><code>change_directory()</code> does not change the process's working
+  directory</strong> — the original's <code>chdir()</code>-based navigation is a real
+  process-wide <code>chdir(2)</code>/<code>setdisk()</code> (<code>fileman.cpp:1376</code>,
+  <code>fileman.cpp:1661</code>), consistent with DOS/OS2/Win32 apps generally
+  running as the sole occupant of their console. <code>FileManager</code> instead
+  just tracks <code>current_directory()</code> as its own state, like
+  <code>Directory</code>/<code>DirEntry</code> already do (<code>docs/03-directory-enumeration.md</code>)
+  -- a real process-wide <code>chdir()</code> would be global, hard-to-reverse
+  state that races across parallel unit tests and has no test-only
+  upside; nothing here needs the process's actual working directory to
+  match.</li>
+</ul>
+<h2 id="whats-deliberately-not-ported">What's deliberately not ported<a class="headerlink" href="#whats-deliberately-not-ported" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>File operations</strong> (Copy/Delete/Rename/Move/MakeDirectory) — every one
+  of these mutates the filesystem. Per this subsystem's issue, they're
+  deferred to subsystem 11 (file operations), sequenced after everything
+  else is stable given their destructive nature and the higher regression-
+  test scrutiny that implies. <code>FileManager</code> exposes only the read-only
+  surface (listing, sorting, selecting, navigating); there is no
+  <code>copy_file()</code>/<code>delete_file()</code>/etc. here to accidentally call.</li>
+<li><strong><code>EditFile</code>/<code>ViewFile</code></strong> — both depend on <code>viewedFiles</code>/<code>currFile</code>
+  buffer-list bookkeeping that belongs to an <code>App</code>/main-loop subsystem
+  that doesn't exist yet (no subsystem in <code>docs/architecture.md</code>'s
+  breakdown has landed a <code>main()</code> that owns a <code>SList&lt;Viewer&gt;</code> the way the
+  original's <code>os.cpp</code> does). <code>FileManager</code> surfaces enough to let a future
+  caller build this (<code>selected()</code>, <code>selected().is_directory</code>) without
+  committing to a buffer-list design here.</li>
+<li><strong><code>DisplayDisks()</code>/drive-letter bar, and <code>Ctrl+A</code>-<code>Ctrl+Z</code> drive
+  jumps</strong> — meaningless on Linux, which has one filesystem namespace, not
+  lettered drives. A Linux-relevant reinterpretation (a bar of mounted
+  filesystems, or of frequently-used directories) is real UI design work
+  with no concrete rendering call site yet (no screen loop exists to draw
+  it in) — deferred rather than guessed at now, the same call made for
+  <code>Style</code>-dependent formatting in <code>docs/07-file-viewer-core.md</code>.</li>
+<li><strong>Per-instance <code>F2</code>-<code>F6</code> color cycling</strong> — depends on <code>setupInfo</code>
+  (subsystem 08, not yet ported), exactly as subsystem 07 deferred its
+  three <code>Style</code>-selected status-line formats for the same reason.</li>
+<li><strong><code>LineEdit</code></strong> — a general modal-prompt widget, not specific to
+  <code>FileManager</code>; out of scope here. A caller wiring <code>change_directory()</code>/
+  <code>set_file_spec()</code> to a real keyboard loop will need some prompt input
+  mechanism, but building it against this one call site would bake in
+  assumptions; better built (or reused, if another subsystem needs it
+  first) against a second concrete call site.</li>
+<li><strong><code>Activate()</code>'s keyboard-loop dispatch itself</strong> — the giant <code>switch</code> in
+  <code>fileman.cpp:1649-2472</code> is what a future screen-loop/<code>App</code> subsystem
+  will translate into calls against <code>FileManager</code>'s ported surface (plus
+  whatever <code>file_manager_render</code> eventually draws). Documented above for
+  that future work's reference; not itself code to port, since it's
+  entirely glue over pieces (menu prompts, color cycling, drive bar, file
+  operations, <code>viewedFiles</code>) that are either deferred or don't exist yet.
+</content></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

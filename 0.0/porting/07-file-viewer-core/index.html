@@ -10,25 +10,31 @@
       
       
       
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/porting/07-file-viewer-core/">
       
+      
+        <link rel="prev" href="../06-file-list-ui/">
+      
+      
+        <link rel="next" href="../08-style-config/">
       
       
         
       
       
-      <link rel="icon" href="/listless/0.0/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Listless</title>
+        <title>07. File viewer core - Listless</title>
       
     
     
-      <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("/listless/0.0",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#subsystem-07-file-viewer-core" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,7 +96,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/listless/0.0/." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              07. File viewer core
             
           </span>
         </div>
@@ -218,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/listless/0.0/." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -239,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/listless/0.0/getting-started/" class="md-tabs__link">
+        <a href="../../getting-started/" class="md-tabs__link">
           
   
   
@@ -255,11 +266,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/listless/0.0/porting/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -293,7 +306,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/listless/0.0/." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -323,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -400,7 +413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -428,7 +441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/usage/" class="md-nav__link">
+      <a href="../../usage/" class="md-nav__link">
         
   
   
@@ -456,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/syntax-highlighting/" class="md-nav__link">
+      <a href="../../syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -484,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/configuration/" class="md-nav__link">
+      <a href="../../configuration/" class="md-nav__link">
         
   
   
@@ -512,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -544,24 +557,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -579,7 +597,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -597,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -625,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -653,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -731,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/original/" class="md-nav__link">
+      <a href="../original/" class="md-nav__link">
         
   
   
@@ -759,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/target/" class="md-nav__link">
+      <a href="../target/" class="md-nav__link">
         
   
   
@@ -792,6 +810,8 @@
                 
   
   
+    
+  
   
   
     
@@ -802,11 +822,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
         
           
           <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
@@ -827,7 +847,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -845,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/01-string-container-primitives/" class="md-nav__link">
+      <a href="../01-string-container-primitives/" class="md-nav__link">
         
   
   
@@ -873,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/02-search-primitives/" class="md-nav__link">
+      <a href="../02-search-primitives/" class="md-nav__link">
         
   
   
@@ -901,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/03-directory-enumeration/" class="md-nav__link">
+      <a href="../03-directory-enumeration/" class="md-nav__link">
         
   
   
@@ -929,7 +949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/04-console-terminal-io/" class="md-nav__link">
+      <a href="../04-console-terminal-io/" class="md-nav__link">
         
   
   
@@ -957,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/05-keyboard-input/" class="md-nav__link">
+      <a href="../05-keyboard-input/" class="md-nav__link">
         
   
   
@@ -985,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/06-file-list-ui/" class="md-nav__link">
+      <a href="../06-file-list-ui/" class="md-nav__link">
         
   
   
@@ -1010,10 +1030,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/listless/0.0/porting/07-file-viewer-core/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07. File viewer core
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1029,6 +1076,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-does-summary-full-derivation-was-a-research-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original does (summary; full derivation was a research pass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-narrowed-or-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately narrowed or deferred
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1041,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/08-style-config/" class="md-nav__link">
+      <a href="../08-style-config/" class="md-nav__link">
         
   
   
@@ -1069,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/09-syntax-highlighting/" class="md-nav__link">
+      <a href="../09-syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -1097,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/10-hex-mode-viewer/" class="md-nav__link">
+      <a href="../10-hex-mode-viewer/" class="md-nav__link">
         
   
   
@@ -1125,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/app-main-loop/" class="md-nav__link">
+      <a href="../app-main-loop/" class="md-nav__link">
         
   
   
@@ -1178,6 +1278,49 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-does-summary-full-derivation-was-a-research-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original does (summary; full derivation was a research pass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-narrowed-or-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately narrowed or deferred
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1190,8 +1333,190 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/porting/07-file-viewer-core.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="subsystem-07-file-viewer-core">Subsystem 07: file viewer core<a class="headerlink" href="#subsystem-07-file-viewer-core" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/apps/onscreen/osview.cpp</code> (3107 lines — the largest
+file in <code>/original</code>), <code>original/apps/onscreen/ostxt.hpp</code>'s <code>Viewer</code>/
+<code>LinePtr</code>/<code>BookMark</code> declarations. This is the "less"-equivalent half of
+Listless. Depends on subsystems 01, 02 (search), 04/05 (I/O). Explicitly
+<strong>excludes</strong> hex mode (subsystem 10), syntax highlighting and the
+<code>Style</code>/config system (subsystems 08/09), and editor invocation
+(subsystem 12) — noted below wherever the original tangles them in.</p>
+<h2 id="what-the-original-does-summary-full-derivation-was-a-research-pass">What the original does (summary; full derivation was a research pass<a class="headerlink" href="#what-the-original-does-summary-full-derivation-was-a-research-pass" title="Permanent link">&para;</a></h2>
+<p>over the whole file, not repeated here)</p>
+<ul>
+<li><strong>Line model</strong>: whole file loaded into one buffer; a two-pass scan
+  finds line boundaries and — load-bearing for the <em>original's</em>
+  implementation only — NUL-terminates each line <strong>in place</strong>, swapping
+  bytes back and forth when switching to/from hex mode. <code>LinePtr</code> also
+  carries per-line syntax-highlight state (<code>LS_INCOMMENT</code> etc. — out of
+  scope) and "bold/underline via control-character toggle" state (a
+  "text with layout" feature that affects plain rendering too, not pure
+  syntax highlighting).</li>
+<li><strong>Scrolling</strong>: <code>iTopLine</code> (vertical) + <code>iColumn</code> (horizontal, for long
+  lines) are the whole viewport state. Line up/down do an incremental
+  scroll (shift existing screen content, draw one new line) using the
+  same primitive as subsystem 04's <code>Terminal::scroll_region</code>; page
+  up/down/Home/End do a full redraw, clamped so the last page still
+  fills the screen. Horizontal scroll moves in fixed 10-column
+  increments, capped at a 1024-column line-buffer limit.</li>
+<li><strong>Word wrap</strong>: optional, re-splits the whole line index at word
+  boundaries when toggled; off by default.</li>
+<li><strong>Search</strong>: three key bindings (case-sensitive, case-insensitive,
+  repeat), sharing one line-by-line scan using the original's literal
+  search primitive (<code>strsrch</code>/<code>SearchExpression</code> — replaced here by
+  subsystem 02's <code>HorspoolSearcher</code>). "Repeat" first tries continuing on
+  the same line past the current match before falling through to
+  scanning subsequent/preceding lines. Regex search mode is out of
+  scope (deferred per subsystem 02's docs — <code>std::regex</code> if/when a
+  concrete need appears). Goto-line (<code>g</code>/<code>G</code>) is search-adjacent: no
+  actual text search, just repositions the viewport and highlights the
+  whole target line.</li>
+<li><strong>Bookmarks</strong>: <code>iBookMark[10]</code>, per-<code>Viewer</code> (not global), each storing
+  a <code>(line, column)</code> position. <code>Alt+1</code>-<code>Alt+9</code>/<code>Alt+0</code> toggle
+  set/clear/reset a slot; <code>Alt+G</code> then a digit jumps to one.</li>
+<li><strong>Status line</strong>: three alternate formats cycled via a <em>Style</em> field
+  (<code>Style::iTopLineFormat</code>) — genuinely tangled with the config
+  subsystem (08), which doesn't exist yet.</li>
+<li><strong>Multi-buffer</strong>: <code>Viewer</code> has no knowledge of the shared
+  <code>App::cViewedFiles</code> list it's one entry of — no interface changes
+  needed here to support that (App-level concern, subsystem 06).</li>
+<li><strong>Rendering</strong> (<code>displayTextLine</code>, the single largest function in the
+  file): almost entirely syntax-highlighting/text-with-layout character
+  classification, inseparable from the <code>Style</code> system at the
+  per-character-attribute level. The only style-independent parts are:
+  iterating characters, tab expansion, the selected-range highlight
+  overlay, and writing the result via the platform text-output
+  primitive.</li>
+</ul>
+<h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>Viewer</code></strong> (<code>src/Viewer.hpp</code>/<code>.cpp</code>) — pure logic and state, no
+  ncurses dependency, fully unit-tested in <code>tests/core</code>:</li>
+<li>Line model as <code>offset+length</code> spans into a loaded <code>std::string</code>
+    buffer (<code>LineSpan</code>), <strong>not</strong> the original's in-place-NUL-termination
+    trick — that trick exists purely to let text/hex mode share one
+    <code>char*</code>-based buffer; spans don't need it, and hex mode (subsystem
+    10) can index the same raw buffer independently when it lands.
+    <code>is_binary()</code> is <code>true</code> if any NUL byte appears anywhere in the
+    file (matching the original's <em>purpose</em> — flagging non-text
+    content — without the original's line-splits-on-NUL side effect).</li>
+<li>Word wrap: a simplified greedy word-wrap (break at the last space
+    before the width limit, or hard-break if none) over the original
+    (un-wrapped) line spans, kept separately so toggling wrap off
+    restores exact original line boundaries without re-reading the
+    file.</li>
+<li>Viewport: <code>top_line()</code>/<code>column()</code>, <code>scroll_line_up/down</code>,
+    <code>scroll_page_up/down</code>, <code>scroll_to_top</code>, <code>scroll_to_bottom</code>,
+    <code>scroll_left/right</code> (10-column increments, 1024-column cap,
+    matching the original), <code>reset_horizontal_scroll</code>. All return
+    <code>bool</code> (whether the position actually changed), so a caller can
+    show "already at top/bottom"-style messages as the original did.
+    The original's scroll-region <em>rendering</em> optimization for
+    single-line scrolling is not reproduced — this subsystem always
+    redraws the full visible page; see "narrowed" below.</li>
+<li>Search: <code>search_forward</code>/<code>search_backward</code>/<code>repeat_search</code>, built on
+    subsystem 02's <code>HorspoolSearcher</code>. Because <code>HorspoolSearcher</code> only
+    finds the leftmost match on a line (forward-only), "backward" here
+    means visiting lines in decreasing order and taking each line's
+    leftmost match — a faithful-enough reading of the original's
+    behavior (which also reused its forward-only <code>strsrch</code> per line,
+    varying only which lines it visited and in what order) given the
+    ambiguity in the exact original algorithm. "Repeat, continuing on
+    the same line" is implemented exactly for the forward case
+    (<code>find(text, match_pos + 1)</code>); the backward case needs "the
+    rightmost match strictly before the current one," which
+    <code>HorspoolSearcher</code> doesn't expose directly, so it's built as a
+    small loop finding successive matches up to that limit.</li>
+<li>Goto-line, bookmarks: direct, self-contained ports — no <code>Style</code>
+    dependency.</li>
+<li><strong>A minimal renderer</strong> (<code>src/ViewerRender.hpp</code>/<code>.cpp</code>, tested against
+  the real <code>Terminal</code> in <code>tests/platform_linux</code>) doing exactly the four
+  style-independent things identified above: iterate visible lines, a
+  fixed-width (8-column, see below) tab expansion, the selection-range
+  highlight overlay, and writing through subsystem 04's <code>Terminal</code>. One
+  status-line format (not the original's three — see "narrowed" below).</li>
+</ul>
+<h2 id="whats-deliberately-narrowed-or-deferred">What's deliberately narrowed or deferred<a class="headerlink" href="#whats-deliberately-narrowed-or-deferred" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A single status-line format</strong>, not the original's three
+  <code>Style</code>-selected alternates. All three formats' <em>content</em> (line/column
+  position, percentage, filename, date/time) is legitimately useful, but
+  the format-cycling mechanism itself lives on <code>Style</code>, which doesn't
+  exist yet — inventing a Style-shaped field now to support cycling
+  between formats nothing yet configures would be building ahead of the
+  subsystem that owns it. One clean format is implemented now
+  (filename, line/total, percentage); the cycling mechanism is
+  subsystem 08's to add once <code>Style</code> exists.</li>
+<li><strong>No incremental scroll-region rendering optimization.</strong> The original
+  shifts existing screen content and draws only the newly-exposed line
+  for single-line up/down scrolling. This subsystem always redraws the
+  full visible page on any scroll. It's a performance optimization, not
+  a correctness concern, and <code>Terminal::scroll_region</code> (subsystem 04)
+  remains available to add this later without any change to <code>Viewer</code>'s
+  own interface.</li>
+<li><strong>Tab width is a fixed constant (8)</strong>, not the original's
+  <code>Style</code>-configured <code>iTabWidth</code> — no config system exists yet. The
+  renderer's tab-expansion is written so wiring in a real configured
+  width later (subsystem 08/09) is a one-line change, not a redesign.</li>
+<li><strong>No live file-change detection/reload</strong> (<code>*</code> key, <code>fileHasChanged()</code>).
+  The original re-checks the file's mtime and reloads on demand. Not
+  implemented here — a file is loaded once at construction; refreshing
+  is a small, self-contained addition for whenever a concrete need
+  makes it worth the added state (tracking mtime, deciding when to
+  reload mid-session).</li>
+<li><strong>No external-filter / <code>d</code>/<code>D</code> reload-through-a-command feature</strong> — a
+  <code>Style</code>-driven feature (subsystem 08/09), and the original's
+  implementation reaches into the shared <code>App::cViewedFiles</code> list to
+  re-dump sibling viewers sharing the same style, which is entirely
+  App/multi-buffer territory (subsystem 06) layered on top of <code>Style</code>
+  besides.</li>
+<li><strong>No stdin/external-filter loading path</strong> — the original's stdin
+  handling involves <code>_popen</code>, growth-buffer <code>fread</code> loops, and
+  Windows-specific console-handle reopening after consuming stdin, none
+  of which apply to a Linux port. <code>Viewer</code> supports being constructed
+  directly from an in-memory buffer plus a display name (so a caller
+  that already read stdin elsewhere can hand it a <code>Viewer</code> without a
+  real file path) — the actual "read stdin into a buffer" plumbing is
+  an <code>App</code>-level concern (subsystem 06+), not this subsystem's.</li>
+<li><strong><code>Ctrl+F</code>, <code>Alt+Z</code>, <code>Alt+E</code>, <code>h</code>/<code>H</code>, <code>d</code>/<code>D</code>, <code>w</code>/<code>W</code>'s storage
+  location</strong> (all <code>Style</code>-dependent one way or another per the survey)
+  and hex mode entirely are not ported here — see the survey notes
+  folded into the bullet points above for exactly where each seam is,
+  so later subsystems land against a known integration point rather
+  than rediscovering it.</li>
+<li><strong>One correction surfaced by this survey to subsystem 05's docs</strong>:
+  <code>docs/05-keyboard-input.md</code> claimed there's no <code>VKALT_0</code> in the
+  original. There isn't a <em>named</em> <code>VKALT_0</code> constant, but <code>Alt+0</code> <strong>is</strong>
+  used as this subsystem's bookmark-slot-0 toggle, with scan code
+  <code>0x81</code> (129 decimal) — matching <code>kbdtab</code>'s <code>'0'</code> row's alt column
+  (<code>EXT(129)</code>) exactly. <code>alt_key()</code> (subsystem 05) is extended in this
+  PR to cover <code>'0'</code> alongside <code>'1'</code>-<code>'9'</code>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1234,10 +1559,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/listless/0.0", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "/listless/0.0/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/listless/0.0/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

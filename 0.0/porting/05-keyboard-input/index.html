@@ -10,25 +10,31 @@
       
       
       
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/porting/05-keyboard-input/">
       
+      
+        <link rel="prev" href="../04-console-terminal-io/">
+      
+      
+        <link rel="next" href="../06-file-list-ui/">
       
       
         
       
       
-      <link rel="icon" href="/listless/0.0/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Listless</title>
+        <title>05. Keyboard input - Listless</title>
       
     
     
-      <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("/listless/0.0",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#subsystem-05-keyboard-input" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,7 +96,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/listless/0.0/." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              05. Keyboard input
             
           </span>
         </div>
@@ -218,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/listless/0.0/." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -239,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/listless/0.0/getting-started/" class="md-tabs__link">
+        <a href="../../getting-started/" class="md-tabs__link">
           
   
   
@@ -255,11 +266,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/listless/0.0/porting/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -293,7 +306,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/listless/0.0/." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -323,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -400,7 +413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -428,7 +441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/usage/" class="md-nav__link">
+      <a href="../../usage/" class="md-nav__link">
         
   
   
@@ -456,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/syntax-highlighting/" class="md-nav__link">
+      <a href="../../syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -484,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/configuration/" class="md-nav__link">
+      <a href="../../configuration/" class="md-nav__link">
         
   
   
@@ -512,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -544,24 +557,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -579,7 +597,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -597,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -625,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -653,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -731,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/original/" class="md-nav__link">
+      <a href="../original/" class="md-nav__link">
         
   
   
@@ -759,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/target/" class="md-nav__link">
+      <a href="../target/" class="md-nav__link">
         
   
   
@@ -792,6 +810,8 @@
                 
   
   
+    
+  
   
   
     
@@ -802,11 +822,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
         
           
           <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
@@ -827,7 +847,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -845,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/01-string-container-primitives/" class="md-nav__link">
+      <a href="../01-string-container-primitives/" class="md-nav__link">
         
   
   
@@ -873,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/02-search-primitives/" class="md-nav__link">
+      <a href="../02-search-primitives/" class="md-nav__link">
         
   
   
@@ -901,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/03-directory-enumeration/" class="md-nav__link">
+      <a href="../03-directory-enumeration/" class="md-nav__link">
         
   
   
@@ -929,7 +949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/04-console-terminal-io/" class="md-nav__link">
+      <a href="../04-console-terminal-io/" class="md-nav__link">
         
   
   
@@ -954,10 +974,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/listless/0.0/porting/05-keyboard-input/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05. Keyboard input
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -973,6 +1020,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-originals-keycode-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The original's keycode model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-narrowed-or-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately narrowed or deferred
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -985,7 +1085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/06-file-list-ui/" class="md-nav__link">
+      <a href="../06-file-list-ui/" class="md-nav__link">
         
   
   
@@ -1013,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/07-file-viewer-core/" class="md-nav__link">
+      <a href="../07-file-viewer-core/" class="md-nav__link">
         
   
   
@@ -1041,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/08-style-config/" class="md-nav__link">
+      <a href="../08-style-config/" class="md-nav__link">
         
   
   
@@ -1069,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/09-syntax-highlighting/" class="md-nav__link">
+      <a href="../09-syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -1097,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/10-hex-mode-viewer/" class="md-nav__link">
+      <a href="../10-hex-mode-viewer/" class="md-nav__link">
         
   
   
@@ -1125,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/app-main-loop/" class="md-nav__link">
+      <a href="../app-main-loop/" class="md-nav__link">
         
   
   
@@ -1178,6 +1278,49 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-originals-keycode-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The original's keycode model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-narrowed-or-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately narrowed or deferred
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1190,8 +1333,136 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/porting/05-keyboard-input.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="subsystem-05-keyboard-input">Subsystem 05: keyboard input<a class="headerlink" href="#subsystem-05-keyboard-input" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/apps/onscreen/osgetch.cpp</code> (<code>getch</code>/<code>kbhit</code>/<code>ungetch</code>
+reimplementations for Win32 and DPMI32), <code>original/apps/onscreen/osmisc.cpp</code>
+(<code>getKey()</code>, the app-level wrapper), <code>original/apps/onscreen/ostxt.hpp</code>
+(<code>VKALT_*</code>/<code>VKCTRL_*</code> constants). Depends on subsystem 04 (shares its
+already-initialized ncurses state).</p>
+<h2 id="the-originals-keycode-model">The original's keycode model<a class="headerlink" href="#the-originals-keycode-model" title="Permanent link">&para;</a></h2>
+<p><code>getKey()</code> (<code>osmisc.cpp:104-147</code>) calls <code>getch()</code>, and if it returns <code>0</code>
+(the PC BIOS extended-key sentinel — AL=0 in the real INT 16h keyboard
+interrupt convention that <code>conio.h</code>'s <code>getch()</code> mimics), calls <code>getch()</code>
+again and adds <code>0xFF00</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getch</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getch</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0xFF00</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>So the app's internal keycode space is:</p>
+<ul>
+<li><strong>0-255</strong>: a plain ASCII character or control code (<code>Ctrl+A</code>=1 ...
+  <code>Ctrl+Z</code>=26, <code>Escape</code>=27, etc.) — resolved by the platform's <code>getch()</code>
+  exactly as a DOS/BIOS keyboard read would.</li>
+<li><strong><code>0xFF00 + scancode</code></strong>: an "extended" key — arrows, function keys,
+  Home/End/PgUp/PgDn/Insert/Delete, <code>Alt+letter</code>/<code>Alt+digit</code>. <code>scancode</code>
+  is a literal <strong>PC/AT keyboard Set-1 scan code</strong> (the same table used by
+  real DOS software and, not coincidentally, by <code>osgetch.cpp</code>'s Win32
+  <code>kbdtab[]</code>, which maps NT virtual keycodes back to these same BIOS
+  scan-code values for compatibility).</li>
+</ul>
+<p>This is why <code>os.cpp</code>'s key-dispatch <code>switch</code> statements use literals like
+<code>case 0xFF3B: // F1</code> and <code>case 0xFF47: // Home</code> directly — cross-checked
+against <code>kbdtab[]</code> and <code>ostxt.hpp</code>'s <code>VKALT_*</code> table, these are internally
+consistent standard PC/AT scan codes (F1=0x3B, Home=0x47, Up=0x48,
+PgUp=0x49, Left=0x4B, Right=0x4D, End=0x4F, Down=0x50, Insert=0x52,
+Delete=0x53, F2-F10=0x3C-0x44, F11=0x85, F12=0x86, Shift+Tab=0x0F, and the
+<code>VKALT_*</code> table for <code>Alt+A</code>-<code>Alt+Z</code>/<code>Alt+1</code>-<code>Alt+9</code>, plus <code>Alt+0</code> at scan
+code <code>0x81</code> — no named <code>VKALT_0</code> constant exists, but this scan code is
+used at a real call site, subsystem 07's bookmark slot 0; see
+<code>docs/07-file-viewer-core.md</code>).</p>
+<h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
+<p><code>docs/architecture.md</code> already flagged this exact <code>0xFFxx</code> encoding as
+worth preserving as Listless's internal keycode model — this subsystem
+implements that:</p>
+<ul>
+<li><strong><code>KeyCode</code></strong> (<code>src/Key.hpp</code>/<code>.cpp</code>) — a plain <code>int</code> alias, plus a
+  <code>Key</code> namespace of named constants for the unambiguous, directly-
+  mappable extended keys (arrows, Home/End/PgUp/PgDn/Insert/Delete,
+  Shift+Tab, F1-F12), using the exact same numeric values as the
+  original's literals above — so later subsystems porting <code>os.cpp</code>'s/
+  <code>fileman.cpp</code>'s/<code>osview.cpp</code>'s key-dispatch <code>switch</code> statements can
+  reuse the original's <code>case</code> literals directly. <code>alt_key(char)</code> returns
+  the <code>Alt+&lt;letter/digit&gt;</code> keycode from the same <code>VKALT_*</code> table.</li>
+<li><strong><code>Keyboard</code></strong> (<code>src/Keyboard.hpp</code>, implemented in
+  <code>src/platform/linux/Keyboard.cpp</code>) — a Pimpl class, constructed with a
+  <code>Terminal&amp;</code> purely to enforce (at the type level and in practice) that
+  ncurses is already initialized before keyboard input is read. Two
+  operations: <code>read_key()</code> (blocking read, translated into the <code>KeyCode</code>
+  space) and <code>key_available()</code> (<code>kbhit()</code>-equivalent non-blocking poll).</li>
+<li><strong>Alt-key detection</strong>: ncurses reports <code>Alt+&lt;key&gt;</code> as a bare <code>ESC</code>
+  (27) followed by the key's own byte on the wire (this is how terminals
+  actually send Meta/Alt — there is no separate "Alt" signal like the
+  Win32 console API's <code>dwControlKeyState</code> the original relied on).
+  <code>read_key()</code> uses the standard technique for this: on seeing <code>ESC</code>,
+  switch to non-blocking (<code>nodelay</code>) and peek for an immediately-following
+  byte. If one arrives, it's <code>Alt+&lt;that key&gt;</code>; if not (<code>ERR</code>), it was a
+  genuine standalone <code>Escape</code> keypress. Verified directly in this
+  sandboxed environment using ncurses' own <code>ungetch()</code> to inject
+  <code>ESC</code>+<code>'a'</code> and confirm this resolves to <code>Alt+A</code>, and a lone <code>ESC</code> with
+  nothing queued resolves to plain <code>Escape</code> — which is also how the
+  automated tests for this exercise the real ncurses input path (<code>ungetch()</code>
+  injecting sequences, not a mock).</li>
+<li><strong><code>Key::Resize</code></strong>: not part of the original's key space at all (no BIOS
+  scan code for "the window changed size" — DOS/OS2/Win32 consoles didn't
+  need one the same way). ncurses reports terminal resizes as a
+  <code>KEY_RESIZE</code> pseudo-key from <code>wgetch()</code>, and the idiomatic way most
+  ncurses TUIs handle it is folding it into the same key-event stream
+  rather than a separate signal — so <code>read_key()</code> surfaces it that way
+  too, as <code>Key::Resize</code>.</li>
+<li><strong><code>Key::Unknown</code></strong>: returned for any extended key ncurses reports that
+  isn't in the mapped set (rather than silently dropping it or crashing),
+  and for <code>ESC</code> immediately followed by another special (non-ASCII)
+  key — a combination the original's model has no representation for
+  either.</li>
+</ul>
+<h2 id="whats-deliberately-narrowed-or-deferred">What's deliberately narrowed or deferred<a class="headerlink" href="#whats-deliberately-narrowed-or-deferred" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Modifier-combined extended keys beyond what's listed above</strong> —
+  <code>Shift+F1</code>-<code>F10</code> (<code>0xFF54</code>-<code>0xFF5D</code> in the original), <code>Ctrl+PgUp</code>/
+  <code>Ctrl+PgDn</code> (<code>0xFF84</code>/<code>0xFF76</code>), and similar combinations that appear as
+  scattered literals in <code>os.cpp</code> — are <strong>not</strong> predefined as named
+  constants here. Unlike the base arrow/function/editing keys, ncurses'
+  reporting of <em>modified</em> function/navigation keys is terminal-
+  (terminfo-)dependent, not a universal scan code the way DOS BIOS gave
+  every program for free. Getting these right requires testing against
+  real terminals, which is better done against the concrete keybinding
+  that needs it (subsystems 06/07) than guessed at now. <code>Key::Unknown</code>
+  is the honest answer for these today; a later subsystem can extend
+  <code>translate_curses_key()</code> (<code>src/platform/linux/Keyboard.cpp</code>) once a real
+  terminal's actual reporting for a specific combination is confirmed.</li>
+<li><strong><code>ungetch()</code>/pushback of a Listless <code>KeyCode</code></strong> — the original's
+  <code>ungetch(int c)</code> pushes one raw platform character back for the next
+  <code>getch()</code>. No concrete call site was found needing this at the
+  <code>Keyboard</code> level (the original's own usage is internal to its
+  <code>getch()</code>/extended-key-continuation implementation, not something the
+  app calls directly). Not exposed; can be added if a real need appears.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1234,10 +1505,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/listless/0.0", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "/listless/0.0/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/listless/0.0/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

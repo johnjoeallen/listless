@@ -10,25 +10,31 @@
       
       
       
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/porting/01-string-container-primitives/">
       
+      
+        <link rel="prev" href="../target/">
+      
+      
+        <link rel="next" href="../02-search-primitives/">
       
       
         
       
       
-      <link rel="icon" href="/listless/0.0/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Listless</title>
+        <title>01. String/container primitives - Listless</title>
       
     
     
-      <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("/listless/0.0",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#subsystem-01-stringcontainer-primitives" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,7 +96,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/listless/0.0/." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              01. String/container primitives
             
           </span>
         </div>
@@ -218,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/listless/0.0/." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -239,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/listless/0.0/getting-started/" class="md-tabs__link">
+        <a href="../../getting-started/" class="md-tabs__link">
           
   
   
@@ -255,11 +266,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/listless/0.0/porting/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -293,7 +306,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/listless/0.0/." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -323,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -400,7 +413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -428,7 +441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/usage/" class="md-nav__link">
+      <a href="../../usage/" class="md-nav__link">
         
   
   
@@ -456,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/syntax-highlighting/" class="md-nav__link">
+      <a href="../../syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -484,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/configuration/" class="md-nav__link">
+      <a href="../../configuration/" class="md-nav__link">
         
   
   
@@ -512,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -544,24 +557,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -579,7 +597,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -597,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -625,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -653,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -731,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/original/" class="md-nav__link">
+      <a href="../original/" class="md-nav__link">
         
   
   
@@ -759,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/target/" class="md-nav__link">
+      <a href="../target/" class="md-nav__link">
         
   
   
@@ -792,6 +810,8 @@
                 
   
   
+    
+  
   
   
     
@@ -802,11 +822,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
         
           
           <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
@@ -827,7 +847,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -842,10 +862,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/listless/0.0/porting/01-string-container-primitives/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01. String/container primitives
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -861,6 +908,114 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cstring-includecstringhpp-classcstringcpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CString (include/cstring.hpp, class/cstring.cpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subcstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SubCString
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arrayt-sortablearrayt-includearrayhpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Array&lt;T&gt; / SortableArray&lt;T&gt; (include/array.hpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slistt-dlistt-sett-includeslistdlistsethpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SList&lt;T&gt; / DList&lt;T&gt; / Set&lt;T&gt; (include/{slist,dlist,set}.hpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refptrt-storaget-includerefptrhpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RefPtr&lt;T&gt; / Storage&lt;T&gt; (include/refptr.hpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#date-time-includedatetimehpp-classdatetimecpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date / Time (include/{date,time}.hpp, class/{date,time}.cpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugdiagnostic-support-tracer-conditio-memcheck-memman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug/diagnostic support: tracer, conditio, memcheck, memman
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-covered-by-this-doc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not covered by this doc
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -873,7 +1028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/02-search-primitives/" class="md-nav__link">
+      <a href="../02-search-primitives/" class="md-nav__link">
         
   
   
@@ -901,7 +1056,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/03-directory-enumeration/" class="md-nav__link">
+      <a href="../03-directory-enumeration/" class="md-nav__link">
         
   
   
@@ -929,7 +1084,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/04-console-terminal-io/" class="md-nav__link">
+      <a href="../04-console-terminal-io/" class="md-nav__link">
         
   
   
@@ -957,7 +1112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/05-keyboard-input/" class="md-nav__link">
+      <a href="../05-keyboard-input/" class="md-nav__link">
         
   
   
@@ -985,7 +1140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/06-file-list-ui/" class="md-nav__link">
+      <a href="../06-file-list-ui/" class="md-nav__link">
         
   
   
@@ -1013,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/07-file-viewer-core/" class="md-nav__link">
+      <a href="../07-file-viewer-core/" class="md-nav__link">
         
   
   
@@ -1041,7 +1196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/08-style-config/" class="md-nav__link">
+      <a href="../08-style-config/" class="md-nav__link">
         
   
   
@@ -1069,7 +1224,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/09-syntax-highlighting/" class="md-nav__link">
+      <a href="../09-syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -1097,7 +1252,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/10-hex-mode-viewer/" class="md-nav__link">
+      <a href="../10-hex-mode-viewer/" class="md-nav__link">
         
   
   
@@ -1125,7 +1280,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/app-main-loop/" class="md-nav__link">
+      <a href="../app-main-loop/" class="md-nav__link">
         
   
   
@@ -1178,6 +1333,104 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cstring-includecstringhpp-classcstringcpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CString (include/cstring.hpp, class/cstring.cpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subcstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SubCString
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arrayt-sortablearrayt-includearrayhpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Array&lt;T&gt; / SortableArray&lt;T&gt; (include/array.hpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slistt-dlistt-sett-includeslistdlistsethpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SList&lt;T&gt; / DList&lt;T&gt; / Set&lt;T&gt; (include/{slist,dlist,set}.hpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refptrt-storaget-includerefptrhpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RefPtr&lt;T&gt; / Storage&lt;T&gt; (include/refptr.hpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#date-time-includedatetimehpp-classdatetimecpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date / Time (include/{date,time}.hpp, class/{date,time}.cpp)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugdiagnostic-support-tracer-conditio-memcheck-memman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug/diagnostic support: tracer, conditio, memcheck, memman
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-covered-by-this-doc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not covered by this doc
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1190,8 +1443,159 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/porting/01-string-container-primitives.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="subsystem-01-stringcontainer-primitives">Subsystem 01: string/container primitives<a class="headerlink" href="#subsystem-01-stringcontainer-primitives" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/include/{cstring,array,dlist,slist,set,refptr,date,time,
+tracer,memman,conditio}.hpp</code>, <code>original/class/{cstring,date,time,tracer,
+conditio}.cpp</code>, <code>original/func/memcheck.cpp</code>. This is a custom, pre-STL
+C++ library predating <code>std::</code>; every other subsystem depends on it, so it
+is documented and ported first.</p>
+<h2 id="cstring-includecstringhpp-classcstringcpp"><code>CString</code> (<code>include/cstring.hpp</code>, <code>class/cstring.cpp</code>)<a class="headerlink" href="#cstring-includecstringhpp-classcstringcpp" title="Permanent link">&para;</a></h2>
+<p>A ref-uncounted, manually managed <code>char*</code> buffer. Provides <code>length()</code>,
+<code>pos</code>/<code>posr</code>/<code>posi</code> (find / reverse-find / case-insensitive find), and an
+implicit <code>operator const char*()</code>.</p>
+<p>Non-obvious behaviour to preserve or deliberately drop:</p>
+<ul>
+<li><strong>1-indexed <code>operator[]</code>.</strong> <code>s[1]</code> is the first character throughout the
+  codebase (e.g. <code>dir.cpp</code>'s <code>path[2] == ':'</code> drive-letter check). A
+  <code>std::string</code>-based port should decide explicitly whether to keep
+  1-indexing at call sites or normalize to 0-indexing everywhere — mixing
+  the two silently is the likely source of off-by-one bugs during the
+  port.</li>
+<li><code>operator==(RegExp&amp;)</code> bakes regex matching into string equality. This
+  goes away once <code>RegExp</code> is replaced (see subsystem 02) — regex/glob
+  matching should become an explicit function call, not an overloaded
+  <code>==</code>.</li>
+</ul>
+<p><strong>Target:</strong> <code>std::string</code>.</p>
+<h2 id="subcstring"><code>SubCString</code><a class="headerlink" href="#subcstring" title="Permanent link">&para;</a></h2>
+<p>A lazily-materialized substring/reference proxy
+(<code>SubCString(s, index, count)</code>) that can be assigned back into its source
+string (used for in-place path manipulation in <code>class/dir.cpp</code>, e.g.
+<code>SubCString(tmp, 1, 2)</code> to read/replace a drive prefix).</p>
+<p><strong>Target:</strong> <code>std::string_view</code> for the read-only case. The assign-back
+case has no direct <code>std::</code> equivalent and should become an explicit
+<code>std::string::replace</code> call at each site — do not port the proxy type.</p>
+<h2 id="arrayt-sortablearrayt-includearrayhpp"><code>Array&lt;T&gt;</code> / <code>SortableArray&lt;T&gt;</code> (<code>include/array.hpp</code>)<a class="headerlink" href="#arrayt-sortablearrayt-includearrayhpp" title="Permanent link">&para;</a></h2>
+<p>A value array of <code>T*</code> that owns and deletes its elements, with fixed or
+<code>dynamic</code> growth (realloc doubling via <code>iExpandSize</code>) and a hand-rolled
+quicksort.</p>
+<p>Bugs/hazards, not behaviour to preserve:</p>
+<ul>
+<li><code>QSort</code>'s pivot/partition bookkeeping uses <code>static</code> locals — not
+  reentrant, not thread-safe, and no recursion-depth guard (stack
+  overflow risk on adversarial or already-sorted large inputs).</li>
+<li><code>dynamic</code> arrays auto-extend on <code>operator[]</code> access when
+  <code>index == iSize</code> — a surprising side-effecting <code>[]</code>. Any C++20 port
+  should make growth explicit (<code>push_back</code>/<code>resize</code>), not implicit in a
+  read/write operator.</li>
+</ul>
+<p><strong>Target:</strong> <code>std::vector&lt;T&gt;</code> + <code>std::sort</code>.</p>
+<h2 id="slistt-dlistt-sett-includeslistdlistsethpp"><code>SList&lt;T&gt;</code> / <code>DList&lt;T&gt;</code> / <code>Set&lt;T&gt;</code> (<code>include/{slist,dlist,set}.hpp</code>)<a class="headerlink" href="#slistt-dlistt-sett-includeslistdlistsethpp" title="Permanent link">&para;</a></h2>
+<p>Singly-linked list, doubly-linked list, and a "set" respectively. All
+three own <code>T*</code> payloads and delete them on destruction unless constructed
+with <code>shouldDelete = FALSE</code>.</p>
+<ul>
+<li><code>Set&lt;T&gt;</code> is actually an <strong>insertion-ordered unique list</strong>, not a
+  tree/hash set: <code>Add</code> does a linear scan for an existing equal element
+  before appending, making bulk construction O(n²). <code>AddBefore</code>/
+  <code>AddAfter</code> also do linear scans by pointer identity.</li>
+<li><code>App::cViewedFiles</code> (the open-file-buffer list) is an <code>SList&lt;Viewer&gt;</code> —
+  this is the one call site most worth checking carefully when choosing
+  a replacement container, since buffer order and identity matter to the
+  UI (digit-key 1-9 switching).</li>
+</ul>
+<p><strong>Target:</strong> <code>std::list</code>/<code>std::vector</code> for <code>SList</code>/<code>DList</code> depending on
+whether random access or mid-list insertion dominates at each call site;
+<code>std::vector</code> with dedup-on-insert, or <code>std::set</code>/<code>std::unordered_set</code> if
+true (non-insertion) ordering turns out not to matter, for <code>Set&lt;T&gt;</code>. Pick
+per call site rather than a single blanket replacement — check whether
+each use relies on insertion order.</p>
+<h2 id="refptrt-storaget-includerefptrhpp"><code>RefPtr&lt;T&gt;</code> / <code>Storage&lt;T&gt;</code> (<code>include/refptr.hpp</code>)<a class="headerlink" href="#refptrt-storaget-includerefptrhpp" title="Permanent link">&para;</a></h2>
+<p>An intrusive-ish shared pointer. Not thread-safe (plain <code>UINT</code> refcount,
+no atomics). <code>Storage::operator=</code> looks broken: it calls <code>ReleaseRef()</code>
+before reading the source's <code>GetPointer()</code>, but increments <code>this</code>'s
+refcount rather than the source <code>Storage</code>'s — the assignment does not
+correctly share ownership.</p>
+<p><code>RCString</code>/<code>RSubCString</code> (<code>include/cstring.hpp</code>) are typedef'd against
+this but no use site was found in the application files surveyed
+(<code>os.cpp</code>, <code>fileman.cpp</code>, <code>osview.cpp</code>, <code>osstyle.cpp</code>, <code>globals.cpp</code>,
+<code>osmisc.cpp</code>). <strong>Before porting this type, grep the full <code>/original</code> tree
+for any remaining use; if none exists, skip it entirely</strong> rather than
+debugging a 1990s reference-counting bug that may be dead code.</p>
+<p><strong>Target (if needed):</strong> <code>std::shared_ptr&lt;T&gt;</code>.</p>
+<h2 id="date-time-includedatetimehpp-classdatetimecpp"><code>Date</code> / <code>Time</code> (<code>include/{date,time}.hpp</code>, <code>class/{date,time}.cpp</code>)<a class="headerlink" href="#date-time-includedatetimehpp-classdatetimecpp" title="Permanent link">&para;</a></h2>
+<p>Hand-rolled Julian-day date and integer-seconds-of-day time, each with
+regex-based string parsing (e.g. a <code>ddmmyyFormat</code>-style pattern) and
+<code>CString</code> conversion operators. Parsing currently depends on <code>RegExp</code>,
+which is non-functional in the shipped source (see
+<a href="../architecture/#known-broken-dead-code-in-original">architecture.md</a>).</p>
+<p><strong>Target:</strong> <code>std::chrono::year_month_day</code> / <code>std::chrono::sys_seconds</code>,
+formatted and parsed via <code>std::format</code>/<code>std::chrono</code> I/O or
+<code>std::from_chars</code> — parsing should not reintroduce a regex dependency.</p>
+<h2 id="debugdiagnostic-support-tracer-conditio-memcheck-memman">Debug/diagnostic support: <code>tracer</code>, <code>conditio</code>, <code>memcheck</code>, <code>memman</code><a class="headerlink" href="#debugdiagnostic-support-tracer-conditio-memcheck-memman" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>tracer</code></strong> (<code>include/tracer.hpp</code>, <code>class/tracer.cpp</code>) — debug-build
+  file logger (<code>trace.log</code>) plus a manual call-stack dump on fatal error,
+  via the <code>MStackCall</code> macro pushing/popping a global linked list at
+  function entry/exit. <strong>Target:</strong> <code>&lt;source_location&gt;</code> plus a real
+  logging library, or rely on debugger-provided stack traces; do not port
+  the manual push/pop call-stack list.</li>
+<li><strong><code>conditio</code></strong> (<code>include/conditio.hpp</code>, <code>class/conditio.cpp</code>) —
+  assertion macros <code>MFailIf</code>/<code>MFail</code>/<code>MEnsure</code>/<code>MUnimplemented</code>, logging
+  via <code>tracer</code> then calling <code>MTerminate()</code> (dumps stack, breaks into
+  debugger, <code>exit(EXIT_FAILURE)</code>). No-ops outside <code>DEBUG</code> builds <strong>except
+  <code>MEnsure</code>, which compiles to a bare <code>while (Condition)</code> in release
+  builds</strong> — i.e., it silently hangs instead of asserting if the
+  condition is ever false in a release build. This is a genuine bug to
+  fix during the port (with a regression test), per the project's
+  "preserve behaviour, but fix genuine bugs" principle — the fix is to
+  make <code>MEnsure</code> assert/throw unconditionally, never loop.
+  <strong>Target:</strong> <code>assert()</code> for internal invariants, exceptions or
+  <code>std::expected</code> at real API boundaries.</li>
+<li><strong><code>func/memcheck.cpp</code></strong> — global <code>operator new</code>/<code>delete</code> overrides
+  backed by a fixed <code>void* allocs[4096]</code> slot table, active only under
+  <code>DEBUG</code> — a crude allocation tracker/leak catcher capped at 4096
+  concurrent allocations. <strong>Target:</strong> none needed — ASan/UBSan (already
+  planned as a CI quality gate) supersedes this entirely; do not port it.</li>
+<li><strong><code>include/memman.hpp</code></strong> — vestigial and non-compiling as shipped (a
+  <code>tepmlate &lt;class T&gt;</code> typo in an otherwise-empty <code>RefPtr&lt;T&gt;</code> template);
+  the real <code>RefPtr</code> lives in <code>refptr.hpp</code>. <strong>Do not port; confirm zero
+  includes elsewhere in <code>/original</code>, then treat as historical dead code
+  only.</strong></li>
+</ul>
+<h2 id="not-covered-by-this-doc">Not covered by this doc<a class="headerlink" href="#not-covered-by-this-doc" title="Permanent link">&para;</a></h2>
+<p><code>getopt.hpp</code>/<code>getopt.cpp</code> (custom argv parser) and <code>jac.h</code>'s
+<code>strstri</code>/<code>strrchri</code>/<code>strchri</code>/<code>SearchExpression</code> (Boyer-Moore-Horspool
+literal search) are self-contained utilities, not part of the core
+container library — <code>SearchExpression</code> belongs with subsystem 02 (search
+primitives), and <code>getopt</code> is low priority (lowest-risk, most easily
+replaced or kept as-is) and can be documented alongside <code>App::Init</code> when
+subsystem 6+ revisits argument parsing.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1234,10 +1638,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/listless/0.0", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "/listless/0.0/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/listless/0.0/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

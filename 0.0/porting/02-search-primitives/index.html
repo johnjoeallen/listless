@@ -10,25 +10,31 @@
       
       
       
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/porting/02-search-primitives/">
       
+      
+        <link rel="prev" href="../01-string-container-primitives/">
+      
+      
+        <link rel="next" href="../03-directory-enumeration/">
       
       
         
       
       
-      <link rel="icon" href="/listless/0.0/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Listless</title>
+        <title>02. Search primitives - Listless</title>
       
     
     
-      <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("/listless/0.0",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#subsystem-02-search-primitives" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,7 +96,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/listless/0.0/." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              02. Search primitives
             
           </span>
         </div>
@@ -218,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/listless/0.0/." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -239,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/listless/0.0/getting-started/" class="md-tabs__link">
+        <a href="../../getting-started/" class="md-tabs__link">
           
   
   
@@ -255,11 +266,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/listless/0.0/porting/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -293,7 +306,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/listless/0.0/." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -323,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -400,7 +413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -428,7 +441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/usage/" class="md-nav__link">
+      <a href="../../usage/" class="md-nav__link">
         
   
   
@@ -456,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/syntax-highlighting/" class="md-nav__link">
+      <a href="../../syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -484,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/configuration/" class="md-nav__link">
+      <a href="../../configuration/" class="md-nav__link">
         
   
   
@@ -512,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -544,24 +557,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -579,7 +597,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -597,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -625,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -653,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -731,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/original/" class="md-nav__link">
+      <a href="../original/" class="md-nav__link">
         
   
   
@@ -759,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/target/" class="md-nav__link">
+      <a href="../target/" class="md-nav__link">
         
   
   
@@ -792,6 +810,8 @@
                 
   
   
+    
+  
   
   
     
@@ -802,11 +822,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
         
           
           <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
@@ -827,7 +847,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -845,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/01-string-container-primitives/" class="md-nav__link">
+      <a href="../01-string-container-primitives/" class="md-nav__link">
         
   
   
@@ -870,10 +890,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/listless/0.0/porting/02-search-primitives/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02. Search primitives
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -889,6 +936,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#literal-search-strsrchsearchexpression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Literal search: strsrch/SearchExpression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glob-matching-fileexp2regexp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glob matching: FileExp2RegExp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#out-of-scope-for-this-subsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Out of scope for this subsystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -901,7 +1001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/03-directory-enumeration/" class="md-nav__link">
+      <a href="../03-directory-enumeration/" class="md-nav__link">
         
   
   
@@ -929,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/04-console-terminal-io/" class="md-nav__link">
+      <a href="../04-console-terminal-io/" class="md-nav__link">
         
   
   
@@ -957,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/05-keyboard-input/" class="md-nav__link">
+      <a href="../05-keyboard-input/" class="md-nav__link">
         
   
   
@@ -985,7 +1085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/06-file-list-ui/" class="md-nav__link">
+      <a href="../06-file-list-ui/" class="md-nav__link">
         
   
   
@@ -1013,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/07-file-viewer-core/" class="md-nav__link">
+      <a href="../07-file-viewer-core/" class="md-nav__link">
         
   
   
@@ -1041,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/08-style-config/" class="md-nav__link">
+      <a href="../08-style-config/" class="md-nav__link">
         
   
   
@@ -1069,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/09-syntax-highlighting/" class="md-nav__link">
+      <a href="../09-syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -1097,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/10-hex-mode-viewer/" class="md-nav__link">
+      <a href="../10-hex-mode-viewer/" class="md-nav__link">
         
   
   
@@ -1125,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/app-main-loop/" class="md-nav__link">
+      <a href="../app-main-loop/" class="md-nav__link">
         
   
   
@@ -1178,6 +1278,49 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#literal-search-strsrchsearchexpression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Literal search: strsrch/SearchExpression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glob-matching-fileexp2regexp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glob matching: FileExp2RegExp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#out-of-scope-for-this-subsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Out of scope for this subsystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1190,8 +1333,121 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/porting/02-search-primitives.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="subsystem-02-search-primitives">Subsystem 02: search primitives<a class="headerlink" href="#subsystem-02-search-primitives" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/func/strsrch.cpp</code>, <code>original/include/jac.h</code>
+(<code>SearchExpression</code>), <code>original/class/dir.cpp</code> (<code>FileExp2RegExp</code>,
+<code>FileExp2RegExpArray</code>), <code>original/apps/onscreen/os.man</code> (documented
+wildcard syntax, section 2.1.1). Depends on
+<a href="../01-string-container-primitives/">01-string-container-primitives.md</a>;
+resolves the non-functional <code>RegExp</code> blocker noted in
+<a href="../architecture/#known-broken-dead-code-in-original">architecture.md</a>
+for filename glob matching.</p>
+<h2 id="literal-search-strsrchsearchexpression">Literal search: <code>strsrch</code>/<code>SearchExpression</code><a class="headerlink" href="#literal-search-strsrchsearchexpression" title="Permanent link">&para;</a></h2>
+<p><code>original/func/strsrch.cpp</code> implements Boyer-Moore-Horspool search: a
+<code>SearchExpression</code> precomputes a 256-entry "last occurrence" table from
+the search pattern (folded to uppercase up front if the search is
+case-insensitive), then <code>strsrch()</code> scans the haystack right-to-left
+within each candidate window, shifting by the bad-character table on a
+mismatch. This is a correct, standard algorithm and is ported directly in
+behaviour (not line-by-line) as <code>listless::HorspoolSearcher</code>
+(<code>src/Search.hpp</code>/<code>.cpp</code>): construct once per pattern, <code>find()</code> repeatedly
+for "find next" style usage, with an explicit <code>start</code> offset rather than
+the original's implicit whole-string-only scan.</p>
+<p>Not ported: <code>strnrcmp</code>/<code>strnrcmpi</code> (small helpers internal to the
+right-to-left comparison in the original's specific implementation
+shape) — <code>HorspoolSearcher::find()</code> does the equivalent right-to-left
+compare inline.</p>
+<h2 id="glob-matching-fileexp2regexp">Glob matching: <code>FileExp2RegExp</code><a class="headerlink" href="#glob-matching-fileexp2regexp" title="Permanent link">&para;</a></h2>
+<p>The original translates a DOS/OS2/Win32-style wildcard into an ERE string
+and hands it to <code>RegExp</code> — which is a non-functional stub in the shipped
+source (see architecture.md). <code>docs/../src/Glob.{hpp,cpp}</code> implements
+direct wildcard matching instead, with no regex engine involved at all.</p>
+<p>The <strong>documented</strong> wildcard syntax (<code>os.man</code> section 2.1.1) is fully
+supported:</p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>zero or more of any character</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>exactly one character</td>
+</tr>
+<tr>
+<td><code>[az]</code></td>
+<td>one character from the given set</td>
+</tr>
+<tr>
+<td><code>[a-z]</code></td>
+<td>one character from the given range</td>
+</tr>
+<tr>
+<td>any other character, including <code>.</code></td>
+<td>matches literally</td>
+</tr>
+</tbody>
+</table>
+<p><code>listless::glob_match()</code> implements this directly (classic two-pointer
+wildcard matching with backtracking on <code>*</code>, extended so a bracket
+expression is treated as one token). <code>listless::glob_match_any()</code> splits
+a <code>;</code>-separated pattern list (as used for file-manager filespecs like
+<code>*.cpp;*.hpp</code>, via the original's <code>FileExp2RegExpArray</code>) and matches if
+any part matches.</p>
+<p><strong>Deliberately not reproduced:</strong> <code>FileExp2RegExp</code> (<code>class/dir.cpp</code>) also
+supports an undocumented <code>+</code> suffix after a bracket expression meaning
+"repeat this character class N times" or "N-M times" (e.g. <code>[abc]+3</code>,
+<code>[abc]+1-3</code>), translating to an ERE <code>\{min,max\}</code> quantifier. This syntax
+appears nowhere in <code>os.man</code>'s wildcard documentation — it looks like an
+implementation detail of the regex translator that was never a documented
+user-facing feature. Not reproduced; if a real use case turns up later,
+it can be added to <code>glob_match()</code>'s token parser without changing the
+existing supported syntax.</p>
+<p><strong>Case sensitivity:</strong> both <code>glob_match()</code>/<code>glob_match_any()</code> and
+<code>HorspoolSearcher</code> default to case-sensitive, matching Linux's
+case-sensitive filesystem convention (the original picked
+case-sensitive/insensitive <code>RegExp</code> construction per platform — case
+sensitive on Unix-like targets, insensitive on OS/2/DOS/Win32). Both take
+an explicit <code>case_sensitive</code> parameter so a later Windows/macOS platform
+layer (case-insensitive filesystems) can opt out per call site rather
+than via a global toggle.</p>
+<h2 id="out-of-scope-for-this-subsystem">Out of scope for this subsystem<a class="headerlink" href="#out-of-scope-for-this-subsystem" title="Permanent link">&para;</a></h2>
+<p>In-file regex search mode (<code>-search regexp</code>, as opposed to the default
+plain/literal search) is not implemented here. It belongs with the file
+viewer core (subsystem 07, issue #7), where <code>std::regex</code> is the
+straightforward backend — there is no reason to build a regex wrapper
+ahead of that concrete call site.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1234,10 +1490,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/listless/0.0", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "/listless/0.0/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/listless/0.0/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

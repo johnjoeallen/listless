@@ -5,63 +5,95 @@
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/01-string-container-primitives/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/configuration/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/02-search-primitives/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/documentation/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/03-directory-enumeration/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/getting-started/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/04-console-terminal-io/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/roadmap/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/05-keyboard-input/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/syntax-highlighting/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/06-file-list-ui/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/usage/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/07-file-viewer-core/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/08-style-config/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/01-string-container-primitives/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/09-syntax-highlighting/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/02-search-primitives/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/10-hex-mode-viewer/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/03-directory-enumeration/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/app-main-loop/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/04-console-terminal-io/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/architecture/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/05-keyboard-input/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/original/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/06-file-list-ui/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/status/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/07-file-viewer-core/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
     <url>
-         <loc>https://johnjoeallen.github.io/listless/0.0/target/</loc>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/08-style-config/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/09-syntax-highlighting/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/10-hex-mode-viewer/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/app-main-loop/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/architecture/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/original/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/status/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/subsystem-index/</loc>
+         <lastmod>2026-08-20</lastmod>
+    </url>
+    <url>
+         <loc>https://johnjoeallen.github.io/listless/0.0/porting/target/</loc>
          <lastmod>2026-08-20</lastmod>
     </url>
 </urlset>

@@ -10,25 +10,31 @@
       
       
       
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/porting/09-syntax-highlighting/">
       
+      
+        <link rel="prev" href="../08-style-config/">
+      
+      
+        <link rel="next" href="../10-hex-mode-viewer/">
       
       
         
       
       
-      <link rel="icon" href="/listless/0.0/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Listless</title>
+        <title>09. Syntax highlighting - Listless</title>
       
     
     
-      <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("/listless/0.0",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#subsystem-09-syntax-highlighting" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,7 +96,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/listless/0.0/." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              09. Syntax highlighting
             
           </span>
         </div>
@@ -218,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/listless/0.0/." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -239,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/listless/0.0/getting-started/" class="md-tabs__link">
+        <a href="../../getting-started/" class="md-tabs__link">
           
   
   
@@ -255,11 +266,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/listless/0.0/porting/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -293,7 +306,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/listless/0.0/." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -323,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -400,7 +413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -428,7 +441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/usage/" class="md-nav__link">
+      <a href="../../usage/" class="md-nav__link">
         
   
   
@@ -456,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/syntax-highlighting/" class="md-nav__link">
+      <a href="../../syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -484,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/configuration/" class="md-nav__link">
+      <a href="../../configuration/" class="md-nav__link">
         
   
   
@@ -512,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -544,24 +557,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -579,7 +597,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -597,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -625,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -653,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -731,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/original/" class="md-nav__link">
+      <a href="../original/" class="md-nav__link">
         
   
   
@@ -759,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/target/" class="md-nav__link">
+      <a href="../target/" class="md-nav__link">
         
   
   
@@ -792,6 +810,8 @@
                 
   
   
+    
+  
   
   
     
@@ -802,11 +822,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
         
           
           <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
@@ -827,7 +847,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -845,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/01-string-container-primitives/" class="md-nav__link">
+      <a href="../01-string-container-primitives/" class="md-nav__link">
         
   
   
@@ -873,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/02-search-primitives/" class="md-nav__link">
+      <a href="../02-search-primitives/" class="md-nav__link">
         
   
   
@@ -901,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/03-directory-enumeration/" class="md-nav__link">
+      <a href="../03-directory-enumeration/" class="md-nav__link">
         
   
   
@@ -929,7 +949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/04-console-terminal-io/" class="md-nav__link">
+      <a href="../04-console-terminal-io/" class="md-nav__link">
         
   
   
@@ -957,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/05-keyboard-input/" class="md-nav__link">
+      <a href="../05-keyboard-input/" class="md-nav__link">
         
   
   
@@ -985,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/06-file-list-ui/" class="md-nav__link">
+      <a href="../06-file-list-ui/" class="md-nav__link">
         
   
   
@@ -1013,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/07-file-viewer-core/" class="md-nav__link">
+      <a href="../07-file-viewer-core/" class="md-nav__link">
         
   
   
@@ -1041,7 +1061,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/08-style-config/" class="md-nav__link">
+      <a href="../08-style-config/" class="md-nav__link">
         
   
   
@@ -1066,10 +1086,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/listless/0.0/porting/09-syntax-highlighting/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09. Syntax highlighting
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1085,6 +1132,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-narrowed-or-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately narrowed or deferred
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1097,7 +1197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/10-hex-mode-viewer/" class="md-nav__link">
+      <a href="../10-hex-mode-viewer/" class="md-nav__link">
         
   
   
@@ -1125,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/app-main-loop/" class="md-nav__link">
+      <a href="../app-main-loop/" class="md-nav__link">
         
   
   
@@ -1178,6 +1278,49 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-narrowed-or-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately narrowed or deferred
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1190,8 +1333,199 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/porting/09-syntax-highlighting.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="subsystem-09-syntax-highlighting">Subsystem 09: syntax highlighting<a class="headerlink" href="#subsystem-09-syntax-highlighting" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/apps/onscreen/ostxt.hpp</code> (<code>LineStatus</code> enum,
+<code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code>), <code>original/apps/onscreen/osview.cpp</code>
+(<code>IsString</code>/<code>IsEolComment</code>/<code>IsBeginComment</code>/<code>IsEndComment</code>/
+<code>IsNumericPrefix</code>/<code>IsSymbol</code>/<code>keywordCmp</code>/<code>IsReservedWord</code>,
+<code>findStyleForFile</code>, <code>Viewer::scanData</code>, <code>Viewer::displayData</code>). Layers
+per-line syntax colouring onto the viewer core (subsystem 07) using the
+style system (subsystem 08).</p>
+<h2 id="what-the-original-does">What the original does<a class="headerlink" href="#what-the-original-does" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Per-character classification helpers</strong> (<code>osview.cpp:34-215</code>) each take
+  a style and answer "does the syntax rule for X match here": <code>IsString</code>
+  (does <code>*sty-&gt;iString</code> — a set of quote characters — contain this char),
+  <code>IsEolComment</code>/<code>IsBeginComment</code>/<code>IsEndComment</code> (does any entry of
+  <code>iEolComment</code>/<code>iOpenComment</code>/<code>iCloseComment</code> match as a prefix at this
+  position; <code>IsEolComment</code> respects <code>iCaseSensitive</code>, the comment
+  delimiter matchers do not), <code>IsNumericPrefix</code> (any entry of
+  <code>iNumericPrefix</code>, e.g. <code>"0x"</code>), <code>IsSymbol</code> (is this char in <code>iSymbols</code>),
+  and <code>IsReservedWord</code>/<code>keywordCmp</code> (binary search over <code>iReserved</code>,
+  sorted, comparing case-(in)sensitively per <code>iCaseSensitive</code> and
+  requiring the character after the match not continue an identifier —
+  <code>isalnum</code> or <code>_</code>).</li>
+<li><strong><code>findStyleForFile</code></strong> (<code>osview.cpp:251-294</code>) — walks the global
+  <code>styles</code> list, returning the first style whose <code>iExtensions</code> contains
+  the file's extension (case-insensitive); falls back to <code>gDefaultStyle</code>
+  if none match.</li>
+<li><strong><code>LineStatus</code></strong> (<code>ostxt.hpp:298-306</code>) — one enum value stored per line
+  (<code>LinePtr::iLineStatus</code>): <code>LS_NONE</code>, <code>LS_BOLD</code>, <code>LS_UNDERLINED</code>,
+  <code>LS_BOLD_UNDERLINED</code>, <code>LS_INCOMMENT</code>, <code>LS_INPREPROCESSOR</code>. It's the
+  state carried <em>into</em> the next line — a multi-line <code>/* */</code> comment sets
+  the <em>next</em> line's status to <code>LS_INCOMMENT</code> (not the line the <code>/*</code>
+  itself is on), so <code>Viewer::displayData</code> seeds <code>iInComment</code>/
+  <code>iInPreprocessorStatement</code> for line N from <code>lp-&gt;iLineStatus</code> (the value
+  computed while processing line N-1).</li>
+<li><strong><code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code></strong> (<code>ostxt.hpp:326-327</code>) — the control
+  bytes <code>\x02</code>/<code>\x13</code> (<code>('B'-'A')+1</code>/<code>('S'-'A')+1</code>). A completely
+  separate feature from syntax highlighting called "text with layout"
+  (<code>iTextWithLayout</code>): a file can embed these bytes to toggle bold/
+  underline on/off from that point forward, and the original explicitly
+  disables this when syntax highlighting is active — "no support for text
+  with layout when syntax highlighting has been enabled"
+  (<code>osview.cpp:839-840</code>).</li>
+<li><strong><code>Viewer::scanData</code></strong> (<code>osview.cpp:1386-1698</code>) — the line-indexing
+  pass. While indexing, if <code>iSyntaxHighlightEnabled</code>, it runs a small
+  state machine (<code>ST_NONE</code>/<code>ST_INSTRING</code>/<code>ST_INPREPROCESSOR</code>/
+  <code>ST_INEOLCOMMENT</code>/<code>ST_INMULTICOMMENT</code>) purely to decide each line's
+  <em>exit</em> <code>iLineStatus</code> — string state isn't tracked into the <em>next</em>
+  line (only comments and preprocessor blocks are), and an
+  end-of-line comment or a preprocessor block without a trailing
+  <code>iLineContinuation</code> character resets to <code>ST_NONE</code> before the next
+  line starts. A preprocessor block found via <code>iOpenPreprocessor</code> only
+  triggers when it starts at column 0 of non-space content
+  (<code>nonSpaceCount == 0</code>). Independently, this same pass tracks
+  <code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code> toggles to compute <code>LS_BOLD</code>/
+  <code>LS_UNDERLINED</code>/<code>LS_BOLD_UNDERLINED</code> for lines not in a comment/
+  preprocessor block (comment/preprocessor status always wins over
+  bold/underline in the stored <code>iLineStatus</code>, even though the toggle
+  bytes are still tracked underneath).</li>
+<li><strong><code>Viewer::displayData</code></strong> (<code>osview.cpp:756-1060</code>) — the per-line render
+  pass. Seeds <code>iInComment</code>/<code>iInPreprocessorStatement</code> from the <em>current</em>
+  line's <code>iLineStatus</code> (set by the <em>previous</em> line's pass through this
+  same function, or by <code>scanData</code> for the first render), then walks the
+  line character by character with this precedence: already-in-comment
+  continuation → end-of-line comment → begin-comment → already-in-
+  preprocessor continuation (itself checking for an embedded comment
+  start, which breaks out of preprocessor colouring) → quoted string →
+  symbol → numeric-prefixed number → decimal number → reserved word →
+  identifier (<code>isalpha</code>/<code>_</code>) → default colour. This chain <strong>only runs
+  when <code>iSyntaxHighlightEnabled</code> <em>and</em> <code>iReserved.Size() &gt; 0</code></strong> — a style
+  with syntax highlighting on but zero reserved words falls through to
+  the <code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code>-toggle-and-backspace-bolding branch
+  instead, a real quirk of the original's <code>if</code>/<code>else if</code> chain, not
+  independently documented behaviour elsewhere in the codebase.
+  Reserved-word matches are recoloured in the <em>stored</em> casing from
+  <code>iReserved</code> when <code>iCaseConvert</code> is set (case-canonicalizing keywords
+  as displayed), not just coloured.</li>
+<li><strong>String/escape handling</strong> (<code>osview.cpp:928-948</code>): a quoted-string scan
+  that, after displaying a character, checks whether the <em>new</em> current
+  character equals <code>iEscape</code> and if so unconditionally consumes it plus
+  the character after — regardless of whether that character is the
+  closing quote. This reads as a simplification/bug in the original
+  itself (a true "backslash escapes the very next character, including
+  an escaped quote" semantics would check the escape <em>before</em> advancing
+  past it, not after), documented here rather than silently "fixed"
+  since a byte-faithful reading of the original was the goal.</li>
+</ul>
+<h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>highlight_line(text, style, state)</code></strong> (<code>src/SyntaxHighlight.hpp</code>/
+  <code>.cpp</code>) — one function combining <code>scanData</code>'s state-machine (which
+  <code>LineStatus</code>-equivalent state carries into the next line) and
+  <code>displayData</code>'s per-character colouring chain into a single pass,
+  since both walk the same rules over the same text; the original only
+  splits them because <code>scanData</code> runs once up front (needing just the
+  exit state) while <code>displayData</code> re-derives entry state per render.
+  Returns a <code>std::vector&lt;ColorSpan&gt;</code> (offset/length/colour/bold/
+  underlined runs covering the line end to end, adjacent same-attribute
+  spans merged) and mutates a <code>HighlightState</code> in place (<code>in_comment</code>,
+  <code>in_preprocessor</code>, <code>bold</code>, <code>underlined</code> — the original's single
+  <code>LineStatus</code> enum split into independent fields, since a line can
+  genuinely be bold <em>and</em> underlined at once, a combination the enum
+  only expresses when neither comment nor preprocessor state also
+  holds).</li>
+<li><strong>The classification/matching logic</strong> — <code>match_any</code>/<code>match_prefix</code>
+  (comment/preprocessor delimiter and numeric-prefix matching),
+  <code>match_reserved</code> (word-boundary-aware reserved-word lookup), and
+  <code>char_in_set</code> (symbol/string-delimiter membership) are direct,
+  unexported (anonymous-namespace) equivalents of <code>IsEolComment</code>/
+  <code>IsBeginComment</code>/<code>IsEndComment</code>/<code>IsNumericPrefix</code>/<code>IsReservedWord</code>/
+  <code>keywordCmp</code>/<code>IsSymbol</code>/<code>IsString</code>.</li>
+<li><strong>Syntax-rule gate</strong> — the syntax-colouring pass activates when a style
+  has reserved words or any configured contextual rule, so structured
+  formats without a fixed keyword set can still be highlighted.</li>
+<li><strong><code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code> toggling</strong> — ported as the fallback
+  path (<code>highlight_line</code> internally: <code>highlight_layout</code>), gated on
+  <code>text_with_layout</code> exactly as <code>WithLayout(iCurrStyle)</code> gates it in the
+  original; toggle bytes are consumed (not emitted as a visible span)
+  and only flip <code>HighlightState::bold</code>/<code>underlined</code>.</li>
+<li><strong>Per-extension style selection</strong> — already covered by subsystem 08's
+  <code>StyleSet::style_for_extension()</code> (a direct port of
+  <code>findStyleForFile</code>'s matching logic); this subsystem adds no new code
+  for it, just uses it in tests.</li>
+</ul>
+<h2 id="whats-deliberately-narrowed-or-deferred">What's deliberately narrowed or deferred<a class="headerlink" href="#whats-deliberately-narrowed-or-deferred" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Comment delimiters always matched case-sensitively</strong> — the original
+  applies <code>iCaseSensitive</code> to <code>IsEolComment</code> but not to
+  <code>IsBeginComment</code>/<code>IsEndComment</code> (an inconsistency in the original
+  itself, <code>osview.cpp:73-112</code> use plain <code>strncmp</code> unconditionally); this
+  port matches <code>IsBeginComment</code>/<code>IsEndComment</code>'s always-case-sensitive
+  behaviour for open/close comments too, and applies <code>case_sensitive</code>
+  only where the original does (reserved words).</li>
+<li><strong>Escape handling in strings is a simplified, standard reading</strong>
+  (backslash-escapes-the-following-character), not the original's exact
+  "consume 2 chars unconditionally after redisplaying the escape-matched
+  char" sequence documented above — a faithful-enough reinterpretation
+  in the spirit of the <code>Viewer</code> search-backward decision in
+  docs/07-file-viewer-core.md, not a byte-for-byte port of what reads
+  like an original bug.</li>
+<li><strong>No case-conversion of displayed reserved-word text</strong> — <code>ColorSpan</code>
+  only carries an offset/length into the caller's original text, not
+  replacement text, so <code>iCaseConvert</code>'s "redisplay the keyword in its
+  stored casing" is not reproduced; reserved words are always coloured
+  in the casing they appear in the source. Revisiting this would need
+  <code>ColorSpan</code> (or a caller) to carry replacement text, not just a
+  colour — deferred until a real renderer (issue #24) needs it.</li>
+<li><strong>Preprocessor state tracking is gated the same as colouring</strong>
+  (<code>syntax_highlight_enabled &amp;&amp; !reserved.empty()</code>), whereas the
+  original's <code>scanData</code> state machine only checks
+  <code>iSyntaxHighlightEnabled</code> (not <code>iReserved.Size() &gt; 0</code>) — so a style
+  with syntax highlighting on, zero reserved words, but real comment/
+  preprocessor delimiters would track cross-line comment state in the
+  original but not here. Judged not worth reproducing: a style enabling
+  syntax highlighting with no reserved words is a degenerate
+  configuration the original itself barely supports (falls through to
+  the bold/underline-toggle path for actual colouring either way).</li>
+<li><strong>No backspace-based manual bolding</strong> (<code>osview.cpp:1024-1041</code>, the
+  <code>char\bchar</code> overstrike convention for bolding/underlining a
+  character without a control byte) — a <code>WithLayout</code>-gated feature
+  independent of <code>BOLD_CODE</code>/<code>UNDERLINE_CODE</code>, not implemented; no test
+  or call site in this port exercises it.</li>
+<li><strong>No rendering</strong> — <code>highlight_line</code> produces colour/attribute spans
+  only; painting them to a terminal is <code>ViewerRender.cpp</code>'s job
+  (subsystem 07), not wired up here since that would need the
+  <code>App</code>/main-loop layer (issue #24) to own <em>which</em> <code>Style</code> is active for
+  the file being viewed and feed <code>highlight_line</code>'s output into the
+  renderer per visible line.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1234,10 +1568,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/listless/0.0", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "/listless/0.0/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/listless/0.0/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

@@ -10,25 +10,31 @@
       
       
       
+        <link rel="canonical" href="https://johnjoeallen.github.io/listless/0.0/porting/03-directory-enumeration/">
       
+      
+        <link rel="prev" href="../02-search-primitives/">
+      
+      
+        <link rel="next" href="../04-console-terminal-io/">
       
       
         
       
       
-      <link rel="icon" href="/listless/0.0/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Listless</title>
+        <title>03. Directory enumeration - Listless</title>
       
     
     
-      <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="/listless/0.0/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("/listless/0.0",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#subsystem-03-directory-enumeration" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -85,7 +96,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/listless/0.0/." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-header__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -105,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              03. Directory enumeration
             
           </span>
         </div>
@@ -218,7 +229,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/listless/0.0/." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -239,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/listless/0.0/getting-started/" class="md-tabs__link">
+        <a href="../../getting-started/" class="md-tabs__link">
           
   
   
@@ -255,11 +266,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/listless/0.0/porting/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -293,7 +306,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/listless/0.0/." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
+    <a href="../.." title="Listless" class="md-nav__button md-logo" aria-label="Listless" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -323,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -400,7 +413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   
@@ -428,7 +441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/usage/" class="md-nav__link">
+      <a href="../../usage/" class="md-nav__link">
         
   
   
@@ -456,7 +469,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/syntax-highlighting/" class="md-nav__link">
+      <a href="../../syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -484,7 +497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/configuration/" class="md-nav__link">
+      <a href="../../configuration/" class="md-nav__link">
         
   
   
@@ -512,7 +525,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/roadmap/" class="md-nav__link">
+      <a href="../../roadmap/" class="md-nav__link">
         
   
   
@@ -544,24 +557,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -579,7 +597,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -597,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -625,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -653,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -731,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/original/" class="md-nav__link">
+      <a href="../original/" class="md-nav__link">
         
   
   
@@ -759,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/target/" class="md-nav__link">
+      <a href="../target/" class="md-nav__link">
         
   
   
@@ -792,6 +810,8 @@
                 
   
   
+    
+  
   
   
     
@@ -802,11 +822,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
         
           
           <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
@@ -827,7 +847,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -845,7 +865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/01-string-container-primitives/" class="md-nav__link">
+      <a href="../01-string-container-primitives/" class="md-nav__link">
         
   
   
@@ -873,7 +893,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/02-search-primitives/" class="md-nav__link">
+      <a href="../02-search-primitives/" class="md-nav__link">
         
   
   
@@ -898,10 +918,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/listless/0.0/porting/03-directory-enumeration/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03. Directory enumeration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -917,6 +964,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original provides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-not-ported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately not ported
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platform note
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -929,7 +1040,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/04-console-terminal-io/" class="md-nav__link">
+      <a href="../04-console-terminal-io/" class="md-nav__link">
         
   
   
@@ -957,7 +1068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/05-keyboard-input/" class="md-nav__link">
+      <a href="../05-keyboard-input/" class="md-nav__link">
         
   
   
@@ -985,7 +1096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/06-file-list-ui/" class="md-nav__link">
+      <a href="../06-file-list-ui/" class="md-nav__link">
         
   
   
@@ -1013,7 +1124,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/07-file-viewer-core/" class="md-nav__link">
+      <a href="../07-file-viewer-core/" class="md-nav__link">
         
   
   
@@ -1041,7 +1152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/08-style-config/" class="md-nav__link">
+      <a href="../08-style-config/" class="md-nav__link">
         
   
   
@@ -1069,7 +1180,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/09-syntax-highlighting/" class="md-nav__link">
+      <a href="../09-syntax-highlighting/" class="md-nav__link">
         
   
   
@@ -1097,7 +1208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/10-hex-mode-viewer/" class="md-nav__link">
+      <a href="../10-hex-mode-viewer/" class="md-nav__link">
         
   
   
@@ -1125,7 +1236,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/listless/0.0/porting/app-main-loop/" class="md-nav__link">
+      <a href="../app-main-loop/" class="md-nav__link">
         
   
   
@@ -1178,6 +1289,60 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-original-provides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the original provides
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-ported-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's ported here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-deliberately-not-ported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's deliberately not ported
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platform note
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1190,8 +1355,119 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+    <a href="https://github.com/johnjoeallen/listless/edit/main/docs/porting/03-directory-enumeration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="subsystem-03-directory-enumeration">Subsystem 03: directory enumeration<a class="headerlink" href="#subsystem-03-directory-enumeration" title="Permanent link">&para;</a></h1>
+<p>Source: <code>original/include/dir.hpp</code>, <code>original/class/dir.cpp</code>, plus the
+platform-specific <code>Directory::fill()</code> implementations
+<code>original/class/{OS2,win32,Dos}/dir.cpp</code>. Depends on
+<a href="../01-string-container-primitives/">01-string-container-primitives.md</a>
+and <a href="../02-search-primitives/">02-search-primitives.md</a> (glob filtering).
+This is Listless's core "ls" behaviour.</p>
+<h2 id="what-the-original-provides">What the original provides<a class="headerlink" href="#what-the-original-provides" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>Dirent</code></strong> — one directory entry: name, full path, size, DOS-style
+  <code>FDATE</code>/<code>FTIME</code>, <code>attrib_t</code> mode bitmask, with <code>isDirectory()</code>/
+  <code>isReadOnly()</code> derived from the mode bitmask via <code>ISDIR</code>/<code>FILE_READONLY</code>
+  macros, and case-insensitive-or-sensitive <code>operator&lt;</code>/<code>&gt;</code>/<code>==</code> depending
+  on platform (<code>__UNIX__</code> branch is case-sensitive; OS/2/DOS/Win32 use
+  <code>stricmp</code>).</li>
+<li><strong><code>Directory</code></strong> — <code>fill(fileSpec = "*")</code> populates a <code>SortableArray&lt;Dirent&gt;</code>
+  for one directory level via the platform-specific backend
+  (<code>DosFindFirst</code>/<code>FindFirstFile</code>/<code>_dos_findfirst</code> — <strong>there is no
+  <code>__UNIX__</code> backend in <code>/original</code> at all</strong>, so this is new platform work
+  on Linux, not a port); <code>sort(cmp)</code> with an optional custom comparator.</li>
+<li><strong><code>FileTreeWalker</code></strong> — recursive directory walk with virtual
+  <code>found()</code>/<code>searching()</code>/<code>dirFinished()</code> hooks. <strong>Zero use sites found
+  anywhere in <code>/original</code></strong> (checked both <code>apps/onscreen</code> and <code>class</code>) —
+  it's dead/unused infrastructure in the shipped source, not a real
+  feature. <strong>Not ported in this subsystem.</strong> If a real recursive-walk need
+  appears later (e.g. recursive copy/delete in subsystem 11, or a
+  recursive search feature), it can be added then against a concrete call
+  site, as a set of callbacks rather than a virtual-inheritance hierarchy
+  (more idiomatic modern C++, and this codebase has no other subclasses
+  of it to justify the extension-point design).</li>
+<li><strong>Path helpers</strong> — <code>mergePath</code>, <code>splitPath</code>, <code>nativePathName</code>/
+  <code>unixPathName</code>/<code>dosPathName</code>, <code>changeDir</code>, <code>isDir</code>, <code>queryCurrentDir</code>,
+  <code>queryCurrentDisk</code>, <code>expandDir</code>, <code>conv2NativePathSep</code>, <code>pathSeparator</code>.
+  Built around DOS/OS2/Win32 drive letters (<code>C:</code>) and backslash/forward-
+  slash normalization — concepts that don't exist on Linux.</li>
+</ul>
+<h2 id="whats-ported-here">What's ported here<a class="headerlink" href="#whats-ported-here" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>DirEntry</code></strong> (<code>src/Directory.hpp</code>) — name, full <code>std::filesystem::path</code>,
+  size, <code>std::filesystem::file_time_type</code> (last write time — <code>std::chrono</code>
+  directly, no separate <code>Date</code>/<code>Time</code> wrapper needed, per the subsystem 01
+  decision to defer <code>Date</code>/<code>Time</code> until a concrete need appears), and
+  <code>is_directory</code>/<code>is_read_only</code> booleans computed directly from
+  <code>std::filesystem::directory_entry</code>'s status rather than reconstructed
+  from a DOS-style attribute bitmask.</li>
+<li><strong><code>Directory</code></strong> (<code>src/Directory.hpp</code>/<code>.cpp</code>) — <code>fill(pattern = "*")</code>
+  lists one directory level via <code>std::filesystem::directory_iterator</code>,
+  filtered through subsystem 02's <code>glob_match()</code>; <code>size()</code>/<code>operator[]</code>;
+  <code>sort()</code> with a default comparator (case-sensitive name order, matching
+  the original's <code>__UNIX__</code> branch) and an optional custom one, as a hook
+  for later sort-by-extension/date/size (file manager, subsystem 06).</li>
+<li><strong><code>split_path_and_pattern()</code></strong> — given a filespec argument like
+  <code>/home/user/*.cpp</code>, <code>*.cpp</code>, or a bare directory path, returns
+  <code>(directory, pattern)</code>: if the whole input names an existing directory,
+  the pattern is <code>"*"</code>; otherwise the last path component is treated as
+  the pattern and the rest as the directory (defaulting to <code>.</code> if there
+  is no directory component). This is the Linux-relevant subset of the
+  original's <code>splitPath()</code> — with no drive letters to parse.</li>
+</ul>
+<h2 id="whats-deliberately-not-ported">What's deliberately not ported<a class="headerlink" href="#whats-deliberately-not-ported" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>FileTreeWalker</code></strong> — see above; dead code, no use sites.</li>
+<li><strong>Drive-letter logic</strong> in <code>splitPath</code>/<code>changeDir</code>/<code>queryCurrentDir</code>/
+  <code>queryCurrentDisk</code> — meaningless on Linux. <code>std::filesystem::path</code>'s own
+  operations (<code>operator/</code>, <code>parent_path()</code>, <code>filename()</code>,
+  <code>lexically_normal()</code>) replace <code>mergePath</code>/<code>nativePathName</code>/
+  <code>unixPathName</code>/<code>dosPathName</code>/<code>conv2NativePathSep</code> directly; there is no
+  wrapper for these, callers use <code>std::filesystem</code> directly.</li>
+<li><strong><code>expandDir()</code></strong> — recursively resolves a wildcard <em>directory</em> path
+  component by component (e.g. resolving a wildcard partway through a
+  path, not just the final filename). This is obscure, undocumented in
+  <code>os.man</code>'s wildcard section, and has no found call site outside
+  <code>splitPath</code>'s own fallback branch. Not ported; <code>split_path_and_pattern()</code>
+  only splits the final path component as a pattern, nothing upstream of
+  it.</li>
+<li><strong><code>isDir()</code>/<code>changeDir()</code>/<code>queryCurrentDir()</code></strong> as named wrappers — thin
+  one-line calls over <code>std::filesystem::is_directory()</code>/
+  <code>std::filesystem::current_path()</code>. Callers use <code>std::filesystem</code>
+  directly rather than a Listless-specific indirection over it.</li>
+</ul>
+<h2 id="platform-note">Platform note<a class="headerlink" href="#platform-note" title="Permanent link">&para;</a></h2>
+<p><code>Directory::fill()</code>'s <code>std::filesystem::directory_iterator</code>-based
+implementation lives directly in <code>src/Directory.cpp</code>, not under
+<code>/src/platform/linux</code> — <code>std::filesystem</code> is already portable across Linux,
+Windows, and macOS, so there is no platform seam here to isolate. The
+<code>/src/platform</code> directories are for genuinely OS-specific APIs (console I/O,
+keyboard input — subsystems 04/05), not for functionality the standard
+library already abstracts.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1234,10 +1510,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/listless/0.0", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "/listless/0.0/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.instant", "content.code.copy", "content.action.edit", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/listless/0.0/assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
