@@ -452,8 +452,7 @@ std::filesystem::path default_styles_dir() {
         return std::filesystem::path(xdg) / "listless" / "styles" / "syntax";
     }
     const char* home = std::getenv("HOME");
-    return std::filesystem::path(home ? home : "") / ".config" / "listless" / "styles" /
-           "syntax";
+    return std::filesystem::path(home ? home : "") / ".config" / "listless" / "styles" / "syntax";
 }
 
 std::filesystem::path system_styles_dir() {
