@@ -146,6 +146,23 @@ TEST(Style, OwnFieldOverridesBase) {
     EXPECT_EQ(*derived.fore_color.get(), Color::Red);
 }
 
+TEST(Style, ContextualRulesAndColorsInherit) {
+    Style base("Base");
+    base.before_delimiter.set(":");
+    base.before_delimiter_color.set(Color::Blue);
+    base.block_text_start.set("|>");
+
+    Style derived("Derived");
+    derived.add_base_style(base);
+
+    ASSERT_NE(derived.before_delimiter.get(), nullptr);
+    EXPECT_EQ(*derived.before_delimiter.get(), ":");
+    ASSERT_NE(derived.before_delimiter_color.get(), nullptr);
+    EXPECT_EQ(*derived.before_delimiter_color.get(), Color::Blue);
+    ASSERT_NE(derived.block_text_start.get(), nullptr);
+    EXPECT_EQ(*derived.block_text_start.get(), "|>");
+}
+
 TEST(Style, ExtensionsDoNotInherit) {
     Style base("Base");
     base.add_extension(".base");
@@ -308,6 +325,10 @@ TEST(LoadConfig, ParsesScalarFieldsAndExtensions) {
                "\tTabWidth => 4\n"
                "\tExpandTabs => On\n"
                "\tEditor => vim\n"
+               "\tBeforeDelimiter => :\n"
+               "\tBeforeDelimiterRequiresSpace => On\n"
+               "\tBlockTextStart => |>\n"
+               "\tBlockTextColor => Yellow\n"
                "}\n";
     }
 
@@ -326,6 +347,14 @@ TEST(LoadConfig, ParsesScalarFieldsAndExtensions) {
     EXPECT_TRUE(*cpp->expand_tabs.get());
     ASSERT_NE(cpp->editor.get(), nullptr);
     EXPECT_EQ(*cpp->editor.get(), "vim");
+    ASSERT_NE(cpp->before_delimiter.get(), nullptr);
+    EXPECT_EQ(*cpp->before_delimiter.get(), ":");
+    ASSERT_NE(cpp->before_delimiter_requires_space.get(), nullptr);
+    EXPECT_TRUE(*cpp->before_delimiter_requires_space.get());
+    ASSERT_NE(cpp->block_text_start.get(), nullptr);
+    EXPECT_EQ(*cpp->block_text_start.get(), "|>");
+    ASSERT_NE(cpp->block_text_color.get(), nullptr);
+    EXPECT_EQ(*cpp->block_text_color.get(), Color::Yellow);
 
     ASSERT_NE(cpp->extensions.get(), nullptr);
     EXPECT_EQ(cpp->extensions.get()->size(), 2u);
