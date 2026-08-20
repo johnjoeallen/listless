@@ -3,9 +3,9 @@
 # Builds listless into build/, mirroring the manual
 # `cmake -S . -B build && cmake --build build` workflow used by CI
 # (.github/workflows/ci.yml). Uses CMakeLists.txt's own default build
-# type (Debug) unless -DCMAKE_BUILD_TYPE is already cached in build/ --
-# a Release build currently fails (see issue #43), so this script
-# deliberately doesn't offer one yet.
+# type (Debug) unless -DCMAKE_BUILD_TYPE is already cached in build/;
+# doesn't offer a --release flag itself (a Release build now works --
+# issue #43 -- but exposing it here is a separate ask).
 #
 # Usage: build.sh [--stripped] [--jobs N]
 #

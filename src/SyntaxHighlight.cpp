@@ -7,6 +7,19 @@ namespace listless {
 
 namespace {
 
+// Item<T>::get() returns a pointer that may be null; resolving it as
+// `item.get() ? *item.get() : fallback` (or `item.get() != nullptr &&
+// *item.get()`) calls get() twice, which the optimizer at -O2 can't
+// always prove returns the same pointer both times -- GCC then flags
+// the second dereference as a potential null dereference
+// (-Wnull-dereference), a false positive that only Debug builds happen
+// to dodge (issue #43). Calling get() once sidesteps it.
+template <typename T>
+T get_or(const Item<T>& item, T fallback) {
+    const T* value = item.get();
+    return value ? *value : fallback;
+}
+
 bool char_in_set(const Item<std::string>& item, char c) {
     const std::string* set = item.get();
     return set != nullptr && set->find(c) != std::string::npos;
@@ -44,7 +57,7 @@ std::size_t match_prefix(std::string_view text, const Item<std::string>& item) {
 // binary-searched `iReserved` -- reserved words are few enough per style
 // that this isn't a performance concern).
 const std::string* match_reserved(std::string_view text, const Style& style) {
-    bool case_sensitive = style.case_sensitive.get() != nullptr && *style.case_sensitive.get();
+    bool case_sensitive = get_or(style.case_sensitive, false);
 
     for (const ReservedWord& word : style.reserved) {
         const std::string& kw = word.keyword;
@@ -89,18 +102,16 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     std::vector<ColorSpan> spans;
     std::size_t n = text.size();
 
-    Color comment_color = style.comment_color.get() ? *style.comment_color.get() : Color::LightGray;
-    Color preprocessor_color =
-        style.preprocessor_color.get() ? *style.preprocessor_color.get() : Color::LightGray;
-    Color string_color = style.string_color.get() ? *style.string_color.get() : Color::LightGray;
-    Color symbols_color = style.symbols_color.get() ? *style.symbols_color.get() : Color::LightGray;
-    Color number_color = style.number_color.get() ? *style.number_color.get() : Color::LightGray;
-    Color reserved_color =
-        style.reserved_color.get() ? *style.reserved_color.get() : Color::LightGray;
-    Color ident_color = style.ident_color.get() ? *style.ident_color.get() : Color::LightGray;
-    Color default_color = style.fore_color.get() ? *style.fore_color.get() : Color::LightGray;
+    Color comment_color = get_or(style.comment_color, Color::LightGray);
+    Color preprocessor_color = get_or(style.preprocessor_color, Color::LightGray);
+    Color string_color = get_or(style.string_color, Color::LightGray);
+    Color symbols_color = get_or(style.symbols_color, Color::LightGray);
+    Color number_color = get_or(style.number_color, Color::LightGray);
+    Color reserved_color = get_or(style.reserved_color, Color::LightGray);
+    Color ident_color = get_or(style.ident_color, Color::LightGray);
+    Color default_color = get_or(style.fore_color, Color::LightGray);
 
-    char escape = style.escape.get() ? *style.escape.get() : '\0';
+    char escape = get_or(style.escape, '\0');
 
     enum class Mode { Text, Comment, Preprocessor };
     Mode mode = state.in_comment ? Mode::Comment
@@ -207,7 +218,7 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
         state.in_comment = true;
         state.in_preprocessor = false;
     } else if (mode == Mode::Preprocessor) {
-        char continuation = style.line_continuation.get() ? *style.line_continuation.get() : '\0';
+        char continuation = get_or(style.line_continuation, '\0');
         state.in_preprocessor = continuation != '\0' && n > 0 && text.back() == continuation;
         state.in_comment = false;
     } else {
@@ -231,14 +242,12 @@ std::vector<ColorSpan> highlight_layout(std::string_view text, const Style& styl
     constexpr char kBoldCode = ('B' - 'A') + 1;
     constexpr char kUnderlineCode = ('S' - 'A') + 1;
 
-    Color default_color = style.fore_color.get() ? *style.fore_color.get() : Color::LightGray;
-    Color bold_color = style.bold_color.get() ? *style.bold_color.get() : default_color;
-    Color underline_color =
-        style.underline_color.get() ? *style.underline_color.get() : default_color;
-    Color bold_underline_color =
-        style.bold_underline_color.get() ? *style.bold_underline_color.get() : default_color;
+    Color default_color = get_or(style.fore_color, Color::LightGray);
+    Color bold_color = get_or(style.bold_color, default_color);
+    Color underline_color = get_or(style.underline_color, default_color);
+    Color bold_underline_color = get_or(style.bold_underline_color, default_color);
 
-    bool with_layout = style.text_with_layout.get() != nullptr && *style.text_with_layout.get();
+    bool with_layout = get_or(style.text_with_layout, false);
 
     std::vector<ColorSpan> spans;
     for (std::size_t i = 0; i < text.size(); ++i) {
@@ -296,8 +305,7 @@ std::vector<ColorSpan> merge_adjacent(std::vector<ColorSpan> spans) {
 
 std::vector<ColorSpan> highlight_line(std::string_view text, const Style& style,
                                       HighlightState& state) {
-    bool syntax_on = style.syntax_highlight_enabled.get() != nullptr &&
-                     *style.syntax_highlight_enabled.get() && !style.reserved.empty();
+    bool syntax_on = get_or(style.syntax_highlight_enabled, false) && !style.reserved.empty();
 
     std::vector<ColorSpan> spans =
         syntax_on ? highlight_syntax(text, style, state) : highlight_layout(text, style, state);
