@@ -140,6 +140,7 @@ class Style {
     Item<std::string> string_delimiter;
     Item<char> escape;
     Item<std::vector<std::string>> numeric_prefix;
+    Item<std::string> before_delimiter;
     Item<bool> case_sensitive;
     Item<bool> case_convert;
     Item<std::string> open_preprocessor;

@@ -10,8 +10,12 @@
 
 namespace listless {
 
-App::App(std::filesystem::path start_path)
-    : keyboard_(terminal_), file_manager_(std::filesystem::current_path()) {
+App::App(std::filesystem::path start_path, std::optional<std::string> syntax_style,
+         std::optional<std::filesystem::path> syntax_dir)
+    : keyboard_(terminal_),
+      file_manager_(std::filesystem::current_path()),
+      requested_style_(std::move(syntax_style)),
+      syntax_dir_(std::move(syntax_dir)) {
     load_styles();
 
     if (start_path.empty()) {
@@ -32,11 +36,12 @@ App::App(std::filesystem::path start_path)
 }
 
 App::App(std::string stdin_content, std::string display_name,
-         std::optional<std::string> syntax_style)
+         std::optional<std::string> syntax_style, std::optional<std::filesystem::path> syntax_dir)
     : terminal_(/*read_from_tty=*/true),
       keyboard_(terminal_),
       file_manager_(std::filesystem::current_path()),
-      requested_style_(std::move(syntax_style)) {
+      requested_style_(std::move(syntax_style)),
+      syntax_dir_(std::move(syntax_dir)) {
     load_styles();
 
     viewer_.emplace(std::move(stdin_content), std::move(display_name));
@@ -47,7 +52,7 @@ App::App(std::string stdin_content, std::string display_name,
 void App::load_styles() {
     load_config_dir(styles_, system_styles_dir());
     load_config(styles_, default_config_path());
-    load_config_dir(styles_, default_styles_dir());
+    load_config_dir(styles_, syntax_dir_.value_or(default_styles_dir()));
 }
 
 int App::run() {

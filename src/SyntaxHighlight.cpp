@@ -112,6 +112,23 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
     Color default_color = get_or(style.fore_color, Color::LightGray);
 
     char escape = get_or(style.escape, '\0');
+    const std::string* before_delimiter = style.before_delimiter.get();
+    std::size_t contextual_start = n;
+    std::size_t contextual_end = n;
+    if (before_delimiter != nullptr && !before_delimiter->empty()) {
+        std::size_t delimiter = text.find(*before_delimiter);
+        contextual_start = text.find_first_not_of(" \t");
+        if (delimiter != std::string_view::npos && contextual_start != std::string_view::npos &&
+            contextual_start < delimiter) {
+            contextual_end = delimiter;
+            while (contextual_end > contextual_start &&
+                   std::isspace(static_cast<unsigned char>(text[contextual_end - 1]))) {
+                --contextual_end;
+            }
+        } else {
+            contextual_start = n;
+        }
+    }
 
     enum class Mode { Text, Comment, Preprocessor };
     Mode mode = state.in_comment ? Mode::Comment
@@ -158,7 +175,11 @@ std::vector<ColorSpan> highlight_syntax(std::string_view text, const Style& styl
         }
 
         // Mode::Text
-        if (match_any(rest, style.eol_comment)) {
+        if (i == contextual_start) {
+            push(i, contextual_end - i, reserved_color);
+            i = contextual_end;
+            seen_non_space = true;
+        } else if (match_any(rest, style.eol_comment)) {
             push(i, n - i, comment_color);
             i = n;
         } else if (match_any(rest, style.open_comment)) {
@@ -305,7 +326,8 @@ std::vector<ColorSpan> merge_adjacent(std::vector<ColorSpan> spans) {
 
 std::vector<ColorSpan> highlight_line(std::string_view text, const Style& style,
                                       HighlightState& state) {
-    bool syntax_on = get_or(style.syntax_highlight_enabled, false) && !style.reserved.empty();
+    bool syntax_on = get_or(style.syntax_highlight_enabled, false) &&
+                     (!style.reserved.empty() || style.before_delimiter.get() != nullptr);
 
     std::vector<ColorSpan> spans =
         syntax_on ? highlight_syntax(text, style, state) : highlight_layout(text, style, state);

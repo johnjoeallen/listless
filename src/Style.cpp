@@ -177,6 +177,8 @@ const std::vector<FieldSpec>& field_table() {
              s.add_numeric_prefix(std::string(v));
              return true;
          }},
+        {"BeforeDelimiter",
+         [](Style& s, std::string_view v) { return apply_string(s.before_delimiter, v); }},
         {"OpenPreProcessor",
          [](Style& s, std::string_view v) { return apply_string(s.open_preprocessor, v); }},
         {"ClosePreProcessor",
@@ -389,6 +391,7 @@ void Style::add_base_style(Style& base) {
     string_delimiter.add_base_item(&base.string_delimiter);
     escape.add_base_item(&base.escape);
     numeric_prefix.add_base_item(&base.numeric_prefix);
+    before_delimiter.add_base_item(&base.before_delimiter);
     case_sensitive.add_base_item(&base.case_sensitive);
     case_convert.add_base_item(&base.case_convert);
     open_preprocessor.add_base_item(&base.open_preprocessor);
@@ -643,6 +646,7 @@ void save_config(const StyleSet& styles, const std::filesystem::path& path) {
         write_string("Strings", style->string_delimiter);
         write_char("Escape", style->escape);
         write_list("NumberPrefix", style->numeric_prefix);
+        write_string("BeforeDelimiter", style->before_delimiter);
         write_bool("CaseSensitive", style->case_sensitive);
         write_bool("CaseConvert", style->case_convert);
         write_string("OpenPreProcessor", style->open_preprocessor);
