@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <filesystem>
 #include <memory>
 #include <optional>
@@ -49,7 +50,10 @@ class Item {
         return *value_;
     }
 
-    void add_base_item(Item<T>* item) { base_items_.insert(base_items_.begin(), item); }
+    void add_base_item(Item<T>* item) {
+        base_items_.push_back(item);
+        std::rotate(base_items_.begin(), base_items_.end() - 1, base_items_.end());
+    }
 
   private:
     std::optional<T> value_;
