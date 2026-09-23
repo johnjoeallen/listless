@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: sudo apt-get update && sudo apt-get install -y ninja-build libncurses-dev
+
+      - name: Set package version from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i "s/VERSION [0-9]\+\.[0-9]\+\.[0-9]\+/VERSION ${VERSION}/" CMakeLists.txt
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DLISTLESS_BUILD_TESTS=OFF
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Package .deb
+        run: cpack --config build/CPackConfig.cmake -B build/package
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" build/package/*.deb \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
