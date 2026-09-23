@@ -21,7 +21,7 @@ jobs:
           sed -i "s/VERSION [0-9]\+\.[0-9]\+\.[0-9]\+/VERSION ${VERSION}/" CMakeLists.txt
 
       - name: Configure
-        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DLISTLESS_BUILD_TESTS=OFF
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DLISTLESS_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
 
       - name: Build
         run: cmake --build build
