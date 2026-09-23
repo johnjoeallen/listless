@@ -50,6 +50,16 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     install(DIRECTORY style/syntax/ DESTINATION ${CMAKE_INSTALL_DATADIR}/listless/styles
         FILES_MATCHING PATTERN "*.conf"
     )
+
+    set(CPACK_PACKAGE_NAME "listless")
+    set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
+    set(CPACK_PACKAGE_CONTACT "John Allen <john.joe.allen@gmail.com>")
+    set(CPACK_GENERATOR "DEB")
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "John Allen <john.joe.allen@gmail.com>")
+    set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+    set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+    include(CPack)
 else()
     message(FATAL_ERROR "Listless has no platform backend for ${CMAKE_SYSTEM_NAME} yet")
 endif()
